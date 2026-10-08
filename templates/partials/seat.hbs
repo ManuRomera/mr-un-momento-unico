@@ -1,0 +1,25 @@
+<aside class="umu-seat {{ink}} {{#if isActive}}active{{/if}} {{#if isMe}}me{{/if}} {{#if low}}low{{/if}}" style="--umu-kamon:{{color}}">
+  <div class="umu-seat-head">
+    <figure class="umu-portrait"><img src="{{portrait}}" alt="{{name}}"></figure>
+    <div class="umu-seat-id">
+      <span class="umu-seat-tag">{{#if isMe}}{{localize "UMU.Seat.You"}}{{else}}{{#if claimed}}{{user}}{{else}}{{localize "UMU.Seat.Free"}}{{/if}}{{/if}}{{#if isActive}} · {{localize "UMU.Seat.Active"}}{{/if}}</span>
+      <strong>{{name}}</strong>
+      <small>{{#if clan}}{{localize "UMU.Seat.Clan"}} {{clan}}{{else}}&nbsp;{{/if}}</small>
+    </div>
+    <div class="umu-seat-kamon">{{{kamon}}}</div>
+  </div>
+  <ul class="umu-counters">
+    <li class="adv" data-tooltip="{{localize 'UMU.Counter.advHint'}}">
+      <header><i class="fa-solid fa-stamp" aria-hidden="true"></i><span>{{localize "UMU.Counter.adv"}}</span><b>{{totals.adv}}</b></header>
+      <div class="umu-pips" aria-hidden="true">{{#each adv.list}}<i class="umu-pip seal"></i>{{/each}}{{#if adv.more}}<em>+{{adv.more}}</em>{{/if}}</div>
+    </li>
+    <li class="hate" data-tooltip="{{localize 'UMU.Counter.hateHint'}}">
+      <header><i class="fa-solid fa-droplet" aria-hidden="true"></i><span>{{localize "UMU.Counter.hate"}}</span><b>{{totals.hate}}</b></header>
+      <div class="umu-pips" aria-hidden="true">{{#each hate.list}}<i class="umu-pip drop"></i>{{/each}}{{#if hate.more}}<em>+{{hate.more}}</em>{{/if}}</div>
+    </li>
+    <li class="scar" data-tooltip="{{localize 'UMU.Counter.scarHint'}}">
+      <header><i class="fa-solid fa-slash" aria-hidden="true"></i><span>{{localize "UMU.Counter.scar"}}</span><b>{{totals.scar}}</b></header>
+      <div class="umu-pips" aria-hidden="true">{{#each scar.list}}<i class="umu-pip cut"></i>{{/each}}{{#if scar.more}}<em>+{{scar.more}}</em>{{/if}}</div>
+    </li>
+  </ul>
+</aside>

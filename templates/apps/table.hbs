@@ -1,0 +1,92 @@
+{{#if noGame}}
+<div class="umu-table umu-empty">
+  <img class="umu-empty-art" src="systems/mr-un-momento-unico/assets/art/brand/logo.webp" alt="">
+  <p class="umu-lede">{{#if gm}}{{localize "UMU.Game.Preparing"}}{{else}}{{localize "UMU.Game.WaitGM"}}{{/if}}</p>
+</div>
+{{else}}
+<div class="umu-table {{#if cine}}cine{{/if}} phase-{{phase}}" style="--umu-bg:{{bg}}">
+  <div class="umu-atmos" aria-hidden="true"></div>
+
+  {{!-- Cabecera --}}
+  <header class="umu-head">
+    <div class="umu-head-title">
+      <h1>{{setting.name}}</h1>
+      <p>{{chapterLabel}}{{#if weatherName}} · {{weatherName}}{{/if}}</p>
+    </div>
+    {{#if canSwitch}}
+    <div class="umu-switch" role="group" aria-label="{{localize 'UMU.Table.ActAs'}}">
+      <span>{{localize "UMU.Table.ActAs"}}</span>
+      {{#each switchSeats}}<button type="button" class="{{#if on}}on{{/if}}" data-action="actAs" data-seat="{{seat}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{name}}</button>{{/each}}
+    </div>
+    {{/if}}
+    {{#if spectator}}{{#unless gm}}<span class="umu-badge"><i class="fa-solid fa-eye" aria-hidden="true"></i> {{localize "UMU.Table.Spectator"}}</span>{{/unless}}{{/if}}
+    <nav class="umu-head-tools" aria-label="{{localize 'UMU.Table.Tools'}}">
+      <button type="button" data-action="chronicle" data-tooltip="{{localize 'UMU.App.Chronicle'}}" aria-label="{{localize 'UMU.App.Chronicle'}}"><i class="fa-solid fa-scroll" aria-hidden="true"></i></button>
+      <button type="button" data-action="safety" data-tooltip="{{localize 'UMU.App.Safety'}}" aria-label="{{localize 'UMU.App.Safety'}}"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i></button>
+      <button type="button" data-action="access" data-tooltip="{{localize 'UMU.Access.Title'}}" aria-label="{{localize 'UMU.Access.Title'}}"><i class="fa-solid fa-universal-access" aria-hidden="true"></i></button>
+    </nav>
+  </header>
+
+  <div class="umu-board">
+    {{!-- Tú, a la izquierda --}}
+    {{> "systems/mr-un-momento-unico/templates/partials/seat.hbs" left}}
+
+    {{!-- El rollo --}}
+    <main class="umu-center" aria-live="polite">
+      {{#each warnings}}<p class="umu-warn"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{this}}</p>{{/each}}
+      {{#if isSetup}}{{> "systems/mr-un-momento-unico/templates/partials/setup.hbs"}}{{/if}}
+      {{#if isChapter}}
+        {{#if chapter.between}}{{> "systems/mr-un-momento-unico/templates/partials/between.hbs"}}{{else}}{{> "systems/mr-un-momento-unico/templates/partials/chapter.hbs"}}{{/if}}
+      {{/if}}
+      {{#if isHate}}{{> "systems/mr-un-momento-unico/templates/partials/hate.hbs"}}{{/if}}
+      {{#if isFinal}}{{> "systems/mr-un-momento-unico/templates/partials/final.hbs"}}{{/if}}
+      {{#if epilogue}}{{> "systems/mr-un-momento-unico/templates/partials/epilogue.hbs"}}{{/if}}
+
+      {{#if arbiter}}
+      <details class="umu-arbiter" data-memory="arbiter">
+        <summary><i class="fa-solid fa-gavel" aria-hidden="true"></i> {{localize "UMU.Arbiter.Title"}}</summary>
+        <div class="umu-arbiter-body">
+          <label>{{localize "UMU.Arbiter.Weather"}}
+            <select name="weather">{{#each weatherOptions}}<option value="{{key}}" {{#if on}}selected{{/if}}>{{name}}</option>{{/each}}</select>
+          </label>
+          <fieldset>
+            <legend>{{localize "UMU.Arbiter.Ledger"}}</legend>
+            <select name="arbSeat"><option value="A">{{seats.A.name}}</option><option value="B">{{seats.B.name}}</option></select>
+            <select name="arbKind"><option value="adv">{{localize "UMU.Counter.adv"}}</option><option value="hate">{{localize "UMU.Counter.hate"}}</option><option value="scar">{{localize "UMU.Counter.scar"}}</option></select>
+            <input type="number" name="arbN" value="1" aria-label="{{localize 'UMU.Arbiter.Amount'}}">
+            <input type="text" name="arbNote" placeholder="{{localize 'UMU.Arbiter.Note'}}">
+            <button type="button" data-action="arbiterLedger">{{localize "UMU.Arbiter.Apply"}}</button>
+          </fieldset>
+          {{#if isChapter}}{{#unless chapter.between}}
+          <fieldset>
+            <legend>{{localize "UMU.Arbiter.Step"}}</legend>
+            <select name="arbStep">{{#each chapter.steps}}<option value="{{n}}" {{#if (eq state "current")}}selected{{/if}}>{{n}} · {{label}}</option>{{/each}}</select>
+            <button type="button" data-action="arbiterStep">{{localize "UMU.Arbiter.Go"}}</button>
+          </fieldset>
+          {{/unless}}{{/if}}
+          {{#if isSetup}}<button type="button" data-action="skipDecl">{{localize "UMU.Arbiter.SkipDecl"}}</button>{{/if}}
+          <button type="button" class="danger" data-action="newGame"><i class="fa-solid fa-rotate" aria-hidden="true"></i> {{localize "UMU.Game.New"}}</button>
+        </div>
+      </details>
+      {{/if}}
+    </main>
+
+    {{!-- Rival, a la derecha --}}
+    {{> "systems/mr-un-momento-unico/templates/partials/seat.hbs" right}}
+  </div>
+
+  {{!-- Rollo de capítulos --}}
+  {{#if history.length}}
+  <footer class="umu-scroll-strip" aria-label="{{localize 'UMU.Table.History'}}">
+    {{#each history}}
+    <article class="umu-fragment {{#if winner}}won-{{winner}}{{/if}}" data-tooltip="{{summary}}">
+      <span class="umu-fragment-n">{{n}}</span>
+      {{#if virtue}}<span class="umu-glyph" aria-label="{{virtue.name}}">{{virtue.glyph}}</span>{{/if}}
+      <span class="umu-fragment-who">{{winnerName}}</span>
+      {{#if theme}}<span class="umu-fragment-theme">{{theme}}</span>{{/if}}
+    </article>
+    {{/each}}
+  </footer>
+  {{/if}}
+</div>
+{{/if}}

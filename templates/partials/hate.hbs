@@ -1,0 +1,37 @@
+<section class="umu-panel umu-hate">
+  <header class="umu-panel-head">
+    <h2>{{localize "UMU.Hate.Title"}}</h2>
+    <p class="umu-lede">{{localize "UMU.Hate.Intro"}}</p>
+  </header>
+  <div class="umu-hate-grid">
+    {{#each hate.rows}}
+    <article class="umu-hate-card {{#if done}}done{{/if}}">
+      <header><strong>{{name}}</strong><span class="umu-hate-n"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{hate}}</span><span class="umu-scar-n"><i class="fa-solid fa-slash" aria-hidden="true"></i> {{scar}}</span></header>
+      {{#if done}}
+        <p class="umu-stamp-done"><i class="fa-solid fa-check" aria-hidden="true"></i>
+          {{#if (eq mode "surrender")}}{{localize "UMU.Hate.SurrenderDone" adv=gained scar=scars}}{{/if}}
+          {{#if (eq mode "escape")}}{{localize "UMU.Hate.EscapeDone" n=discarded}}{{/if}}
+          {{#if (eq mode "keep")}}{{localize "UMU.Hate.KeepDone"}}{{/if}}</p>
+        {{#if dice.length}}<div class="umu-dice">{{#each dice}}<i class="umu-die d{{this}} {{#if (isEven this)}}even{{else}}odd{{/if}}">{{this}}</i>{{/each}}</div>{{/if}}
+        {{#if note}}<blockquote>{{note}}</blockquote>{{/if}}
+      {{else if choosing}}
+        {{#if mine}}
+        <label class="umu-field">{{localize "UMU.Hate.Note"}}<textarea name="hateNote-{{seat}}" rows="3" placeholder="{{localize 'UMU.Hate.NoteHint'}}"></textarea></label>
+        <div class="umu-ideas" aria-label="{{localize 'UMU.Hate.Ideas'}}">{{#each @root.hate.ideas}}<button type="button" class="umu-chip" data-action="hateIdea" data-seat="{{../seat}}" data-idea="{{this}}">{{this}}</button>{{/each}}</div>
+        <div class="umu-actions">
+          <button type="button" class="umu-primary" data-action="hateChoose" data-mode="surrender" data-seat="{{seat}}" {{#if none}}disabled{{/if}} data-tooltip="{{localize 'UMU.Hate.SurrenderHint'}}"><i class="fa-solid fa-fire" aria-hidden="true"></i> {{localize "UMU.Hate.Surrender"}}</button>
+          <button type="button" data-action="hateChoose" data-mode="escape" data-seat="{{seat}}" {{#unless canEscape}}disabled{{/unless}} data-tooltip="{{localize 'UMU.Hate.EscapeHint' n=@root.hate.threshold}}"><i class="fa-solid fa-dove" aria-hidden="true"></i> {{localize "UMU.Hate.Escape"}}{{#if canEscape}} (−{{willDiscard}}){{/if}}</button>
+          <button type="button" class="umu-link" data-action="hateChoose" data-mode="keep" data-seat="{{seat}}">{{localize "UMU.Hate.Keep"}}</button>
+        </div>
+        <ul class="umu-intensity">{{#each @root.hate.intensity}}<li>{{this}}</li>{{/each}}</ul>
+        {{else}}<p class="umu-waiting"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> {{localize "UMU.Hate.Deciding" name=name}}</p>{{/if}}
+      {{else if rolling}}
+        {{#if mine}}
+        <p class="umu-hint">{{localize "UMU.Hate.RollHint" n=hate}}</p>
+        <div class="umu-actions"><button type="button" class="umu-primary big" data-action="hateRoll" data-seat="{{seat}}"><i class="fa-solid fa-dice" aria-hidden="true"></i> {{localize "UMU.Hate.Roll" n=hate}}</button><button type="button" class="umu-link" data-action="hateUndo" data-seat="{{seat}}">{{localize "UMU.Hate.Back"}}</button></div>
+        {{else}}<p class="umu-waiting"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> {{localize "UMU.Hate.Deciding" name=name}}</p>{{/if}}
+      {{/if}}
+    </article>
+    {{/each}}
+  </div>
+</section>

@@ -1,0 +1,10 @@
+<div class="umu-diagnostic">
+  <p class="umu-status {{#if ok}}ok{{else}}bad{{/if}}"><i class="fa-solid {{#if ok}}fa-circle-check{{else}}fa-triangle-exclamation{{/if}}" aria-hidden="true"></i>{{#if ok}}{{localize "UMU.Diagnostic.AllGood"}}{{else}}{{localize "UMU.Diagnostic.Problems"}}{{/if}}</p>
+  {{#if errors.length}}<ul class="umu-diag-list">{{#each errors}}<li><strong>{{phase}}</strong> {{message}}</li>{{/each}}</ul>{{/if}}
+  {{#if missing.length}}<ul class="umu-diag-list">{{#each missing}}<li><strong>{{localize "UMU.Diagnostic.Missing"}}</strong> {{this}}</li>{{/each}}</ul>{{/if}}
+  <textarea readonly aria-label="{{localize 'UMU.Diagnostic.Title'}}">{{json}}</textarea>
+  <footer class="umu-row-end">
+    <button type="button" data-action="refresh"><i class="fa-solid fa-rotate" aria-hidden="true"></i>{{localize "UMU.Diagnostic.Refresh"}}</button>
+    <button type="button" class="umu-primary" data-action="copy"><i class="fa-regular fa-copy" aria-hidden="true"></i>{{localize "UMU.Diagnostic.Copy"}}</button>
+  </footer>
+</div>

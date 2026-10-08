@@ -1,0 +1,34 @@
+name: Publicar
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Comprobar la versión de publicación
+        id: version
+        run: |
+          V=$(jq -r .version system.json)
+          TAG="v$V"
+          [ "$TAG" = "$GITHUB_REF_NAME" ] || { echo "system.json dice $V y la etiqueta es $GITHUB_REF_NAME"; exit 1; }
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - run: npm test
+      - run: npm run check
+      - run: npm run build
+      - name: Crear la release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
+          files: |
+            dist/mr-un-momento-unico.zip
+            dist/system.json
+          body_path: dist/release-notes.md

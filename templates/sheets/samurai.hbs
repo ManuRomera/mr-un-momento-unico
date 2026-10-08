@@ -1,0 +1,37 @@
+<div class="umu-sheet-body">
+  <header class="umu-sheet-head">
+    <figure class="umu-sheet-portrait">
+      <img src="{{actor.img}}" alt="{{actor.name}}" {{#if editable}}data-action="editImage" data-edit="img"{{/if}}>
+    </figure>
+    <div class="umu-sheet-id">
+      <label><span>{{localize "UMU.Sheet.Name"}}</span><input type="text" name="name" value="{{actor.name}}"></label>
+      <label><span>{{localize "UMU.Sheet.Clan"}}</span><input type="text" name="system.clan" value="{{system.clan}}"></label>
+    </div>
+    <div class="umu-sheet-kamon">{{{kamon}}}</div>
+  </header>
+
+  {{#if seat}}
+  <section class="umu-sheet-seat" aria-label="{{localize 'UMU.Sheet.Duel'}}">
+    <h3>{{localize "UMU.Sheet.Duel"}}</h3>
+    <ul class="umu-counters">
+      <li class="adv"><i class="fa-solid fa-stamp" aria-hidden="true"></i><span>{{localize "UMU.Counter.adv"}}</span><b>{{seat.totals.adv}}</b></li>
+      <li class="hate"><i class="fa-solid fa-droplet" aria-hidden="true"></i><span>{{localize "UMU.Counter.hate"}}</span><b>{{seat.totals.hate}}</b></li>
+      <li class="scar"><i class="fa-solid fa-slash" aria-hidden="true"></i><span>{{localize "UMU.Counter.scar"}}</span><b>{{seat.totals.scar}}</b></li>
+    </ul>
+    <button type="button" data-action="table"><i class="fa-solid fa-torii-gate" aria-hidden="true"></i> {{localize "UMU.App.Table"}}</button>
+  </section>
+  {{/if}}
+
+  <section>
+    <h3>{{localize "UMU.Sheet.Kamon"}}</h3>
+    <div class="umu-kamon-grid" role="radiogroup" aria-label="{{localize 'UMU.Sheet.Kamon'}}">
+      {{#each shapes}}<button type="button" class="umu-kamon-btn {{#if on}}on{{/if}}" data-action="kamon" data-shape="{{shape}}" role="radio" aria-checked="{{#if on}}true{{else}}false{{/if}}" aria-label="{{shape}}" {{#unless @root.editable}}disabled{{/unless}}>{{{svg}}}</button>{{/each}}
+    </div>
+    <label class="umu-inline"><span>{{localize "UMU.Sheet.Color"}}</span><input type="color" name="system.kamon.color" value="{{system.kamon.color}}"></label>
+  </section>
+
+  <section>
+    <label><span>{{localize "UMU.Sheet.Declaration"}}</span><textarea name="system.declaration" rows="3" placeholder="{{localize 'UMU.Setup.IntroHint'}}">{{system.declaration}}</textarea></label>
+    <label><span>{{localize "UMU.Sheet.Notes"}}</span><textarea name="system.notes" rows="8">{{system.notes}}</textarea></label>
+  </section>
+</div>

@@ -1,0 +1,96 @@
+<section class="umu-panel umu-setup">
+  <header class="umu-panel-head">
+    <h2>{{localize "UMU.Setup.Title"}}</h2>
+    <p class="umu-lede">{{setting.tagline}}</p>
+  </header>
+
+  {{!-- 1 · asientos --}}
+  <div class="umu-seat-pick">
+    {{#each setup.seatCards}}
+    <div class="umu-seat-card {{#if claimed}}taken{{/if}}">
+      <div class="umu-seat-card-who"><span class="umu-glyph-sm">{{#if (eq seat "A")}}墨{{else}}紙{{/if}}</span> <strong>{{name}}</strong></div>
+      {{#if claimed}}
+        <span class="umu-user"><i class="fa-solid fa-user" aria-hidden="true"></i> {{user}}</span>
+        {{#if canLeave}}<button type="button" data-action="leave" data-seat="{{seat}}">{{localize "UMU.Setup.Leave"}}</button>{{/if}}
+      {{else}}
+        <button type="button" class="umu-primary" data-action="claim" data-seat="{{seat}}"><i class="fa-solid fa-chair" aria-hidden="true"></i> {{localize "UMU.Setup.Sit"}}</button>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+
+  {{!-- 2 · quién eres --}}
+  {{#each setup.profiles}}
+  <fieldset class="umu-profile">
+    <legend>{{legend}}</legend>
+    <label>{{localize "UMU.Setup.Name"}}<input type="text" value="{{name}}" data-profile="name" data-seat="{{seat}}" maxlength="60" placeholder="Kurosawa"></label>
+    <label>{{localize "UMU.Setup.Clan"}}<input type="text" value="{{clan}}" data-profile="clan" data-seat="{{seat}}" maxlength="60" placeholder="Yamato"></label>
+    <div class="umu-kamon-row">
+      <div class="umu-kamon-grid" role="radiogroup" aria-label="{{localize 'UMU.Setup.Kamon'}}">
+        {{#each shapes}}<button type="button" class="umu-kamon-btn {{#if on}}on{{/if}}" data-action="kamon" data-seat="{{../seat}}" data-shape="{{shape}}" role="radio" aria-checked="{{#if on}}true{{else}}false{{/if}}" aria-label="{{shape}}">{{{svg}}}</button>{{/each}}
+      </div>
+      <label class="umu-inline">{{localize "UMU.Setup.Color"}}<input type="color" value="{{color}}" data-kamon-color data-seat="{{seat}}"></label>
+    </div>
+  </fieldset>
+  {{/each}}
+
+  {{!-- 3 · opciones --}}
+  {{#if setup.canOptions}}
+  <fieldset class="umu-options">
+    <legend>{{localize "UMU.Setup.Options"}}</legend>
+    <label>{{localize "UMU.Setup.First"}}
+      <select data-option="first">{{#each setup.firstOptions}}<option value="{{seat}}" {{#if on}}selected{{/if}}>{{name}}</option>{{/each}}</select>
+    </label>
+    <label>{{localize "UMU.Setup.Planned"}}
+      <input type="number" min="2" max="40" value="{{setup.planned}}" data-option="planned">
+    </label>
+    <p class="umu-hint">{{localize "UMU.Setup.PlannedHint"}}</p>
+  </fieldset>
+  {{/if}}
+
+  {{!-- 4 · declaraciones --}}
+  <ol class="umu-declarations">
+    {{#each setup.lines}}
+    <li class="{{#if done}}done{{/if}} {{#if current}}current{{/if}}">
+      <header><strong>{{label}}</strong><span class="umu-who">{{writerName}}</span></header>
+      {{#if done}}
+        <p class="umu-brush">{{text}}</p>
+        {{#if isStory}}{{#if @root.virtueDeclared}}<p class="umu-virtue-line"><span class="umu-glyph">{{@root.virtueDeclared.glyph}}</span> {{@root.virtueDeclared.romaji}} · {{@root.virtueDeclared.name}}</p>{{/if}}{{/if}}
+      {{else if current}}
+        <p class="umu-hint">{{hint}}</p>
+        {{#if mine}}
+          {{#if isEra}}
+          <div class="umu-weather" role="radiogroup" aria-label="{{localize 'UMU.Weather.Label'}}">
+            <span>{{localize "UMU.Weather.Label"}}</span>
+            <select name="declWeather">{{#each @root.weatherOptions}}<option value="{{key}}">{{name}}</option>{{/each}}</select>
+          </div>
+          {{/if}}
+          <textarea name="decl" rows="3" placeholder="{{example}}"></textarea>
+          {{#if isStory}}
+          <div class="umu-virtue-pick" role="radiogroup" aria-label="{{localize 'UMU.Setup.ChooseVirtue'}}">
+            {{#each @root.setup.virtues}}
+            <label class="umu-virtue-opt"><input type="radio" name="declVirtue" value="{{id}}"><span class="umu-virtue-card"><b class="umu-glyph">{{glyph}}</b><i>{{romaji}}</i><small>{{name}}</small></span></label>
+            {{/each}}
+          </div>
+          {{/if}}
+          <button type="button" class="umu-primary" data-action="declWrite"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i> {{localize "UMU.Setup.Declare"}}</button>
+        {{else}}
+          <p class="umu-waiting"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> {{localize "UMU.Setup.WaitingFor" name=writerName}}</p>
+        {{/if}}
+      {{else}}
+        <p class="umu-hint dim">{{example}}</p>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ol>
+  {{#if setup.canUndo}}<button type="button" class="umu-link" data-action="declUndo"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> {{localize "UMU.Setup.Undo"}}</button>{{/if}}
+
+  {{!-- 5 · empezar --}}
+  {{#if setup.canStart}}
+  <div class="umu-start">
+    <p class="umu-lede">{{localize "UMU.Setup.StartHint"}}</p>
+    {{#unless setup.bothSeated}}<p class="umu-warn"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{localize "UMU.Setup.NeedBoth"}}</p>{{/unless}}
+    {{#each setup.starters}}<button type="button" class="umu-primary big" data-action="begin" data-seat="{{seat}}"><i class="fa-solid fa-torii-gate" aria-hidden="true"></i> {{localize "UMU.Setup.Start" name=name}}</button>{{/each}}
+  </div>
+  {{/if}}
+</section>

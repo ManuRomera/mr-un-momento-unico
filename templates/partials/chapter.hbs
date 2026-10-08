@@ -1,0 +1,197 @@
+<section class="umu-panel umu-chapter step-{{chapter.step}}">
+  <header class="umu-panel-head">
+    <h2>{{localize "UMU.Chapter.Title" n=chapter.n}}</h2>
+    <p class="umu-lede">{{#if chapter.isActive}}{{localize "UMU.Chapter.YouAreActive"}}{{else}}{{localize "UMU.Chapter.ActiveIs" name=chapter.activeName}}{{/if}}</p>
+  </header>
+
+  <ol class="umu-steps" aria-label="{{localize 'UMU.Chapter.Steps'}}">
+    {{#each chapter.steps}}<li class="{{state}}" {{#if (eq state "current")}}aria-current="step"{{/if}}><b>{{n}}</b><span>{{label}}</span></li>{{/each}}
+  </ol>
+
+  {{!-- cartas del capítulo --}}
+  <div class="umu-spread">
+    {{#if chapter.virtue}}
+    <article class="umu-card virtue" data-tooltip="{{chapter.virtue.blurb}}">
+      <b class="umu-glyph big">{{chapter.virtue.glyph}}</b><i>{{chapter.virtue.romaji}}</i><strong>{{chapter.virtue.name}}</strong>
+    </article>
+    {{/if}}
+    {{#if chapter.theme}}
+    <article class="umu-card art" data-action="zoom" data-src="{{chapter.theme.art}}" data-title="{{chapter.theme.title}}" role="button" tabindex="0">
+      <img src="{{chapter.theme.art}}" alt=""><strong>{{chapter.theme.title}}</strong>
+    </article>
+    {{/if}}
+    {{#if chapter.character}}
+    <article class="umu-card art" data-action="zoom" data-src="{{chapter.character.art}}" data-title="{{chapter.character.title}}" role="button" tabindex="0">
+      <img src="{{chapter.character.art}}" alt=""><strong>{{chapter.character.title}}</strong>{{#if chapter.character.ownerName}}<small>{{chapter.character.ownerName}}</small>{{/if}}
+    </article>
+    {{/if}}
+  </div>
+
+  {{!-- PASO 1 · virtud --}}
+  {{#if (eq chapter.step 1)}}
+  <section class="umu-step-body">
+    <h3>{{localize "UMU.Step.virtue"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Step1.Hint"}}</p>
+    {{#if chapter.drawing}}
+      <div class="umu-drawn">
+        {{#each chapter.drawn}}
+        <article class="umu-card virtue pickable">
+          <b class="umu-glyph big">{{glyph}}</b><i>{{romaji}}</i><strong>{{name}}</strong><p>{{blurb}}</p>
+          {{#if @root.chapter.isActive}}<button type="button" class="umu-primary" data-action="virtuePick" data-id="{{id}}">{{localize "UMU.Step1.Pick"}}</button>{{/if}}
+        </article>
+        {{/each}}
+      </div>
+      {{#unless chapter.isActive}}<p class="umu-waiting">{{localize "UMU.Chapter.ActiveChooses" name=chapter.activeName}}</p>{{/unless}}
+    {{else}}
+      {{#if chapter.isActive}}
+      <div class="umu-actions">
+        <button type="button" class="umu-primary" data-action="virtueDraw"><i class="fa-solid fa-clone" aria-hidden="true"></i> {{localize "UMU.Step1.Draw"}} ({{chapter.deckLeft}})</button>
+        <button type="button" data-action="virtueKeep"><i class="fa-solid fa-check" aria-hidden="true"></i> {{localize "UMU.Step1.Keep"}}</button>
+      </div>
+      {{else}}<p class="umu-waiting">{{localize "UMU.Chapter.ActiveChooses" name=chapter.activeName}}</p>{{/if}}
+    {{/if}}
+  </section>
+  {{/if}}
+
+  {{!-- PASO 2 · tema clave --}}
+  {{#if (eq chapter.step 2)}}
+  <section class="umu-step-body">
+    <h3>{{localize "UMU.Step.theme"}} <small>{{chapter.themesDone}}/{{chapter.themesTotal}}</small></h3>
+    <p class="umu-hint">{{localize "UMU.Step2.Hint"}}</p>
+    <div class="umu-choices">
+      {{#each chapter.themes}}
+      <article class="umu-card art {{#unless available}}spent{{/unless}}">
+        <img src="{{art}}" alt="" data-action="zoom" data-src="{{art}}" data-title="{{title}}">
+        <strong>{{title}}</strong><small>{{quote}}</small>
+        {{#if available}}{{#if @root.chapter.isActive}}<button type="button" class="umu-primary" data-action="themePick" data-id="{{id}}">{{localize "UMU.Step2.Pick"}}</button>{{/if}}{{else}}<span class="umu-stamp-done"><i class="fa-solid fa-check" aria-hidden="true"></i> {{localize "UMU.Step2.Done"}}</span>{{/if}}
+      </article>
+      {{/each}}
+    </div>
+    {{#if chapter.isActive}}<button type="button" class="umu-link" data-action="themeSkip">{{localize "UMU.Step2.Skip"}}</button>{{else}}<p class="umu-waiting">{{localize "UMU.Chapter.ActiveChooses" name=chapter.activeName}}</p>{{/if}}
+  </section>
+  {{/if}}
+
+  {{!-- PASO 3 · personaje clave --}}
+  {{#if (eq chapter.step 3)}}
+  <section class="umu-step-body">
+    <h3>{{localize "UMU.Step.character"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Step3.Hint"}}</p>
+    <div class="umu-choices">
+      {{#each chapter.chars}}
+      <article class="umu-card art {{#unless available}}spent{{/unless}}">
+        <img src="{{art}}" alt="" data-action="zoom" data-src="{{art}}" data-title="{{title}}">
+        <strong>{{title}}</strong><small>{{blurb}}</small>
+        {{#if available}}{{#if @root.chapter.isActive}}<button type="button" class="umu-primary" data-action="charPick" data-id="{{id}}">{{localize "UMU.Step3.Pick"}}</button>{{/if}}
+        {{else}}<span class="umu-stamp-done">{{owner}}{{#if ownerName}} · {{ownerName}}{{/if}}</span>{{/if}}
+      </article>
+      {{/each}}
+    </div>
+    {{#if chapter.isActive}}
+    <label class="umu-inline">{{localize "UMU.Step3.Name"}} <input type="text" name="charName" maxlength="60" placeholder="{{localize 'UMU.Step3.NameHint'}}"></label>
+    <button type="button" class="umu-link" data-action="charSkip">{{localize "UMU.Step3.Skip"}}</button>
+    {{else}}<p class="umu-waiting">{{localize "UMU.Chapter.ActiveChooses" name=chapter.activeName}}</p>{{/if}}
+  </section>
+  {{/if}}
+
+  {{!-- PASO 4 · jugar --}}
+  {{#if (eq chapter.step 4)}}
+  <section class="umu-step-body">
+    <h3>{{localize "UMU.Step.play"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Step4.Hint" name=chapter.activeName}}</p>
+    <div class="umu-reserve" aria-label="{{localize 'UMU.Pool.Reserve'}}: {{chapter.pool.reserve}}">
+      <div class="umu-reserve-main"><span class="umu-label">{{localize "UMU.Pool.Reserve"}}</span>
+        <div class="umu-stones">{{#each chapter.pool.stones}}<i class="umu-stone"></i>{{/each}}{{#unless chapter.pool.reserve}}<em>{{localize "UMU.Pool.Empty"}}</em>{{/unless}}</div></div>
+      <div class="umu-reserve-sides">
+        <div><span class="umu-label">{{@root.seats.A.name}}</span><div class="umu-stones side">{{#each chapter.pool.stonesA}}<i class="umu-stone a"></i>{{/each}}<b>{{chapter.pool.A}}</b></div></div>
+        <div><span class="umu-label">{{@root.seats.B.name}}</span><div class="umu-stones side">{{#each chapter.pool.stonesB}}<i class="umu-stone b"></i>{{/each}}<b>{{chapter.pool.B}}</b></div></div>
+      </div>
+    </div>
+    {{#if chapter.isActive}}
+      {{#if chapter.pool.reserve}}
+      <label class="umu-field">{{localize "UMU.Pool.Note"}}<input type="text" name="note" maxlength="300" placeholder="{{localize 'UMU.Pool.NoteHint'}}"></label>
+      <div class="umu-favor">
+        {{#each chapter.favorButtons}}<button type="button" class="{{#if seat}}umu-favor-btn {{seat.ink}}{{/if}}" data-action="favor" data-to="{{to}}">{{label}}</button>{{/each}}
+      </div>
+      <p class="umu-hint dim">{{localize "UMU.Pool.Rule"}}</p>
+      {{/if}}
+      <div class="umu-actions">
+        {{#if chapter.decisions.length}}<button type="button" class="umu-link" data-action="poolUndo"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> {{localize "UMU.Pool.Undo"}}</button>{{/if}}
+        <button type="button" class="umu-primary" data-action="settle">{{localize "UMU.Step4.Settle"}}</button>
+      </div>
+    {{else}}<p class="umu-waiting">{{localize "UMU.Chapter.ActiveDecides" name=chapter.activeName}}</p>{{/if}}
+    <ul class="umu-decisions">{{#each chapter.decisions}}<li><b>{{n}}</b> <span>{{to}}{{#if marker}} → {{marker}}{{/if}}</span>{{#if note}}<em>{{note}}</em>{{/if}}</li>{{/each}}</ul>
+  </section>
+  {{/if}}
+
+  {{!-- PASO 5 · clímax --}}
+  {{#if (eq chapter.step 5)}}
+  <section class="umu-step-body">
+    <h3>{{localize "UMU.Step.climax"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Step5.Hint"}}</p>
+
+    {{#if chapter.climax.plan}}
+    <div class="umu-extra">
+      <span class="umu-label">{{localize "UMU.Climax.Extra"}}</span>
+      <button type="button" data-action="extra" data-delta="-1" {{#unless chapter.climax.canLess}}disabled{{/unless}} aria-label="{{localize 'UMU.Climax.Less'}}"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+      <b>{{chapter.climax.extraMe}}</b>
+      <button type="button" data-action="extra" data-delta="1" {{#unless chapter.climax.canMore}}disabled{{/unless}} aria-label="{{localize 'UMU.Climax.More'}}"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+      <small>{{localize "UMU.Climax.ExtraHint"}}</small>
+    </div>
+    {{/if}}
+
+    <div class="umu-consonance">
+      <span class="umu-label">{{localize "UMU.Climax.Consonance"}}</span>
+      {{#if chapter.climax.consonance}}
+        <p><i class="fa-solid fa-yin-yang" aria-hidden="true"></i> {{localize "UMU.Climax.ConsonanceTo" name=chapter.climax.consonance}}</p>
+        {{#unless chapter.climax.locked}}<button type="button" class="umu-link" data-action="consClear">{{localize "UMU.Climax.ConsonanceClear"}}</button>{{/unless}}
+      {{else if chapter.climax.proposal}}
+        <p>{{localize "UMU.Climax.Proposed" by=chapter.climax.proposal.by name=chapter.climax.proposal.name}}</p>
+        {{#if chapter.climax.proposal.canAnswer}}<div class="umu-actions"><button type="button" class="umu-primary" data-action="consAccept">{{localize "UMU.Climax.Accept"}}</button><button type="button" data-action="consReject">{{localize "UMU.Climax.Reject"}}</button></div>
+        {{else}}<p class="umu-waiting">{{localize "UMU.Climax.WaitingAnswer"}}</p>{{/if}}
+      {{else}}
+        {{#unless chapter.climax.locked}}<div class="umu-actions">{{#each @root.switchSeats}}<button type="button" data-action="consPropose" data-seat="{{seat}}">{{name}}</button>{{/each}}</div>{{/unless}}
+        <small class="umu-hint dim">{{localize "UMU.Climax.ConsonanceHint"}}</small>
+      {{/if}}
+    </div>
+
+    <div class="umu-dice-table">
+      {{#each chapter.climax.rows}}
+      <div class="umu-dice-row {{seatView.ink}}">
+        <header><strong>{{name}}</strong><span>{{localize "UMU.Climax.Plan" markers=markers dice=plan.dice scars=plan.scars}}{{#if consonant}} · {{localize "UMU.Climax.PlusTwo"}}{{/if}}</span></header>
+        <div class="umu-dice">{{#if rolled}}{{#each dice}}<i class="umu-die d{{this}}">{{this}}</i>{{/each}}<b class="umu-sum">= {{sum}}</b>{{else}}{{#each (diceFill plan.dice)}}<i class="umu-die blank"></i>{{/each}}{{/if}}</div>
+        {{#if canRoll}}<button type="button" class="umu-primary" data-action="rollClimax"><i class="fa-solid fa-dice" aria-hidden="true"></i> {{localize "UMU.Climax.Roll"}}</button>{{/if}}
+      </div>
+      {{/each}}
+    </div>
+
+    {{#unless chapter.climax.locked}}
+    {{#if chapter.climax.plan}}
+    <div class="umu-actions">
+      <button type="button" class="umu-primary {{#if chapter.climax.meReady}}on{{/if}}" data-action="ready" aria-pressed="{{#if chapter.climax.meReady}}true{{else}}false{{/if}}">
+        <i class="fa-solid {{#if chapter.climax.meReady}}fa-lock{{else}}fa-hand{{/if}}" aria-hidden="true"></i> {{#if chapter.climax.meReady}}{{localize "UMU.Climax.Unready"}}{{else}}{{localize "UMU.Climax.Ready"}}{{/if}}
+      </button>
+      <span class="umu-waiting">{{#if chapter.climax.rivalReady}}<i class="fa-solid fa-check" aria-hidden="true"></i> {{localize "UMU.Climax.RivalReady"}}{{else}}{{localize "UMU.Climax.RivalNotReady"}}{{/if}}</span>
+    </div>
+    {{/if}}
+    {{/unless}}
+  </section>
+  {{/if}}
+
+  {{!-- PASO 6 · cierre --}}
+  {{#if (eq chapter.step 6)}}
+  <section class="umu-step-body">
+    <h3>{{localize "UMU.Step.close"}}</h3>
+    {{#with chapter.result}}
+    <div class="umu-result {{#if tie}}tie{{/if}}">
+      <p class="umu-verdict">{{#if tie}}{{localize "UMU.Climax.TieText"}}{{else}}{{localize "UMU.Climax.Wins" name=winnerName a=totals.A b=totals.B}}{{/if}}</p>
+      <ul class="umu-gains">{{#each gains}}<li><strong>{{name}}</strong> {{#if adv}}<span class="adv">+{{adv}} {{localize "UMU.Counter.adv"}}</span>{{/if}} {{#if hate}}<span class="hate">+{{hate}} {{localize "UMU.Counter.hate"}}</span>{{/if}} {{#if scar}}<span class="scar">+{{scar}} {{localize "UMU.Counter.scar"}}</span>{{/if}}</li>{{/each}}</ul>
+      <p class="umu-hint">{{#if tie}}{{localize "UMU.Step6.NarrateTie" name=narratorName}}{{else}}{{localize "UMU.Step6.Narrate" name=narratorName}}{{/if}}</p>
+      {{#if canClose}}
+        <textarea name="summary" rows="3" placeholder="{{localize 'UMU.Step6.Summary'}}"></textarea>
+        <button type="button" class="umu-primary big" data-action="closeChapter"><i class="fa-solid fa-stamp" aria-hidden="true"></i> {{localize "UMU.Step6.Close"}}</button>
+      {{else}}<p class="umu-waiting">{{localize "UMU.Setup.WaitingFor" name=narratorName}}</p>{{/if}}
+    </div>
+    {{/with}}
+  </section>
+  {{/if}}
+</section>

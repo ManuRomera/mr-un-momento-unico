@@ -1,0 +1,102 @@
+<section class="umu-panel umu-final stage-{{final.stage}}">
+  <header class="umu-panel-head">
+    <h2>{{localize "UMU.Final.Title"}}</h2>
+    <p class="umu-lede">{{#if (eq final.stage "mortal")}}{{localize "UMU.Final.MortalTitle" n=final.mortal.round}}{{else}}{{localize "UMU.Final.Round" n=final.round}} — {{localize "UMU.Final.Attacks" name=final.attackerName}}{{/if}}</p>
+    {{#if final.why}}<p class="umu-hint">{{final.why}}</p>{{/if}}
+  </header>
+
+  {{!-- declarar --}}
+  {{#if (eq final.stage "declare")}}
+  <div class="umu-exchange">
+    <div class="umu-say attacker">
+      <h3><i class="fa-solid fa-khanda" aria-hidden="true"></i> {{localize "UMU.Final.Attacker"}} · {{final.attackerName}}</h3>
+      {{#if final.declaration}}<p class="umu-brush">{{final.declaration}}</p>
+      {{else if final.canDeclare}}<textarea name="declare" rows="3" placeholder="{{localize 'UMU.Final.DeclareHint'}}"></textarea><button type="button" class="umu-primary" data-action="finalWrite" data-kind="declare">{{localize "UMU.Final.Declare"}}</button>
+      {{else}}<p class="umu-waiting">{{localize "UMU.Setup.WaitingFor" name=final.attackerName}}</p>{{/if}}
+    </div>
+    <div class="umu-say defender">
+      <h3><i class="fa-solid fa-shield" aria-hidden="true"></i> {{localize "UMU.Final.Defender"}} · {{final.defenderName}}</h3>
+      {{#if final.response}}<p class="umu-brush">{{final.response}}</p>
+      {{else if final.canRespond}}<textarea name="respond" rows="3" placeholder="{{localize 'UMU.Final.RespondHint'}}"></textarea><button type="button" class="umu-primary" data-action="finalWrite" data-kind="respond">{{localize "UMU.Final.Respond"}}</button>
+      {{else}}<p class="umu-waiting">{{localize "UMU.Setup.WaitingFor" name=final.defenderName}}</p>{{/if}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{!-- gastar ventajas --}}
+  {{#if (eq final.stage "spend")}}
+  <div class="umu-spend">
+    <p class="umu-brush">{{final.declaration}}</p><p class="umu-brush alt">{{final.response}}</p>
+    {{#if final.canAct}}
+      {{#if final.spend.mineSet}}<p class="umu-stamp-done"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{localize "UMU.Final.SpendLocked"}}</p>
+      {{else}}
+        <h3>{{localize "UMU.Final.SpendTitle"}}</h3>
+        <p class="umu-hint">{{#if final.amAtt}}{{localize "UMU.Final.SpendAtt"}}{{else}}{{localize "UMU.Final.SpendDef"}}{{/if}}</p>
+        <div class="umu-actions">{{#each final.spend.options}}<button type="button" class="{{#if this}}{{else}}umu-primary{{/if}}" data-action="spend" data-n="{{this}}">{{#if this}}{{localize "UMU.Final.SpendN" n=this}}{{else}}{{localize "UMU.Final.SpendNone"}}{{/if}}</button>{{/each}}</div>
+      {{/if}}
+      <p class="umu-waiting">{{#if final.spend.rivalSet}}<i class="fa-solid fa-check" aria-hidden="true"></i> {{localize "UMU.Final.RivalLocked"}}{{else}}{{localize "UMU.Final.RivalThinking"}}{{/if}}</p>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{!-- tirar --}}
+  {{#if (eq final.stage "roll")}}
+  <div class="umu-dice-table">
+    {{#each final.roll.rows}}
+    <div class="umu-dice-row"><header><strong>{{name}}</strong><span>{{role}} · {{localize "UMU.Final.DiceN" n=n}}</span></header>
+      <div class="umu-dice">{{#if rolled}}{{#each dice}}<i class="umu-die d{{this}}">{{this}}</i>{{/each}}{{else}}{{#each (diceFill n)}}<i class="umu-die blank"></i>{{/each}}{{/if}}</div>
+      {{#if canRoll}}<button type="button" class="umu-primary" data-action="rollExchange"><i class="fa-solid fa-dice" aria-hidden="true"></i> {{localize "UMU.Climax.Roll"}}</button>{{/if}}
+    </div>
+    {{/each}}
+  </div>
+  <p class="umu-hint dim">{{localize "UMU.Final.HighestWins"}}</p>
+  {{/if}}
+
+  {{!-- apuesta a ciegas --}}
+  {{#if (eq final.stage "bet")}}
+  <div class="umu-bet">
+    <p class="umu-lede"><i class="fa-solid fa-burst" aria-hidden="true"></i> {{localize "UMU.Final.Clash"}}</p>
+    {{#if final.canAct}}
+      {{#if final.bet.mineSet}}<p class="umu-stamp-done"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{localize "UMU.Final.BetLocked"}}</p>
+      {{else}}<label class="umu-field">{{localize "UMU.Final.BetHow" max=final.bet.max}}<input type="number" name="bet" min="0" max="{{final.bet.max}}" value="0"></label>
+      <button type="button" class="umu-primary" data-action="bet"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{localize "UMU.Final.BetLock"}}</button>
+      <p class="umu-hint dim">{{localize "UMU.Final.BetHint"}}</p>{{/if}}
+      <p class="umu-waiting">{{#if final.bet.rivalSet}}<i class="fa-solid fa-check" aria-hidden="true"></i> {{localize "UMU.Final.RivalLocked"}}{{else}}{{localize "UMU.Final.RivalThinking"}}{{/if}}</p>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{!-- resuelto: narra el ganador --}}
+  {{#if (eq final.stage "resolved")}}
+  {{#with final.last}}
+  <div class="umu-result {{#unless winner}}tie{{/unless}}">
+    <p class="umu-verdict">{{#if winner}}{{localize "UMU.Final.Won" name=winnerName}}{{else}}{{localize "UMU.Final.NoWinner"}}{{/if}}</p>
+    <p class="umu-hint">{{localize "UMU.Final.Best" a=best.attacker d=best.defender}}{{#if bet}} · {{localize "UMU.Final.BetRevealed" a=bet.A b=bet.B}}{{/if}}</p>
+  </div>
+  {{/with}}
+  {{#if final.canNarrate}}
+    <textarea name="narration" rows="3" placeholder="{{localize 'UMU.Final.NarrateHint'}}"></textarea>
+    <button type="button" class="umu-primary big" data-action="narrate"><i class="fa-solid fa-feather-pointed" aria-hidden="true"></i> {{localize "UMU.Final.Narrate"}}</button>
+  {{else}}<p class="umu-waiting">{{localize "UMU.Final.Narrates" name=final.narratorName}}</p>{{/if}}
+  {{/if}}
+
+  {{!-- golpe mortal --}}
+  {{#if (eq final.stage "mortal")}}
+  <div class="umu-mortal">
+    <p class="umu-lede">{{localize "UMU.Final.MortalText" att=final.mortal.attackerName def=final.mortal.defenderName}}</p>
+    <p class="umu-hint">{{localize "UMU.Final.MortalRule"}}</p>
+    <div class="umu-dice">
+      {{#if final.mortal.rolled.A}}<span class="umu-mortal-die"><small>{{@root.seats.A.name}}</small><i class="umu-die d{{final.mortal.rolled.A.[0]}}">{{final.mortal.rolled.A.[0]}}</i></span>{{/if}}
+      {{#if final.mortal.rolled.B}}<span class="umu-mortal-die"><small>{{@root.seats.B.name}}</small><i class="umu-die d{{final.mortal.rolled.B.[0]}}">{{final.mortal.rolled.B.[0]}}</i></span>{{/if}}
+    </div>
+    {{#if final.canMortalRoll}}<button type="button" class="umu-primary big" data-action="rollMortal"><i class="fa-solid fa-dice-d6" aria-hidden="true"></i> {{localize "UMU.Final.MortalRoll"}}</button>{{/if}}
+  </div>
+  {{/if}}
+
+  {{#if final.log.length}}
+  <details class="umu-log" open data-memory="final-log">
+    <summary>{{localize "UMU.Final.Log"}}</summary>
+    <ol>{{#each final.log}}<li>{{#if mortal}}<b>{{localize "UMU.Final.MortalTitle" n=round}}</b> · {{name}} — {{#if success}}{{localize "UMU.Final.Hit"}}{{else}}{{localize "UMU.Final.Missed"}}{{/if}}{{else}}<b>{{round}}.</b> {{attacker}} — {{winner}}{{#if declaration}}<em>{{declaration}} / {{response}}</em>{{/if}}{{#if text}}<span class="umu-brush">{{text}}</span>{{/if}}{{/if}}</li>{{/each}}</ol>
+  </details>
+  {{/if}}
+</section>

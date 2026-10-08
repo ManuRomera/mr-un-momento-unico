@@ -1,0 +1,26 @@
+<section class="umu-panel umu-epilogue">
+  <header class="umu-panel-head">
+    <h2>{{#if epilogue.done}}{{localize "UMU.Epilogue.DoneTitle"}}{{else}}{{localize "UMU.Epilogue.Title"}}{{/if}}</h2>
+    {{#if verdict}}
+    <p class="umu-verdict big">{{epilogue.verdictText}}</p>
+    <p class="umu-hint">{{verdict.by}}</p>
+    {{/if}}
+  </header>
+  <ol class="umu-epilogue-steps">
+    {{#each epilogue.steps}}
+    <li class="{{#if written}}done{{/if}} {{#if current}}current{{/if}}">
+      <header><strong>{{label}}</strong><span class="umu-who">{{name}}</span></header>
+      {{#if written}}<p class="umu-brush">{{text}}</p>
+      {{else if current}}
+        {{#if mine}}<textarea name="epilogue" rows="4" placeholder="{{localize 'UMU.Epilogue.Hint'}}"></textarea><button type="button" class="umu-primary" data-action="epilogueWrite"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i> {{localize "UMU.Epilogue.Write"}}</button>
+        {{else}}<p class="umu-waiting"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> {{localize "UMU.Setup.WaitingFor" name=name}}</p>{{/if}}
+      {{/if}}
+    </li>
+    {{/each}}
+  </ol>
+  {{#if epilogue.done}}
+  <div class="umu-actions">
+    <button type="button" class="umu-primary big" data-action="chronicle"><i class="fa-solid fa-scroll" aria-hidden="true"></i> {{localize "UMU.Chronicle.Open"}}</button>
+  </div>
+  {{/if}}
+</section>

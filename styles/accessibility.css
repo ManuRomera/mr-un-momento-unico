@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Accesibilidad. Las clases viven en <html> (settings.applyPreferences),
+   pero todas las reglas se limitan a ventanas y capas del sistema.
+   ========================================================================== */
+
+/* Movimiento: el sistema operativo o el ajuste interno */
+@media (prefers-reduced-motion: reduce) {
+  .mr-umu *, .mr-umu *::before, .mr-umu *::after, .umu-help { animation: none !important; transition-duration: .01ms !important; }
+}
+.umu-reduced-motion .mr-umu *, .umu-reduced-motion .mr-umu *::before, .umu-reduced-motion .mr-umu *::after,
+.umu-reduced-motion .mr-umu.umu-overlay { animation: none !important; transition-duration: .01ms !important; }
+
+/* Efectos: niebla, motas, parpadeo */
+.umu-reduced-effects .mr-umu .umu-atmos { display: none; }
+.umu-reduced-effects .mr-umu .umu-table { filter: none !important; }
+.umu-reduced-effects .mr-umu .umu-draw-hint { animation: none; }
+.umu-reduced-effects .mr-umu .umu-overlay-scrim { backdrop-filter: none; }
+
+/* Tipografía sencilla */
+.umu-plain-font .application.mr-umu, .umu-plain-font .mr-umu.umu-overlay, .umu-plain-font .umu-help {
+  --umu-serif: var(--umu-sans); --umu-display: var(--umu-sans);
+}
+.umu-plain-font .mr-umu h1, .umu-plain-font .mr-umu h2, .umu-plain-font .mr-umu h3 { font-weight: 700; }
+.umu-plain-font .mr-umu em, .umu-plain-font .mr-umu .umu-lede, .umu-plain-font .mr-umu .umu-hook { font-style: normal; }
+
+/* Espaciado */
+.umu-wide-spacing .mr-umu p, .umu-wide-spacing .mr-umu textarea, .umu-wide-spacing .mr-umu li, .umu-wide-spacing .umu-help p {
+  line-height: 1.8 !important; letter-spacing: .03em; word-spacing: .08em;
+}
+
+/* Botones grandes */
+.umu-large-buttons .mr-umu button:where(:not(.header-control)):not(.umu-pip):not(.umu-ink) { min-height: 44px; font-size: 1.02em; padding: .6em 1em; }
+.umu-large-buttons .mr-umu button.umu-icon-btn { min-width: 40px; min-height: 40px; }
+.umu-large-buttons .mr-umu button.umu-pip { width: 44px; height: 44px; }
+
+/* Alto contraste: bordes y textos marcados, sin transparencias engañosas */
+.umu-high-contrast .application.mr-umu { --umu-text: #ffffff; --umu-muted: #e6e0d4; --umu-line: rgba(255, 230, 180, .75); --umu-line-strong: #ffe2a8; border-color: #ffe2a8; }
+.umu-high-contrast .mr-umu button:where(:not(.header-control)) { border-width: 2px; }
+.umu-high-contrast .mr-umu input, .umu-high-contrast .mr-umu select, .umu-high-contrast .mr-umu textarea { border-width: 2px !important; border-color: #ffe2a8 !important; }
+.umu-high-contrast .mr-umu .umu-token.spent { opacity: .35; }
+.umu-high-contrast .mr-umu .umu-card-copy { background: rgba(0, 0, 0, .94); }
+.umu-high-contrast .mr-umu .umu-table-head, .umu-high-contrast .mr-umu .umu-table-foot { background: #000; }
+.umu-high-contrast .mr-umu .umu-atmos { display: none; }
+.umu-high-contrast .mr-umu.umu-paper-window .window-content { background: #fffaf0; color: #000; }
+.umu-high-contrast .mr-umu.umu-paper-window { --umu-ink: #000; }
+.umu-high-contrast .mr-umu :focus-visible { outline: 3px solid #ffd35a; outline-offset: 2px; }
+
+/* Lectura limpia: fondos lisos, tinta elegida por el usuario */
+.umu-reading .application.mr-umu .window-content,
+.umu-reading .application.mr-umu.umu-paper-window .window-content { background: #121110; color: var(--umu-reading-ink); }
+.umu-reading .mr-umu.umu-paper-window { --umu-ink: var(--umu-reading-ink); }
+.umu-reading .mr-umu.umu-paper-window input, .umu-reading .mr-umu.umu-paper-window textarea, .umu-reading .mr-umu.umu-paper-window select { color: var(--umu-reading-ink) !important; background: rgba(255, 255, 255, .04) !important; }
+.umu-reading .mr-umu.umu-paper-window .umu-truth, .umu-reading .mr-umu.umu-paper-window .umu-memory,
+.umu-reading .mr-umu.umu-paper-window .umu-trait, .umu-reading .mr-umu.umu-paper-window .umu-record-card,
+.umu-reading .mr-umu.umu-paper-window .umu-list-edit li, .umu-reading .mr-umu.umu-paper-window .umu-compose { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .12); transform: none; box-shadow: none; }
+.umu-reading .mr-umu.umu-paper-window .umu-status-badge { background: rgba(255, 255, 255, .1); color: var(--umu-reading-ink); }
+.umu-reading .mr-umu.umu-paper-window .umu-kicker, .umu-reading .mr-umu.umu-paper-window .umu-section-title { color: var(--umu-reading-ink) !important; opacity: .75; }
+.umu-reading .mr-umu .umu-overlay-paper { background: #121110; color: var(--umu-reading-ink); transform: none; }
+.umu-reading .mr-umu .umu-card-copy p, .umu-reading .mr-umu .umu-read, .umu-reading .mr-umu .umu-hook { color: var(--umu-reading-ink); font-style: normal; }

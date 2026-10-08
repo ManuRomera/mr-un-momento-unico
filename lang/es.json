@@ -1,0 +1,441 @@
+{
+  "TYPES": {
+    "Actor": {
+      "samurai": "Samurái"
+    }
+  },
+  "UMU": {
+    "App": {
+      "Table": "Mesa del Duelo",
+      "Chronicle": "Crónica",
+      "Safety": "Seguridad"
+    },
+    "Keys": {
+      "Table": "Abrir la Mesa del Duelo",
+      "TableHint": "Abre la ventana principal de Un momento único."
+    },
+    "Error": {
+      "Phase": "MR · Un momento único: la fase «{phase}» falló. Foundry sigue funcionando; mira el diagnóstico."
+    },
+    "Settings": {
+      "OpenOnStart": "Abrir la Mesa al entrar",
+      "OpenOnStartHint": "Abre la Mesa del Duelo automáticamente al cargar el mundo. Es un ajuste personal."
+    },
+    "Game": {
+      "DocName": "Un momento único · Partida",
+      "NoDoc": "Todavía no existe la partida. Pide al Director que entre al mundo una vez.",
+      "Preparing": "Preparando la partida…",
+      "WaitGM": "La partida se prepara cuando el Director entra al mundo por primera vez.",
+      "New": "Nueva partida",
+      "NewTitle": "Nueva partida",
+      "NewConfirm": "Se borra la partida actual (capítulos, ventajas, odio y cicatrices). Los asientos se conservan. ¿Continuar?"
+    },
+    "Seat": {
+      "Default": "Samurái {seat}",
+      "You": "Tú",
+      "Free": "Asiento libre",
+      "Active": "jugador activo",
+      "Clan": "Clan"
+    },
+    "Counter": {
+      "adv": "Ventajas",
+      "hate": "Odio",
+      "scar": "Cicatrices",
+      "advHint": "Se gastan en el Gran Final: una por cada ataque y por cada dado extra.",
+      "hateHint": "Cada punto es un dado que se tira al lidiar con el odio. Desempata el final.",
+      "scarHint": "Quien acumule más cicatrices pierde si nadie logra el golpe mortal."
+    },
+    "Table": {
+      "ActAs": "Jugar como",
+      "Spectator": "Espectador",
+      "Tools": "Herramientas de la mesa",
+      "History": "Rollo de capítulos"
+    },
+    "Phase": {
+      "setup": "Escena inicial",
+      "chapter": "Capítulos",
+      "hate": "Lidiar con el odio",
+      "final": "Gran Final",
+      "epilogue": "Epílogo",
+      "done": "Fin"
+    },
+    "Chapter": {
+      "Label": "Capítulo {n} de {total}",
+      "Between": "{n} de {total} capítulos contados",
+      "Title": "Capítulo {n}",
+      "Steps": "Pasos del capítulo",
+      "YouAreActive": "Eres el jugador activo: haces de Director de este capítulo.",
+      "ActiveIs": "{name} es el jugador activo y hace de Director.",
+      "ActiveChooses": "{name} decide.",
+      "ActiveDecides": "{name} tiene la última palabra sobre cada decisión."
+    },
+    "Step": {
+      "virtue": "Virtud",
+      "theme": "Tema clave",
+      "character": "Personaje clave",
+      "play": "Jugar",
+      "climax": "Clímax",
+      "close": "Cierre"
+    },
+    "Setup": {
+      "Title": "La escena inicial",
+      "Sit": "Sentarme aquí",
+      "Leave": "Levantarme",
+      "YourSamurai": "Tu samurái",
+      "SamuraiOf": "Samurái {seat}",
+      "Name": "Nombre del personaje",
+      "Clan": "Clan",
+      "Kamon": "Emblema del clan",
+      "Color": "Color",
+      "IntroHint": "«Mi nombre es… Soy miembro del clan… Esta es mi historia.»",
+      "Options": "Preparación",
+      "First": "Empieza quien vio más recientemente una película de artes marciales",
+      "Planned": "Capítulos acordados",
+      "PlannedHint": "Tres para una partida corta, cinco para una estándar. Podéis cambiarlo en cualquier momento.",
+      "WaitingFor": "Esperando a {name}…",
+      "Declare": "Declarar",
+      "Undo": "Deshacer la última declaración",
+      "ChooseVirtue": "Elige la virtud de la historia",
+      "StartHint": "La escena está declarada. Ahora se cuenta, en flashbacks, cómo llegasteis hasta aquí.",
+      "NeedBoth": "Los dos asientos deben estar ocupados para empezar.",
+      "Start": "Empieza {name} el primer capítulo"
+    },
+    "Decl": {
+      "era": "Ocurre en tiempos de…",
+      "eraHint": "Cuándo ocurre la historia: la estación, quizás el año. Elige también el clima de la mesa.",
+      "place": "Nos encontramos en…",
+      "placeHint": "La localización, que puede sugerir el nivel tecnológico o el estado del entorno.",
+      "span": "Nos ha llevado… llegar a este momento.",
+      "spanHint": "El tiempo que abarcará toda la narración. Puede ser épico: más de una generación.",
+      "story": "Esta es una historia de…",
+      "storyHint": "Elige una virtud. Tendrá prioridad sobre las demás durante todos los capítulos."
+    },
+    "Weather": {
+      "Label": "Clima de la mesa",
+      "none": "Sin clima",
+      "snow": "Nieve",
+      "petals": "Pétalos (primavera)",
+      "summer": "Verano",
+      "leaves": "Hojas (otoño)",
+      "rain": "Lluvia",
+      "fog": "Niebla",
+      "dust": "Polvo"
+    },
+    "Between": {
+      "Title": "Capítulo {n} cerrado",
+      "Next": "El siguiente capítulo lo abre {name}.",
+      "Reached": "Habéis llegado al número de capítulos acordado. Podéis lidiar con el odio o seguir contando.",
+      "Begin": "Empezar el siguiente capítulo",
+      "ToHate": "Lidiar con el odio"
+    },
+    "Step1": {
+      "Hint": "Cada jugador saca una virtud de las seis que quedan y el activo elige una para el capítulo. O sigue con la virtud de la historia.",
+      "Draw": "Robar virtud",
+      "Keep": "Seguir con la virtud de la historia",
+      "Pick": "Esta es la del capítulo"
+    },
+    "Step2": {
+      "Hint": "Hay tres temas clave y hay que haber jugado los tres antes del final. Iniciar un capítulo con tema clave da dos ventajas al jugador activo.",
+      "Pick": "Jugar este tema (+2 ventajas)",
+      "Skip": "Este capítulo no lleva tema clave",
+      "Done": "ya jugado"
+    },
+    "Step3": {
+      "Hint": "El activo puede introducir un personaje clave. Quien lo introduce lo interpreta en todas las escenas siguientes.",
+      "Pick": "Introducir",
+      "Skip": "Sin personaje clave en este capítulo",
+      "Name": "Nombre del personaje",
+      "NameHint": "Opcional"
+    },
+    "Step4": {
+      "Hint": "{name} dirige la escena. Si una decisión favorece a su samurái, el otro jugador recibe un marcador de elección; si favorece al otro, lo recibe él.",
+      "Settle": "Pasar al clímax"
+    },
+    "Pool": {
+      "Reserve": "Reserva de elección",
+      "Empty": "reserva vacía",
+      "Note": "Nota de la decisión",
+      "NoteHint": "Qué se decidió (alimenta la Crónica)",
+      "Favors": "Favorece a {name}",
+      "NoOne": "No favorece a nadie",
+      "Undo": "Deshacer la última",
+      "Rule": "El marcador va al otro jugador: quien recibe un marcador tendrá más dados en el clímax, a costa de lo que concede la historia."
+    },
+    "Step5": {
+      "Hint": "Cada jugador cambia sus marcadores por dados. Podéis añadir dados extra (cada uno da una cicatriz) y premiar con dos dados a quien mejor representó la virtud. Nadie pasa de siete."
+    },
+    "Climax": {
+      "Extra": "Dados extra",
+      "ExtraHint": "Cada dado extra da una cicatriz",
+      "Less": "Menos",
+      "More": "Más",
+      "Consonance": "Consonancia",
+      "ConsonanceHint": "Entre los dos elegís quién representó mejor la virtud: recibe dos dados. Si no os ponéis de acuerdo, nadie.",
+      "ConsonanceTo": "{name} recibe dos dados extra.",
+      "ConsonanceClear": "Quitar",
+      "Proposed": "{by} propone a {name}.",
+      "Accept": "De acuerdo",
+      "Reject": "No",
+      "WaitingAnswer": "Esperando respuesta…",
+      "Plan": "{markers} marcadores · {dice} dados · {scars} cicatrices por extras",
+      "PlusTwo": "consonancia +2",
+      "Ready": "Listo para tirar",
+      "Unready": "Todavía no",
+      "RivalReady": "El otro jugador está listo.",
+      "RivalNotReady": "El otro jugador aún no está listo.",
+      "Roll": "Tirar los dados",
+      "Tie": "Punto muerto",
+      "TieText": "Punto muerto: cada uno gana ventajas por sus marcadores y odio por los del rival, y el jugador activo recibe una cicatriz.",
+      "Wins": "Gana {name} ({a} contra {b})."
+    },
+    "Step6": {
+      "Narrate": "{name} narra el final del capítulo y debe respetar el tema, al menos en lo que toca al jugador activo.",
+      "NarrateTie": "En un punto muerto, {name} narra el final de forma neutral y directa.",
+      "Summary": "Resumen del capítulo (para la Crónica)",
+      "Close": "Cerrar el capítulo"
+    },
+    "Hate": {
+      "Title": "Lidiar con el odio",
+      "Intro": "Cada samurái decide por separado qué hace con su odio antes del Gran Final.",
+      "Note": "Qué hace tu samurái a espaldas del otro",
+      "NoteHint": "Cuanto más dramático, mejor. Puede tocar a gente a quien el rival quería.",
+      "Ideas": "Ideas",
+      "Surrender": "Entregarse al odio",
+      "SurrenderHint": "Tira todos tus dados de odio: pares son ventajas, impares cicatrices.",
+      "Escape": "Escapar del odio",
+      "EscapeHint": "Solo con más de {n} puntos de odio. Descartas tantas cicatrices como la mitad del odio, redondeando abajo. No da ventajas ni borra el odio.",
+      "Keep": "Guardar el odio tal cual",
+      "Back": "Volver",
+      "Roll": "Tirar {n} dados de odio",
+      "RollHint": "Tiras todos tus {n} dados de odio juntos. Los pares son ventajas; los impares, cicatrices.",
+      "Deciding": "{name} está decidiendo…",
+      "SurrenderDone": "Se entregó al odio: +{adv} ventajas, +{scar} cicatrices.",
+      "EscapeDone": "Escapó del odio: descarta {n} cicatrices.",
+      "KeepDone": "Guarda su odio."
+    },
+    "Final": {
+      "Title": "El Gran Final",
+      "Round": "Intercambio {n}",
+      "Attacks": "ataca {name}",
+      "Attacker": "Atacante",
+      "Defender": "Defensor",
+      "WhyHate": "Ataca primero quien tiene más odio.",
+      "WhyAdv": "Igualados en odio: ataca primero quien tiene más ventajas.",
+      "WhyScar": "Igualados en ventajas: ataca primero quien tiene más cicatrices.",
+      "WhyFirst": "Todo igualado: ataca quien declaró primero.",
+      "Declare": "Declarar el movimiento",
+      "DeclareHint": "Cuánto más dramático, mejor.",
+      "Respond": "Declarar la defensa",
+      "RespondHint": "Cómo te defiendes de ese movimiento.",
+      "SpendTitle": "Gastar ventajas",
+      "SpendAtt": "Atacar cuesta una ventaja (un dado). Puedes gastar hasta dos más para tener más dados.",
+      "SpendDef": "Defender es gratis (un dado). Puedes gastar hasta dos ventajas para tener más dados.",
+      "SpendNone": "No gastar más",
+      "SpendN": "Gastar {n} más",
+      "SpendLocked": "Ya has decidido.",
+      "RivalLocked": "El otro jugador ya ha decidido.",
+      "RivalThinking": "El otro jugador está decidiendo…",
+      "DiceN": "{n} dados",
+      "HighestWins": "No se suman: gana el dado más alto. El atacante tiene que superar al defensor.",
+      "Clash": "Las espadas chocan. Apuesta a ciegas: gana quien apueste más ventajas.",
+      "BetHow": "Ventajas que apuestas (máximo {max})",
+      "BetLock": "Bloquear apuesta",
+      "BetLocked": "Apuesta bloqueada. Se revelan a la vez.",
+      "BetHint": "Puedes apostar cero. Las ventajas apostadas se gastan. Si apostáis lo mismo, nadie recibe cicatriz.",
+      "Won": "{name} gana el intercambio y el otro recibe una cicatriz.",
+      "NoWinner": "Nadie gana: el choque se rompe y la pelea continúa.",
+      "Best": "Dado más alto: atacante {a}, defensor {d}",
+      "BetRevealed": "apuestas {a} y {b}",
+      "Narrate": "Narrar el resultado",
+      "NarrateHint": "Describe cómo se resuelve el intercambio.",
+      "Narrates": "{name} narra el resultado.",
+      "MortalTitle": "Golpe mortal {n}",
+      "MortalText": "{att} se lanza a por el golpe definitivo contra {def}.",
+      "MortalRule": "Un dado cada uno, sin modificar. Si el atacante supera al defensor, todas sus ventajas pasan a ser cicatrices del rival. Un empate falla.",
+      "MortalRoll": "Tirar el dado del golpe mortal",
+      "Log": "Registro del duelo",
+      "Hit": "acierta",
+      "Missed": "falla"
+    },
+    "Verdict": {
+      "Defeated": "{winner} triunfa. {loser} es derrotado.",
+      "Dies": "{winner} triunfa. {loser} es derrotado y muere.",
+      "Draw": "Tablas: nadie triunfa.",
+      "by": {
+        "mortal": "Golpe mortal",
+        "scars": "Más cicatrices",
+        "hate": "Empate de cicatrices: triunfa quien menos odio acumuló",
+        "draw": "Cicatrices y odio iguales"
+      }
+    },
+    "Epilogue": {
+      "Title": "Epílogo",
+      "DoneTitle": "Fin de la historia",
+      "Triumph": "El triunfador cuenta lo que ocurrió justo después",
+      "Defeated": "El derrotado añade algo (dramático, favoreciendo al triunfador)",
+      "Close": "El triunfador cierra la historia",
+      "Hint": "Escribe tu parte del epílogo.",
+      "Write": "Escribir"
+    },
+    "Warn": {
+      "reserveLeft": "Quedan marcadores en la reserva. Podéis seguir, pero normalmente se reparten los siete.",
+      "themesPending": "Faltan temas clave por jugar. El libro pide haber completado los tres antes del Gran Final."
+    },
+    "Arbiter": {
+      "Title": "Árbitro",
+      "Weather": "Clima",
+      "Ledger": "Corregir un contador",
+      "Amount": "Cantidad (puede ser negativa)",
+      "Note": "Motivo",
+      "Apply": "Aplicar",
+      "Step": "Saltar a un paso",
+      "Go": "Ir",
+      "SkipDecl": "Saltar las declaraciones"
+    },
+    "Chronicle": {
+      "Open": "Abrir la Crónica",
+      "Empty": "La Crónica aparece en cuanto se cierra el primer capítulo.",
+      "Heading": "Crónica de {a} y {b}",
+      "Chapters": "{n} capítulos",
+      "Scene": "La escena inicial",
+      "Intro": "Mi nombre es {name}. Soy miembro del clan {clan}. Esta es mi historia.",
+      "ChapterTitle": "Capítulo {n} · {name}",
+      "Won": "Gana {name} ({a} contra {b}).",
+      "Tied": "Punto muerto ({a} contra {b}).",
+      "HateTitle": "El odio",
+      "Hate": {
+        "surrender": "{name} se entregó al odio: {adv} ventajas y {scar} cicatrices.",
+        "escape": "{name} escapó del odio y descartó {n} cicatrices.",
+        "keep": "{name} guardó su odio."
+      },
+      "Final": "El Gran Final",
+      "Totals": "{a}: {aa} ventajas, {ah} odio, {as} cicatrices. {b}: {ba} ventajas, {bh} odio, {bs} cicatrices.",
+      "MortalHit": "{name} acertó el golpe mortal.",
+      "MortalMiss": "{name} falló el golpe mortal.",
+      "Epilogue": "Epílogo",
+      "Copy": "Copiar el texto",
+      "Copied": "Crónica copiada.",
+      "CopyFail": "No se pudo copiar. Usa «Descargar».",
+      "Download": "Descargar como página",
+      "Save": "Guardar en Diarios",
+      "Saved": "Crónica guardada en «{name}».",
+      "Credit": "Basada en «Un momento único», de Tobie Abad (The Hills Press, traducción de Víctor Romero), licencia CC BY 4.0. Sistema de Foundry VTT: MR · Un momento único, de Manu Romera. Texto de las virtudes adaptado y resumido."
+    },
+    "Sheet": {
+      "Samurai": "MR · Samurái",
+      "Name": "Nombre",
+      "Clan": "Clan",
+      "Kamon": "Emblema",
+      "Color": "Color",
+      "Declaration": "Declaración inicial",
+      "Notes": "Notas",
+      "Duel": "En el duelo"
+    },
+    "Welcome": {
+      "Title": "MR · Un momento único",
+      "Ready": "Todo listo.",
+      "Body": "Dos samuráis, un duelo congelado y la historia de cómo llegaron a él. Sentaos los dos a la Mesa del Duelo.",
+      "Table": "Abrir la Mesa del Duelo",
+      "Safety": "Líneas y velos",
+      "Hide": "No volver a mostrar"
+    },
+    "Safety": {
+      "Intro": "Pausa, Velo o Tarjeta X: avisan a toda la mesa al instante, sin decir quién lo ha pulsado.",
+      "Pause": "Pausa",
+      "PauseHint": "Parar un momento.",
+      "PauseText": "La partida se detiene un momento.",
+      "Veil": "Velo",
+      "VeilHint": "Contarlo sin entrar en detalle.",
+      "VeilText": "Pasamos esto por encima, sin detalle.",
+      "X": "Tarjeta X",
+      "XHint": "Esto no. Se salta y no se pregunta.",
+      "XText": "Eso queda fuera de la historia. Seguimos por otro camino.",
+      "Continue": "Continuar",
+      "Anonymous": "Nadie sabrá quién lo ha activado; la Tarjeta X no se registra en ningún sitio.",
+      "Topics": "Antes de empezar, hablad de líneas y velos: el seppuku, la violencia sobre familiares y el duelo a muerte pueden ser temas duros."
+    },
+    "Access": {
+      "Title": "Accesibilidad y lectura",
+      "Open": "Abrir",
+      "Intro": "Ajustes personales: afectan solo a las ventanas de este sistema y solo en tu navegador.",
+      "textScale": "Tamaño de texto",
+      "sfxVolume": "Volumen de efectos",
+      "ambientVolume": "Volumen de ambiente",
+      "musicVolume": "Volumen de la música",
+      "readingMode": "Modo lectura",
+      "readingModeHint": "Fondos lisos y oscuros, sin texturas.",
+      "highContrast": "Alto contraste",
+      "highContrastHint": "Bordes y textos marcados.",
+      "plainFont": "Tipografía sencilla",
+      "plainFontHint": "Sin letra de pincel ni cursivas.",
+      "wideSpacing": "Espaciado amplio",
+      "wideSpacingHint": "Más aire entre líneas y letras.",
+      "largeButtons": "Botones grandes",
+      "largeButtonsHint": "Más fáciles de pulsar.",
+      "reducedMotion": "Reducir movimiento",
+      "reducedMotionHint": "Sin animaciones ni trazos que se dibujan.",
+      "reducedEffects": "Reducir efectos",
+      "reducedEffectsHint": "Sin tinta que sangra, sin barras de cine.",
+      "soundFx": "Sonido",
+      "soundFxHint": "Ambientes y efectos sintetizados.",
+      "music": "Música",
+      "musicHint": "Koto muy esporádico en los cambios importantes.",
+      "InkLabel": "Color del texto en modo lectura",
+      "Ink": {
+        "soft": "Marfil suave",
+        "paper": "Papel",
+        "pearl": "Perla",
+        "amber": "Ámbar",
+        "mint": "Menta"
+      },
+      "Reset": "Restablecer",
+      "Forget": "Olvidar posiciones de ventanas",
+      "Forgotten": "Posiciones de ventanas olvidadas."
+    },
+    "Diagnostic": {
+      "Title": "Diagnóstico",
+      "Open": "Abrir",
+      "Hint": "Informe copiable del estado del sistema, por si algo falla.",
+      "AllGood": "Todo en orden.",
+      "Problems": "Hay problemas; copia el informe y envíalo.",
+      "Missing": "Falta el archivo:",
+      "Refresh": "Actualizar",
+      "Copy": "Copiar",
+      "Copied": "Informe copiado."
+    },
+    "Err": {
+      "badSeat": "Asiento no válido.",
+      "seatTaken": "Ese asiento ya está ocupado.",
+      "wrongPhase": "Eso no se puede hacer en esta fase de la partida.",
+      "wrongStep": "Eso no toca ahora.",
+      "notYourTurn": "No es tu turno.",
+      "notNarrator": "Lo narra otro jugador.",
+      "needNames": "Los dos samuráis necesitan nombre y clan.",
+      "emptyText": "Escribe algo antes de enviar.",
+      "needVirtue": "Elige una virtud para cerrar las declaraciones.",
+      "declDone": "Las declaraciones ya están completas.",
+      "needDeclarations": "Faltan declaraciones iniciales.",
+      "needSeats": "Los dos asientos deben estar ocupados.",
+      "nothingToUndo": "No hay nada que deshacer.",
+      "drawing": "Ya hay virtudes sobre la mesa.",
+      "notDrawing": "Primero hay que robar virtudes.",
+      "badVirtue": "Esa virtud no está sobre la mesa.",
+      "noVirtues": "No quedan virtudes.",
+      "badTheme": "Ese tema ya se jugó.",
+      "badCharacter": "Ese personaje clave ya está en la historia.",
+      "reserveEmpty": "La reserva está vacía.",
+      "locked": "Ya estáis listos: los dados están fijados.",
+      "notReady": "Los dos tenéis que estar listos para tirar.",
+      "alreadyRolled": "Ya has tirado.",
+      "badDice": "Los dados no coinciden con lo esperado.",
+      "noProposal": "No hay ninguna propuesta.",
+      "alreadyDone": "Ya lo has decidido.",
+      "badMode": "Opción no válida.",
+      "cannotEscape": "Solo puedes escapar del odio si es superior a diez.",
+      "noHate": "No tienes odio con el que lidiar.",
+      "notEnoughAdvantages": "No te quedan ventajas suficientes.",
+      "unknownAction": "Acción desconocida.",
+      "noSetting": "Falta la ambientación."
+    }
+  }
+}

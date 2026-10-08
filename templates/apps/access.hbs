@@ -1,0 +1,23 @@
+<div class="umu-access">
+  <p class="umu-lede">{{localize "UMU.Access.Intro"}}</p>
+  <div class="umu-ranges">
+    {{#each ranges}}
+    <label class="umu-range"><span>{{label}}</span><input type="range" name="{{key}}" min="{{min}}" max="{{max}}" step="{{step}}" value="{{value}}"><output>{{value}}%</output></label>
+    {{/each}}
+  </div>
+  <div class="umu-toggle-grid">
+    {{#each toggles}}
+    <button type="button" class="umu-toggle {{#if on}}on{{/if}}" data-action="toggle" data-key="{{key}}" role="switch" aria-checked="{{#if on}}true{{else}}false{{/if}}">
+      <span class="umu-switch" aria-hidden="true"></span><span><strong>{{label}}</strong><small>{{hint}}</small></span>
+    </button>
+    {{/each}}
+  </div>
+  <div class="umu-ink-row" role="radiogroup" aria-label="{{localize 'UMU.Access.InkLabel'}}">
+    <span>{{localize "UMU.Access.InkLabel"}}</span>
+    {{#each inks}}<button type="button" class="umu-ink {{#if selected}}selected{{/if}}" data-action="ink" data-key="{{key}}" style="--swatch:{{color}}" role="radio" aria-checked="{{#if selected}}true{{else}}false{{/if}}" aria-label="{{label}}" title="{{label}}"></button>{{/each}}
+  </div>
+  <footer class="umu-row-end">
+    <button type="button" data-action="forget"><i class="fa-solid fa-up-down-left-right" aria-hidden="true"></i>{{localize "UMU.Access.Forget"}}</button>
+    <button type="button" data-action="reset"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i>{{localize "UMU.Access.Reset"}}</button>
+  </footer>
+</div>

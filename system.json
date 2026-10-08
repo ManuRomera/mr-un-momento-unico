@@ -1,0 +1,33 @@
+{
+  "id": "mr-un-momento-unico",
+  "title": "MR · Un momento único",
+  "description": "Sistema no oficial de Un momento único (Tobie Abad) para Foundry VTT: un juego de rol para dos jugadores sin Director sobre un duelo de samuráis. Mesa del Duelo con asientos simétricos, virtudes, temas y personajes clave, clímax con dados, odio, Gran Final con golpe mortal, epílogo y Crónica autogenerada. Estética sumi-e, sonido sintetizado, accesibilidad y seguridad en mesa.",
+  "version": "1.0.0",
+  "compatibility": { "minimum": "13", "verified": "13.351", "maximum": "14" },
+  "authors": [
+    { "name": "Manu Romera", "url": "https://github.com/ManuRomera", "flags": { "role": "Diseño e implementación" } },
+    { "name": "Anthropic Claude", "flags": { "role": "Asistencia de desarrollo" } }
+  ],
+  "esmodules": ["mr-un-momento-unico.mjs", "module/mr-credits.mjs"],
+  "styles": ["styles/system.css", "styles/accessibility.css"],
+  "languages": [
+    { "lang": "es", "name": "Español", "path": "lang/es.json" },
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ],
+  "documentTypes": { "Actor": { "samurai": { "htmlFields": ["notes"] } } },
+  "socket": true,
+  "grid": { "distance": 1, "units": "" },
+  "background": "systems/mr-un-momento-unico/assets/art/brand/cover.webp",
+  "media": [
+    { "type": "setup", "url": "systems/mr-un-momento-unico/assets/art/brand/cover.webp", "thumbnail": "systems/mr-un-momento-unico/assets/art/brand/logo.webp" },
+    { "type": "icon", "url": "systems/mr-un-momento-unico/assets/icon.svg" }
+  ],
+  "flags": { "hotReload": { "extensions": ["css", "hbs", "json"], "paths": ["styles", "templates", "lang"] } },
+  "url": "https://github.com/ManuRomera/mr-un-momento-unico",
+  "bugs": "https://github.com/ManuRomera/mr-un-momento-unico/issues",
+  "manifest": "https://github.com/ManuRomera/mr-un-momento-unico/releases/latest/download/system.json",
+  "download": "https://github.com/ManuRomera/mr-un-momento-unico/releases/latest/download/mr-un-momento-unico.zip",
+  "readme": "https://github.com/ManuRomera/mr-un-momento-unico#readme",
+  "changelog": "https://github.com/ManuRomera/mr-un-momento-unico/blob/main/CHANGELOG.md",
+  "license": "LICENSE"
+}

@@ -1,0 +1,11 @@
+<section class="umu-panel umu-between">
+  <header class="umu-panel-head">
+    <h2>{{#if chapter.played}}{{localize "UMU.Between.Title" n=chapter.played}}{{/if}}</h2>
+    <p class="umu-lede">{{localize "UMU.Between.Next" name=chapter.nextName}}</p>
+  </header>
+  {{#if chapter.reached}}<p class="umu-hint"><i class="fa-solid fa-flag-checkered" aria-hidden="true"></i> {{localize "UMU.Between.Reached"}}</p>{{/if}}
+  <div class="umu-actions">
+    {{#if chapter.canBegin}}<button type="button" class="umu-primary big" data-action="begin" data-seat="{{chapter.next}}"><i class="fa-solid fa-feather-pointed" aria-hidden="true"></i> {{localize "UMU.Between.Begin"}}</button>{{else}}<p class="umu-waiting">{{localize "UMU.Setup.WaitingFor" name=chapter.nextName}}</p>{{/if}}
+    {{#if chapter.canHate}}<button type="button" class="{{#if chapter.reached}}umu-primary{{/if}}" data-action="toHate"><i class="fa-solid fa-droplet" aria-hidden="true"></i> {{localize "UMU.Between.ToHate"}}</button>{{/if}}
+  </div>
+</section>

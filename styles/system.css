@@ -1,0 +1,484 @@
+/* ==========================================================================
+   MR · Un momento único
+   Un único gesto: tinta sobre papel. Todo selector va bajo .mr-umu o una clase umu-*:
+   la interfaz de Foundry no se toca nunca (lo vigila tests/boot-safety.test.mjs).
+   ========================================================================== */
+
+:root {
+  --umu-sumi: #0b0b0c;
+  --umu-sumi-2: #17171a;
+  --umu-sumi-3: #25252a;
+  --umu-washi: #f2ede1;
+  --umu-washi-2: #e4dcc8;
+  --umu-shu: #b3202a;
+  --umu-oro: #c9a35c;
+  --umu-nube: #8d8f94;
+  --umu-ink: #17171a;
+  --umu-line: rgba(23, 23, 26, .22);
+  --umu-line-soft: rgba(23, 23, 26, .12);
+  --umu-shadow: 0 24px 60px rgba(0, 0, 0, .5), 0 2px 8px rgba(0, 0, 0, .45);
+  --umu-serif: "Zen Old Mincho", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --umu-sans: "Hiragino Sans", "Noto Sans JP", system-ui, "Segoe UI", sans-serif;
+  --umu-brush: "Yuji Boku", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", var(--umu-serif);
+  --umu-text-scale: 1;
+  --umu-reading-ink: #e8e2d4;
+  --umu-ease: cubic-bezier(.22, .7, .2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Ventanas del sistema
+   -------------------------------------------------------------------------- */
+.application.mr-umu {
+  --font-family: var(--umu-serif);
+  font-family: var(--umu-serif);
+  font-size: calc(14px * var(--umu-text-scale));
+  color: var(--umu-washi);
+  background: var(--umu-sumi-2);
+  border: 1px solid #000;
+  border-radius: 6px;
+  box-shadow: var(--umu-shadow);
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+}
+.application.mr-umu .window-header {
+  background: linear-gradient(180deg, #202024, var(--umu-sumi));
+  border-bottom: 2px solid var(--umu-shu);
+  color: var(--umu-washi);
+  font-family: var(--umu-serif);
+  letter-spacing: .08em;
+}
+.application.mr-umu .window-header .window-title { font-size: 1.05em; }
+.application.mr-umu .window-header button { color: var(--umu-nube); }
+.application.mr-umu .window-header button:hover { color: var(--umu-washi); }
+.application.mr-umu .window-content { padding: 0; background: var(--umu-sumi-2); display: flex; flex-direction: column; overflow: hidden; }
+.application.mr-umu .window-content > * { flex: 1; min-height: 0; }
+.application.mr-umu.umu-paper-window .window-content { background: var(--umu-washi); color: var(--umu-ink); }
+
+.mr-umu h1, .mr-umu h2, .mr-umu h3, .mr-umu h4 { font-family: var(--umu-serif); font-weight: 600; margin: 0; border: 0; letter-spacing: .06em; line-height: 1.2; }
+.mr-umu h1, .mr-umu h2, .mr-umu h3, .mr-umu h4 { color: inherit; }
+.mr-umu p { margin: 0; line-height: 1.55; }
+.mr-umu :focus-visible { outline: 2px solid var(--umu-oro); outline-offset: 2px; }
+.mr-umu .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mr-umu [data-action] > * { pointer-events: none; }
+
+/* Controles: se restablece lo que Foundry da por defecto (altura fija, sombras…) */
+.mr-umu button:where(:not(.header-control)) {
+  height: auto; min-height: 30px; width: auto; margin: 0; padding: .35em .85em; line-height: 1.25;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  font: inherit; font-size: .95em; color: var(--umu-washi); background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(242, 237, 225, .3); border-radius: 3px; box-shadow: none; text-shadow: none; cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, transform .1s;
+}
+.mr-umu button:where(:not(.header-control)):hover:not(:disabled) { background: rgba(255, 255, 255, .14); border-color: var(--umu-washi); }
+.mr-umu button:where(:not(.header-control)):active:not(:disabled) { transform: translateY(1px); }
+.mr-umu button:where(:not(.header-control)):disabled { opacity: .4; cursor: not-allowed; }
+.mr-umu button.umu-primary { background: var(--umu-washi); color: var(--umu-sumi); border-color: var(--umu-washi); font-weight: 600; }
+.mr-umu button.umu-primary:hover:not(:disabled) { background: #fff; box-shadow: 0 0 0 2px var(--umu-shu); }
+.mr-umu button.umu-primary.on { background: var(--umu-shu); color: #fff; border-color: var(--umu-shu); }
+.mr-umu button.big { font-size: 1.1em; padding: .6em 1.3em; }
+.mr-umu button.danger:hover:not(:disabled) { background: var(--umu-shu); border-color: var(--umu-shu); color: #fff; }
+.mr-umu button.umu-link { background: none; border: none; padding: 0; min-height: 0; color: inherit; opacity: .8; text-decoration: underline; text-underline-offset: 3px; }
+.mr-umu button.umu-link:hover:not(:disabled) { background: none; opacity: 1; }
+.mr-umu input[type=text], .mr-umu input[type=number], .mr-umu input:not([type]), .mr-umu select, .mr-umu textarea {
+  height: auto; width: 100%; padding: .45em .6em; font: inherit; color: inherit; background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(242, 237, 225, .3); border-radius: 3px; box-shadow: none;
+}
+.mr-umu textarea { resize: vertical; line-height: 1.5; min-height: 3em; }
+.mr-umu input:focus, .mr-umu select:focus, .mr-umu textarea:focus { outline: none; border-color: var(--umu-oro); box-shadow: 0 0 0 2px rgba(201, 163, 92, .3); }
+.mr-umu select option { color: #111; background: var(--umu-washi); }
+.mr-umu input[type=color] { width: 44px; height: 32px; padding: 0; border: 1px solid rgba(242, 237, 225, .3); background: none; }
+.mr-umu label { display: flex; flex-direction: column; gap: .25em; font-size: .85em; letter-spacing: .04em; color: var(--umu-nube); }
+.mr-umu label.umu-inline { flex-direction: row; align-items: center; gap: .6em; }
+.mr-umu .umu-lede { color: inherit; opacity: .78; font-style: italic; }
+.mr-umu .umu-hint { font-size: .9em; opacity: .75; }
+.mr-umu .umu-hint.dim { opacity: .5; }
+.mr-umu .umu-warn { display: flex; gap: .5em; align-items: center; padding: .5em .8em; background: rgba(201, 163, 92, .16); border-left: 3px solid var(--umu-oro); font-size: .9em; }
+.mr-umu .umu-waiting { display: inline-flex; gap: .5em; align-items: center; font-style: italic; opacity: .75; font-size: .92em; }
+.mr-umu .umu-actions { display: flex; flex-wrap: wrap; gap: .5em; align-items: center; }
+.mr-umu .umu-note { font-size: .85em; opacity: .7; display: flex; gap: .5em; align-items: center; }
+.mr-umu .umu-row-end, .mr-umu footer.umu-row-end { display: flex; gap: .5em; justify-content: flex-end; flex-wrap: wrap; }
+.mr-umu .umu-stamp-done { display: inline-flex; gap: .4em; align-items: center; font-size: .85em; letter-spacing: .08em; color: var(--umu-oro); }
+
+/* Glifos y trazo de pincel */
+.mr-umu .umu-glyph { font-family: var(--umu-brush); font-weight: 400; line-height: 1; }
+.mr-umu .umu-glyph.big { font-size: 3.4em; }
+.mr-umu .umu-glyph-sm { font-family: var(--umu-brush); font-size: 1.3em; color: var(--umu-shu); }
+.mr-umu .umu-brush {
+  font-family: var(--umu-brush); font-size: 1.12em; line-height: 1.6; padding-left: .9em; border-left: 3px solid var(--umu-shu);
+  animation: umu-write 1.1s var(--umu-ease) both;
+}
+.mr-umu .umu-brush.alt { border-left-color: var(--umu-oro); }
+@keyframes umu-write { from { clip-path: inset(0 100% 0 0); opacity: .2; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+
+/* --------------------------------------------------------------------------
+   Mesa del Duelo
+   -------------------------------------------------------------------------- */
+.application.mr-umu.umu-table-app .window-content { background: var(--umu-sumi); }
+.mr-umu .umu-table {
+  position: relative; display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden;
+  background: var(--umu-washi) var(--umu-bg, none) center / cover no-repeat; color: var(--umu-ink);
+}
+.mr-umu .umu-table .umu-atmos { position: absolute; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse at 50% 40%, transparent 38%, rgba(23, 23, 26, .22) 100%); }
+.mr-umu .umu-table > * { position: relative; z-index: 1; }
+.mr-umu .umu-table .umu-atmos { position: absolute; z-index: 0; }
+
+.mr-umu .umu-head { display: flex; align-items: center; gap: 1rem; padding: .55rem 1rem; background: linear-gradient(180deg, rgba(11, 11, 12, .94), rgba(11, 11, 12, .82)); color: var(--umu-washi); border-bottom: 1px solid var(--umu-shu); }
+.mr-umu .umu-head-title { flex: 1; min-width: 0; }
+.mr-umu .umu-head-title h1 { font-size: 1.25em; letter-spacing: .18em; font-weight: 500; text-transform: uppercase; }
+.mr-umu .umu-head-title p { font-size: .85em; opacity: .7; letter-spacing: .06em; }
+.mr-umu .umu-head-tools { display: flex; gap: .3rem; }
+.mr-umu .umu-head-tools button { min-height: 32px; width: 32px; padding: 0; border-color: transparent; background: transparent; }
+.mr-umu .umu-switch { display: flex; align-items: center; gap: .3rem; font-size: .8em; }
+.mr-umu .umu-switch span { opacity: .6; letter-spacing: .08em; text-transform: uppercase; margin-right: .2rem; }
+.mr-umu .umu-switch button { min-height: 26px; padding: .1em .7em; }
+.mr-umu .umu-switch button.on { background: var(--umu-washi); color: var(--umu-sumi); }
+.mr-umu .umu-badge { font-size: .8em; padding: .2em .7em; border: 1px solid rgba(242, 237, 225, .4); border-radius: 999px; }
+
+.mr-umu .umu-board { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(180px, 230px) minmax(0, 1fr) minmax(180px, 230px); gap: 0; }
+.mr-umu .umu-center { min-height: 0; overflow-y: auto; padding: 1rem 1.2rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; scrollbar-width: thin; }
+
+/* Asientos: sumi (A) contra washi (B) */
+.mr-umu .umu-seat { display: flex; flex-direction: column; gap: .8rem; padding: 1rem .9rem; min-height: 0; overflow-y: auto; position: relative; }
+.mr-umu .umu-seat.sumi { background: rgba(11, 11, 12, .9); color: var(--umu-washi); border-right: 1px solid #000; }
+.mr-umu .umu-seat.washi { background: rgba(242, 237, 225, .93); color: var(--umu-sumi); border-left: 1px solid rgba(0, 0, 0, .3); }
+.mr-umu .umu-seat.active::before { content: ""; position: absolute; top: 0; bottom: 0; width: 4px; background: var(--umu-shu); }
+.mr-umu .umu-seat.sumi.active::before { right: 0; }
+.mr-umu .umu-seat.washi.active::before { left: 0; }
+.mr-umu .umu-seat-head { display: grid; grid-template-columns: 56px 1fr; gap: .6rem; align-items: center; position: relative; }
+.mr-umu .umu-portrait { margin: 0; width: 56px; height: 70px; border-radius: 2px; overflow: hidden; border: 1px solid rgba(128, 128, 128, .5); }
+.mr-umu .umu-portrait img { width: 100%; height: 100%; object-fit: cover; border: 0; display: block; }
+.mr-umu .umu-seat-id { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
+.mr-umu .umu-seat-id strong { font-size: 1.15em; letter-spacing: .05em; overflow: hidden; text-overflow: ellipsis; }
+.mr-umu .umu-seat-id small { opacity: .65; }
+.mr-umu .umu-seat-tag { font-size: .7em; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+.mr-umu .umu-seat.me .umu-seat-tag { color: var(--umu-shu); opacity: 1; font-weight: 700; }
+.mr-umu .umu-seat-kamon { position: absolute; right: -4px; top: -6px; opacity: .85; }
+.mr-umu .umu-seat-kamon .umu-kamon { width: 34px; height: 34px; }
+.mr-umu .umu-counters { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .7rem; }
+.mr-umu .umu-counters li header { display: flex; align-items: center; gap: .45rem; font-size: .8em; letter-spacing: .1em; text-transform: uppercase; }
+.mr-umu .umu-counters li header b { margin-left: auto; font-size: 1.8em; font-weight: 500; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums; }
+.mr-umu .umu-counters li.adv header i { color: var(--umu-oro); }
+.mr-umu .umu-counters li.hate header i, .mr-umu .umu-counters li.scar header i { color: var(--umu-shu); }
+.mr-umu .umu-seat.low .umu-counters li.adv b { color: var(--umu-shu); animation: umu-beat 1.2s infinite; }
+@keyframes umu-beat { 50% { transform: scale(1.18); } }
+.mr-umu .umu-pips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: .3rem; min-height: 14px; align-items: center; }
+.mr-umu .umu-pips em { font-size: .75em; opacity: .7; font-style: normal; }
+.mr-umu .umu-pip { display: inline-block; width: 12px; height: 12px; position: relative; flex: 0 0 auto; }
+.mr-umu .umu-pip.seal { border-radius: 2px; background: var(--umu-oro); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .25); transform: rotate(8deg); }
+.mr-umu .umu-pip.drop { background: var(--umu-shu); border-radius: 50% 0 50% 50%; transform: rotate(-45deg) scale(.9); }
+.mr-umu .umu-pip.cut::before { content: ""; position: absolute; left: 5px; top: -2px; width: 2px; height: 16px; background: var(--umu-shu); transform: rotate(32deg); border-radius: 1px; }
+.mr-umu .umu-seat.low .umu-pip.seal { animation: umu-beat 1.2s infinite; }
+
+/* Paneles del rollo central */
+.mr-umu .umu-panel { background: rgba(242, 237, 225, .93); border: 1px solid rgba(23, 23, 26, .35); box-shadow: 0 6px 22px rgba(0, 0, 0, .22); padding: 1.2rem 1.4rem; display: flex; flex-direction: column; gap: 1rem; color: var(--umu-ink); position: relative; }
+.mr-umu .umu-panel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(90deg, var(--umu-shu), transparent 40%); }
+.mr-umu .umu-panel button:where(:not(.header-control)) { color: var(--umu-ink); background: rgba(255, 255, 255, .4); border-color: rgba(23, 23, 26, .4); }
+.mr-umu .umu-panel button:where(:not(.header-control)):hover:not(:disabled) { background: #fff; border-color: var(--umu-ink); }
+.mr-umu .umu-panel button.umu-primary { background: var(--umu-sumi); color: var(--umu-washi); border-color: var(--umu-sumi); }
+.mr-umu .umu-panel button.umu-primary:hover:not(:disabled) { background: var(--umu-sumi-3); box-shadow: 0 0 0 2px var(--umu-shu); }
+.mr-umu .umu-panel button.umu-primary.on { background: var(--umu-shu); border-color: var(--umu-shu); }
+.mr-umu .umu-panel button.umu-link { background: none; border: none; }
+.mr-umu .umu-panel input[type=text], .mr-umu .umu-panel input[type=number], .mr-umu .umu-panel input:not([type]), .mr-umu .umu-panel select, .mr-umu .umu-panel textarea { color: var(--umu-ink); background: rgba(255, 255, 255, .55); border-color: rgba(23, 23, 26, .35); }
+.mr-umu .umu-panel label { color: #55555a; }
+.mr-umu .umu-panel .umu-stamp-done { color: #7b5f1e; }
+.mr-umu .umu-panel .umu-warn { background: rgba(179, 32, 42, .1); border-left-color: var(--umu-shu); }
+.mr-umu .umu-panel-head { display: flex; flex-direction: column; gap: .2rem; border-bottom: 1px solid var(--umu-line); padding-bottom: .7rem; }
+.mr-umu .umu-panel-head h2 { font-size: 1.5em; font-weight: 500; letter-spacing: .1em; color: var(--umu-ink); }
+.mr-umu .umu-table.cine .umu-panel-head h2 { color: #fff; }
+.mr-umu .umu-panel h3 { font-size: 1.05em; letter-spacing: .12em; text-transform: uppercase; color: #55555a; display: flex; align-items: baseline; gap: .6em; }
+.mr-umu .umu-panel h3 small { font-size: .8em; letter-spacing: 0; font-weight: 400; }
+.mr-umu fieldset { border: 1px solid var(--umu-line); border-radius: 2px; padding: .7rem .9rem .9rem; margin: 0; display: flex; flex-direction: column; gap: .6rem; min-width: 0; }
+.mr-umu fieldset legend { padding: 0 .5rem; font-size: .8em; letter-spacing: .12em; text-transform: uppercase; color: #55555a; }
+
+/* Preparación */
+.mr-umu .umu-seat-pick { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.mr-umu .umu-seat-card { display: flex; flex-direction: column; gap: .5rem; align-items: flex-start; padding: .8rem; border: 1px dashed var(--umu-line); background: rgba(255, 255, 255, .3); }
+.mr-umu .umu-seat-card.taken { border-style: solid; background: rgba(255, 255, 255, .6); }
+.mr-umu .umu-seat-card-who { display: flex; align-items: center; gap: .5rem; }
+.mr-umu .umu-user { font-size: .9em; opacity: .8; }
+.mr-umu .umu-profile { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem .9rem; }
+.mr-umu .umu-profile .umu-kamon-row { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.mr-umu .umu-kamon-grid { display: grid; grid-template-columns: repeat(6, 40px); gap: 4px; }
+.mr-umu button.umu-kamon-btn { width: 40px; height: 40px; min-height: 0; padding: 2px; background: rgba(255, 255, 255, .3); }
+.mr-umu button.umu-kamon-btn.on { outline: 2px solid var(--umu-shu); outline-offset: 1px; background: #fff; }
+.mr-umu .umu-options { display: grid; grid-template-columns: 1fr 140px; gap: .6rem 1rem; align-items: end; }
+.mr-umu .umu-options .umu-hint { grid-column: 1 / -1; }
+.mr-umu .umu-declarations { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .9rem; counter-reset: decl; }
+.mr-umu .umu-declarations > li { padding: .8rem 1rem .9rem 3rem; position: relative; border: 1px solid transparent; counter-increment: decl; display: flex; flex-direction: column; gap: .5rem; }
+.mr-umu .umu-declarations > li::before { content: counter(decl, cjk-ideographic); position: absolute; left: .7rem; top: .6rem; font-family: var(--umu-brush); font-size: 1.5em; color: var(--umu-shu); }
+.mr-umu .umu-declarations > li.current { border-color: var(--umu-line); background: rgba(255, 255, 255, .45); }
+.mr-umu .umu-declarations > li:not(.done):not(.current) { opacity: .55; }
+.mr-umu .umu-declarations header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.mr-umu .umu-who { font-size: .8em; letter-spacing: .08em; opacity: .65; text-transform: uppercase; }
+.mr-umu .umu-weather { display: flex; align-items: center; gap: .7rem; font-size: .9em; }
+.mr-umu .umu-weather select { width: auto; }
+.mr-umu .umu-virtue-line { display: flex; align-items: center; gap: .6em; font-size: 1.05em; }
+.mr-umu .umu-virtue-line .umu-glyph { font-size: 1.8em; color: var(--umu-shu); }
+.mr-umu .umu-virtue-pick { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: .5rem; }
+.mr-umu .umu-virtue-opt { cursor: pointer; }
+.mr-umu .umu-virtue-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.mr-umu .umu-virtue-card { display: flex; flex-direction: column; align-items: center; gap: .1rem; padding: .5rem .3rem; border: 1px solid var(--umu-line); background: rgba(255, 255, 255, .5); text-align: center; transition: all .15s; }
+.mr-umu .umu-virtue-card b { font-size: 2em; font-weight: 400; }
+.mr-umu .umu-virtue-card i { font-style: normal; letter-spacing: .1em; font-size: .85em; }
+.mr-umu .umu-virtue-card small { opacity: .7; font-size: .8em; letter-spacing: .04em; }
+.mr-umu .umu-virtue-opt:hover .umu-virtue-card { border-color: var(--umu-ink); }
+.mr-umu .umu-virtue-opt input:checked + .umu-virtue-card { background: var(--umu-sumi); color: var(--umu-washi); border-color: var(--umu-sumi); box-shadow: 0 0 0 2px var(--umu-shu); }
+.mr-umu .umu-virtue-opt input:focus-visible + .umu-virtue-card { outline: 2px solid var(--umu-oro); outline-offset: 2px; }
+.mr-umu .umu-start { display: flex; flex-direction: column; gap: .7rem; align-items: flex-start; padding-top: .5rem; border-top: 1px solid var(--umu-line); }
+
+/* Capítulo */
+.mr-umu .umu-steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 0; }
+.mr-umu .umu-steps li { flex: 1; display: flex; flex-direction: column; align-items: center; gap: .25rem; font-size: .75em; letter-spacing: .08em; text-transform: uppercase; opacity: .45; position: relative; }
+.mr-umu .umu-steps li b { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1px solid currentColor; font-size: 1.15em; letter-spacing: 0; background: var(--umu-washi); position: relative; z-index: 1; }
+.mr-umu .umu-steps li::before { content: ""; position: absolute; left: -50%; right: 50%; top: 13px; height: 1px; background: currentColor; }
+.mr-umu .umu-steps li:first-child::before { display: none; }
+.mr-umu .umu-steps li.done { opacity: .75; }
+.mr-umu .umu-steps li.done b { background: var(--umu-sumi); color: var(--umu-washi); border-color: var(--umu-sumi); }
+.mr-umu .umu-steps li.current { opacity: 1; color: var(--umu-shu); font-weight: 700; }
+.mr-umu .umu-steps li.current b { background: var(--umu-shu); color: #fff; border-color: var(--umu-shu); box-shadow: 0 0 0 4px rgba(179, 32, 42, .2); }
+.mr-umu .umu-spread { display: flex; gap: .8rem; flex-wrap: wrap; }
+.mr-umu .umu-spread:empty { display: none; }
+.mr-umu .umu-step-body { display: flex; flex-direction: column; gap: .8rem; }
+.mr-umu .umu-card {
+  display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; padding: .6rem; width: 150px;
+  background: var(--umu-washi); border: 1px solid rgba(23, 23, 26, .45); box-shadow: 0 3px 10px rgba(0, 0, 0, .25); position: relative;
+  transition: transform .2s var(--umu-ease), box-shadow .2s;
+}
+.mr-umu .umu-card:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0, 0, 0, .3); }
+.mr-umu .umu-card.art[role=button] { cursor: zoom-in; }
+.mr-umu .umu-card.art img { width: 100%; aspect-ratio: 900 / 1275; object-fit: cover; object-position: top; border: 0; border-radius: 1px; cursor: zoom-in; }
+.mr-umu .umu-card.art.spent { opacity: .55; filter: grayscale(.7); }
+.mr-umu .umu-card strong { font-size: .95em; letter-spacing: .04em; }
+.mr-umu .umu-card small, .mr-umu .umu-card p { font-size: .78em; opacity: .75; line-height: 1.4; }
+.mr-umu .umu-card.virtue { background: linear-gradient(180deg, var(--umu-washi), var(--umu-washi-2)); padding-top: 1rem; }
+.mr-umu .umu-card.virtue::after { content: ""; position: absolute; right: 8px; top: 8px; width: 14px; height: 14px; background: var(--umu-shu); border-radius: 2px; transform: rotate(6deg); opacity: .9; }
+.mr-umu .umu-card.virtue i { font-style: normal; letter-spacing: .14em; font-size: .85em; }
+.mr-umu .umu-card.pickable { width: 190px; }
+.mr-umu .umu-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; justify-items: center; }
+.mr-umu .umu-choices .umu-card { width: 100%; max-width: 190px; }
+.mr-umu .umu-drawn { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* Reserva de elección: piedras de go */
+.mr-umu .umu-reserve { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; padding: .8rem; background: rgba(23, 23, 26, .07); border: 1px solid var(--umu-line); }
+.mr-umu .umu-label { font-size: .75em; letter-spacing: .12em; text-transform: uppercase; opacity: .65; display: block; margin-bottom: .3rem; }
+.mr-umu .umu-stones { display: flex; flex-wrap: wrap; gap: 6px; min-height: 26px; align-items: center; }
+.mr-umu .umu-stones em { font-size: .85em; opacity: .6; }
+.mr-umu .umu-stones.side b { margin-left: .3rem; font-size: 1.2em; }
+.mr-umu .umu-reserve-sides { display: flex; flex-direction: column; gap: .4rem; }
+.mr-umu .umu-stone { display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #5a5a60, #1a1a1d 70%); box-shadow: 0 2px 3px rgba(0, 0, 0, .45), inset 0 -2px 3px rgba(0, 0, 0, .5); animation: umu-drop .35s var(--umu-ease) both; }
+.mr-umu .umu-stone.a { background: radial-gradient(circle at 35% 30%, #3b3b40, #050506 70%); }
+.mr-umu .umu-stone.b { background: radial-gradient(circle at 35% 30%, #ffffff, #cfc7b2 75%); box-shadow: 0 2px 3px rgba(0, 0, 0, .4), inset 0 -2px 3px rgba(0, 0, 0, .18); }
+@keyframes umu-drop { from { transform: translateY(-14px) scale(1.2); opacity: 0; } }
+.mr-umu .umu-field { display: flex; flex-direction: column; gap: .25rem; }
+.mr-umu .umu-favor { display: flex; flex-wrap: wrap; gap: .5rem; }
+.mr-umu button.umu-favor-btn.sumi { background: var(--umu-sumi); color: var(--umu-washi); border-color: var(--umu-sumi); }
+.mr-umu button.umu-favor-btn.washi { background: var(--umu-washi); color: var(--umu-sumi); border: 2px solid var(--umu-sumi); }
+.mr-umu .umu-panel button.umu-favor-btn.sumi:hover:not(:disabled) { background: var(--umu-sumi-3); }
+.mr-umu .umu-decisions { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; font-size: .9em; }
+.mr-umu .umu-decisions li { display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap; padding-bottom: .3rem; border-bottom: 1px dotted var(--umu-line); }
+.mr-umu .umu-decisions li b { color: var(--umu-shu); }
+.mr-umu .umu-decisions li em { opacity: .7; }
+
+/* Clímax: dados */
+.mr-umu .umu-extra { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.mr-umu .umu-extra b { font-size: 1.4em; min-width: 1.5ch; text-align: center; }
+.mr-umu .umu-consonance { display: flex; flex-direction: column; gap: .4rem; padding: .7rem; border: 1px solid var(--umu-line); background: rgba(255, 255, 255, .3); }
+.mr-umu .umu-dice-table { display: flex; flex-direction: column; gap: .7rem; }
+.mr-umu .umu-dice-row { display: grid; grid-template-columns: 1fr auto; gap: .4rem .8rem; align-items: center; padding: .6rem .8rem; border: 1px solid var(--umu-line); background: rgba(255, 255, 255, .35); }
+.mr-umu .umu-dice-row header { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; flex-wrap: wrap; }
+.mr-umu .umu-dice-row header span { font-size: .8em; opacity: .7; }
+.mr-umu .umu-dice { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.mr-umu .umu-die {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 6px; font-style: normal; font-weight: 700; font-size: 1.2em;
+  background: var(--umu-sumi); color: var(--umu-washi); box-shadow: 0 2px 4px rgba(0, 0, 0, .4), inset 0 0 0 2px rgba(255, 255, 255, .12);
+  animation: umu-tumble .5s var(--umu-ease) both;
+}
+.mr-umu .umu-dice-row.washi .umu-die { background: var(--umu-washi); color: var(--umu-sumi); box-shadow: 0 2px 4px rgba(0, 0, 0, .35), inset 0 0 0 2px rgba(0, 0, 0, .18); }
+.mr-umu .umu-die.blank { background: transparent; border: 1px dashed var(--umu-line); box-shadow: none; animation: none; color: transparent; }
+.mr-umu .umu-die.even { box-shadow: 0 0 0 2px var(--umu-oro); }
+.mr-umu .umu-die.odd { box-shadow: 0 0 0 2px var(--umu-shu); }
+@keyframes umu-tumble { from { transform: rotate(-200deg) scale(.4); opacity: 0; } }
+.mr-umu .umu-sum { font-size: 1.3em; margin-left: .4rem; }
+.mr-umu .umu-result { display: flex; flex-direction: column; gap: .6rem; padding: .9rem; border: 1px solid var(--umu-line); background: rgba(255, 255, 255, .4); }
+.mr-umu .umu-verdict { font-size: 1.2em; font-family: var(--umu-brush); }
+.mr-umu .umu-verdict.big { font-size: 1.6em; }
+.mr-umu .umu-gains { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.2rem; flex-wrap: wrap; font-size: .95em; }
+.mr-umu .umu-gains .adv { color: #7b5f1e; } .mr-umu .umu-gains .hate, .mr-umu .umu-gains .scar { color: var(--umu-shu); }
+.mr-umu .umu-gains span { margin-left: .5em; }
+
+/* Odio */
+.mr-umu .umu-hate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+.mr-umu .umu-hate-card { display: flex; flex-direction: column; gap: .6rem; padding: .9rem; border: 1px solid var(--umu-line); background: rgba(255, 255, 255, .4); position: relative; overflow: hidden; }
+.mr-umu .umu-hate-card::after { content: ""; position: absolute; right: -30px; top: -30px; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(179, 32, 42, .22), transparent 70%); pointer-events: none; }
+.mr-umu .umu-hate-card header { display: flex; gap: .8rem; align-items: baseline; }
+.mr-umu .umu-hate-card header strong { flex: 1; font-size: 1.1em; }
+.mr-umu .umu-hate-n, .mr-umu .umu-scar-n { color: var(--umu-shu); font-size: 1.1em; }
+.mr-umu .umu-ideas { display: flex; flex-wrap: wrap; gap: .3rem; }
+.mr-umu button.umu-chip { min-height: 24px; padding: .1em .7em; border-radius: 999px; font-size: .8em; }
+.mr-umu .umu-intensity { list-style: none; margin: 0; padding: 0; font-size: .78em; opacity: .65; display: flex; flex-direction: column; gap: .1rem; }
+.mr-umu blockquote { margin: 0; padding: .3rem .8rem; border-left: 3px solid var(--umu-shu); font-style: italic; opacity: .85; }
+
+/* Gran Final */
+.mr-umu .umu-exchange { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.mr-umu .umu-say { display: flex; flex-direction: column; gap: .6rem; padding: .9rem; border: 1px solid var(--umu-line); background: rgba(255, 255, 255, .4); }
+.mr-umu .umu-say h3 { display: flex; gap: .5em; align-items: center; }
+.mr-umu .umu-spend, .mr-umu .umu-bet, .mr-umu .umu-mortal { display: flex; flex-direction: column; gap: .8rem; }
+.mr-umu .umu-mortal-die { display: inline-flex; flex-direction: column; align-items: center; gap: .2rem; }
+.mr-umu .umu-mortal-die .umu-die { width: 52px; height: 52px; font-size: 1.8em; }
+.mr-umu .umu-log { font-size: .9em; }
+.mr-umu .umu-log summary { cursor: pointer; letter-spacing: .1em; text-transform: uppercase; font-size: .8em; opacity: .7; }
+.mr-umu .umu-log ol { margin: .5rem 0 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .4rem; }
+.mr-umu .umu-log li em { display: block; opacity: .65; font-size: .9em; }
+.mr-umu .umu-log .umu-brush { display: block; font-size: 1em; margin-top: .2rem; animation: none; }
+
+/* Epílogo */
+.mr-umu .umu-epilogue-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+.mr-umu .umu-epilogue-steps li { display: flex; flex-direction: column; gap: .5rem; padding: .8rem 1rem; border: 1px solid transparent; }
+.mr-umu .umu-epilogue-steps li.current { border-color: var(--umu-line); background: rgba(255, 255, 255, .45); }
+.mr-umu .umu-epilogue-steps li:not(.done):not(.current) { opacity: .5; }
+.mr-umu .umu-epilogue-steps header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+
+/* Árbitro */
+.mr-umu .umu-arbiter { background: rgba(11, 11, 12, .75); color: var(--umu-washi); border: 1px solid #000; padding: .5rem .8rem; font-size: .9em; }
+.mr-umu .umu-arbiter summary { cursor: pointer; letter-spacing: .12em; text-transform: uppercase; font-size: .8em; opacity: .8; }
+.mr-umu .umu-arbiter-body { display: flex; flex-direction: column; gap: .7rem; padding-top: .7rem; }
+.mr-umu .umu-arbiter fieldset { border-color: rgba(242, 237, 225, .25); flex-direction: row; flex-wrap: wrap; align-items: center; }
+.mr-umu .umu-arbiter fieldset legend { color: var(--umu-nube); }
+.mr-umu .umu-arbiter fieldset > * { width: auto; flex: 0 1 auto; }
+
+/* Rollo de capítulos */
+.mr-umu .umu-scroll-strip { display: flex; gap: .6rem; padding: .5rem 1rem; overflow-x: auto; background: linear-gradient(180deg, rgba(11, 11, 12, .82), rgba(11, 11, 12, .95)); color: var(--umu-washi); border-top: 1px solid var(--umu-shu); scrollbar-width: thin; }
+.mr-umu .umu-fragment { display: flex; align-items: center; gap: .55rem; padding: .25rem .8rem; border: 1px solid rgba(242, 237, 225, .3); border-radius: 2px; white-space: nowrap; font-size: .85em; }
+.mr-umu .umu-fragment-n { opacity: .55; }
+.mr-umu .umu-fragment .umu-glyph { font-size: 1.5em; }
+.mr-umu .umu-fragment.won-A { border-color: rgba(242, 237, 225, .9); }
+.mr-umu .umu-fragment.won-B { background: rgba(242, 237, 225, .9); color: var(--umu-sumi); }
+.mr-umu .umu-fragment-theme { opacity: .6; font-size: .85em; }
+
+/* Modo cine: el Gran Final cambia la interfaz a blanco y negro duro */
+.mr-umu .umu-table.cine { --umu-bg-filter: invert(1) grayscale(1) contrast(1.3); background: #000; color: #fff; }
+.mr-umu .umu-table.cine::before { content: ""; position: absolute; inset: 0; z-index: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) grayscale(1) contrast(1.25); opacity: .85; }
+.mr-umu .umu-table.cine .umu-atmos { background: radial-gradient(ellipse at 50% 45%, transparent 30%, #000 100%); }
+.mr-umu .umu-table.cine .umu-panel { background: rgba(0, 0, 0, .82); color: #fff; border-color: #fff; box-shadow: none; }
+.mr-umu .umu-table.cine .umu-panel::before { background: #fff; height: 1px; }
+.mr-umu .umu-table.cine .umu-panel button:where(:not(.header-control)) { color: #fff; background: transparent; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-panel button.umu-primary { background: #fff; color: #000; }
+.mr-umu .umu-table.cine .umu-panel input, .mr-umu .umu-table.cine .umu-panel textarea, .mr-umu .umu-table.cine .umu-panel select { color: #fff; background: #000; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-panel label, .mr-umu .umu-table.cine .umu-panel h3 { color: #ccc; }
+.mr-umu .umu-table.cine .umu-say, .mr-umu .umu-table.cine .umu-result, .mr-umu .umu-table.cine .umu-dice-row { background: transparent; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-panel-head { border-color: #fff; }
+.mr-umu .umu-table.cine .umu-seat.sumi { background: #000; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-seat.washi { background: #fff; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-counters li.adv header i, .mr-umu .umu-table.cine .umu-pip.seal { color: #fff; background: #fff; }
+.mr-umu .umu-table.cine .umu-seat.washi .umu-pip.seal { background: #000; }
+.mr-umu .umu-table.cine .umu-head { background: #000; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-panel .umu-stamp-done { color: #fff; }
+.mr-umu .umu-table.cine .umu-brush { border-left-color: #fff; }
+.mr-umu .umu-table.cine .umu-verdict { color: #fff; }
+.mr-umu .umu-table.cine .umu-dice-row.washi .umu-die { background: #fff; color: #000; }
+.mr-umu .umu-table.cine .umu-die { background: #000; color: #fff; box-shadow: 0 0 0 1px #fff; }
+.mr-umu .umu-table.cine .umu-dice-row.washi .umu-die { background: #fff; color: #000; }
+.mr-umu .umu-table.cine .umu-scroll-strip { background: #000; border-color: #fff; }
+.mr-umu .umu-table.cine .umu-board { border-top: 0 solid #000; border-bottom: 0 solid #000; animation: umu-bars 1.4s var(--umu-ease) forwards; }
+@keyframes umu-bars { to { border-top-width: 22px; border-bottom-width: 22px; } }
+
+/* Vacío */
+.mr-umu .umu-empty { display: grid; place-content: center; justify-items: center; gap: 1rem; padding: 2rem; background: var(--umu-washi); color: var(--umu-ink); text-align: center; }
+.mr-umu .umu-empty-art { width: 140px; border: 0; }
+
+/* Crónica */
+.application.mr-umu.umu-chronicle-app .window-content { background: var(--umu-washi); color: var(--umu-ink); }
+.mr-umu .umu-chron-wrap { display: flex; flex-direction: column; min-height: 0; height: 100%; }
+.mr-umu .umu-chron { flex: 1; min-height: 0; overflow-y: auto; padding: 1.6rem 2.2rem; font-size: 1.05em; line-height: 1.7; background: var(--umu-washi) radial-gradient(ellipse at 50% 0, rgba(255, 255, 255, .6), transparent 60%); }
+.mr-umu .umu-chron h1 { text-align: center; font-weight: 400; font-size: 1.9em; letter-spacing: .06em; }
+.mr-umu .umu-chron h2 { margin-top: 2rem; padding-bottom: .2rem; border-bottom: 1px solid var(--umu-shu); font-weight: 400; letter-spacing: .1em; }
+.mr-umu .umu-chron-head { display: flex; flex-direction: column; align-items: center; gap: .6rem; padding-bottom: 1rem; }
+.mr-umu .umu-chron-kamon { display: flex; gap: 1.2rem; }
+.mr-umu .umu-chron-sub, .mr-umu .umu-chron-meta { text-align: center; opacity: .65; font-size: .9em; }
+.mr-umu .umu-chron-meta { text-align: left; }
+.mr-umu .umu-chron-notes { font-size: .92em; opacity: .85; }
+.mr-umu .umu-chron-result { display: flex; align-items: center; gap: .6rem; font-style: italic; }
+.mr-umu .umu-hanko { display: inline-grid; place-items: center; width: 1.9em; height: 1.9em; background: var(--umu-shu); color: #fff; font-style: normal; border-radius: 3px; transform: rotate(-4deg); font-family: var(--umu-brush); }
+.mr-umu .umu-chron-result.won-A .umu-hanko { background: var(--umu-sumi); }
+.mr-umu .umu-chron-virtue .umu-glyph { font-size: 1.6em; color: var(--umu-shu); }
+.mr-umu .umu-chron-verdict { text-align: center; font-size: 1.25em; font-family: var(--umu-brush); margin-top: 1.5rem; }
+.mr-umu .umu-chron-foot { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--umu-line); display: flex; align-items: center; gap: 1rem; font-size: .78em; opacity: .75; }
+.mr-umu .umu-chron-foot img { width: 56px; border: 0; flex: 0 0 auto; }
+.mr-umu .umu-chron .umu-brush { animation: none; }
+.mr-umu .umu-chron-actions { display: flex; gap: .5rem; justify-content: flex-end; padding: .7rem 1rem; border-top: 1px solid var(--umu-line); background: var(--umu-washi-2); }
+.mr-umu .umu-chron-wrap button:where(:not(.header-control)) { color: var(--umu-ink); background: rgba(255, 255, 255, .5); border-color: rgba(23, 23, 26, .4); }
+.mr-umu .umu-chron-wrap button.umu-primary { background: var(--umu-sumi); color: var(--umu-washi); }
+.mr-umu .umu-empty-note { padding: 2rem; text-align: center; }
+
+/* Ficha del samurái */
+.application.mr-umu.umu-sheet .window-content { background: var(--umu-sumi-2); }
+.mr-umu .umu-sheet-body { padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+.mr-umu .umu-sheet-head { display: grid; grid-template-columns: 110px 1fr 96px; gap: 1rem; align-items: center; }
+.mr-umu .umu-sheet-portrait { margin: 0; width: 110px; height: 138px; border: 1px solid rgba(242, 237, 225, .35); overflow: hidden; }
+.mr-umu .umu-sheet-portrait img { width: 100%; height: 100%; object-fit: cover; border: 0; cursor: pointer; }
+.mr-umu .umu-sheet-id { display: flex; flex-direction: column; gap: .6rem; }
+.mr-umu .umu-sheet-kamon { color: var(--umu-shu); }
+.mr-umu .umu-sheet h3 { font-size: .85em; letter-spacing: .14em; text-transform: uppercase; color: var(--umu-nube); margin-bottom: .4rem; }
+.mr-umu .umu-sheet-seat { padding: .8rem; border: 1px solid rgba(242, 237, 225, .25); display: flex; flex-direction: column; gap: .6rem; }
+.mr-umu .umu-sheet-seat .umu-counters { flex-direction: row; gap: 1.5rem; }
+.mr-umu .umu-sheet-seat .umu-counters li { display: flex; align-items: center; gap: .5rem; }
+.mr-umu .umu-sheet-seat .umu-counters li b { font-size: 1.5em; }
+.mr-umu .umu-sheet-seat .umu-counters li.adv i { color: var(--umu-oro); } .mr-umu .umu-sheet-seat .umu-counters li.hate i, .mr-umu .umu-sheet-seat .umu-counters li.scar i { color: var(--umu-shu); }
+
+/* Seguridad, accesibilidad, bienvenida, diagnóstico */
+.mr-umu.umu-safety-signal { position: fixed; z-index: 9800; font-family: var(--umu-serif); color: var(--umu-washi); font-size: calc(16px * var(--umu-text-scale)); }
+.mr-umu.umu-safety-signal.overlay { inset: 0; display: grid; place-items: center; background: rgba(4, 4, 4, .9); backdrop-filter: blur(8px); }
+.mr-umu.umu-safety-signal.banner { top: 12px; left: 50%; transform: translateX(-50%); }
+.mr-umu .umu-safety-box { max-width: 520px; text-align: center; padding: 2rem 2.4rem; border-radius: 4px; background: var(--umu-sumi); border: 1px solid var(--umu-washi); box-shadow: var(--umu-shadow); display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+.mr-umu.banner .umu-safety-box { flex-direction: row; padding: .7rem 1rem; text-align: left; gap: 1rem; max-width: 92vw; }
+.mr-umu .umu-safety-box > i { font-size: 2.4em; color: var(--umu-shu); }
+.mr-umu.banner .umu-safety-box > i { font-size: 1.4em; }
+.mr-umu .umu-safety-box h2 { font-size: 2em; }
+.mr-umu.umu-safety-signal.x .umu-safety-box { border-color: var(--umu-shu); }
+.mr-umu .umu-safety-panel { padding: 1rem; display: flex; flex-direction: column; gap: .6rem; }
+.mr-umu button.umu-safety-btn { justify-content: flex-start; gap: 1rem; padding: .8rem 1rem; min-height: 60px; text-align: left; }
+.mr-umu .umu-safety-btn i { font-size: 1.5em; width: 1.4em; }
+.mr-umu .umu-safety-btn span { display: flex; flex-direction: column; gap: .15em; }
+.mr-umu .umu-safety-btn strong { font-size: 1.2em; }
+.mr-umu .umu-safety-btn small { opacity: .7; }
+.mr-umu .umu-safety-btn.x { border-color: var(--umu-shu); }
+.mr-umu .umu-access { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .9rem; overflow-y: auto; }
+.mr-umu .umu-ranges { display: flex; flex-direction: column; gap: .5rem; }
+.mr-umu .umu-range { display: grid; grid-template-columns: 11em 1fr 3.5em; align-items: center; gap: .6rem; flex-direction: row; }
+.mr-umu .umu-range input { padding: 0; }
+.mr-umu .umu-toggle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+.mr-umu button.umu-toggle { justify-content: flex-start; text-align: left; gap: .7rem; padding: .55rem .7rem; min-height: 52px; }
+.mr-umu .umu-toggle span:last-child { display: flex; flex-direction: column; gap: .1em; }
+.mr-umu .umu-toggle small { opacity: .65; }
+.mr-umu .umu-switch-dot, .mr-umu .umu-toggle .umu-switch { flex: 0 0 auto; width: 34px; height: 18px; border-radius: 999px; background: rgba(255, 255, 255, .18); position: relative; transition: background .2s; }
+.mr-umu .umu-toggle .umu-switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #d8cdb8; transition: transform .2s; }
+.mr-umu .umu-toggle.on .umu-switch { background: var(--umu-shu); }
+.mr-umu .umu-toggle.on .umu-switch::after { transform: translateX(16px); background: #fff; }
+.mr-umu .umu-ink-row { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.mr-umu button.umu-ink { width: 28px; height: 28px; min-height: 0; padding: 0; border-radius: 50%; background: var(--swatch); }
+.mr-umu button.umu-ink.selected { outline: 2px solid var(--umu-shu); outline-offset: 2px; }
+.mr-umu .umu-welcome { display: flex; flex-direction: column; gap: .8rem; padding: 0 0 1rem; }
+.mr-umu .umu-welcome-art { width: 100%; height: 150px; object-fit: cover; border: none; mask-image: linear-gradient(180deg, #000 60%, transparent); }
+.mr-umu .umu-welcome > p { padding: 0 1.1rem; }
+.mr-umu .umu-welcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; padding: 0 1.1rem; }
+.mr-umu .umu-welcome-grid .umu-primary { grid-column: 1 / -1; }
+.mr-umu .umu-welcome > .umu-link { align-self: center; font-size: .85em; }
+.mr-umu .umu-diagnostic { display: flex; flex-direction: column; gap: .6rem; padding: 1rem; height: 100%; }
+.mr-umu .umu-diagnostic textarea { flex: 1; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .8em; min-height: 12em; }
+.mr-umu .umu-status.ok { color: #9fd3a4; } .mr-umu .umu-status.bad { color: #f0a5a5; }
+.mr-umu .umu-status { display: flex; gap: .5em; align-items: center; }
+.mr-umu .umu-diag-list { margin: 0; padding-left: 1.2rem; font-size: .9em; }
+.umu-directory-actions { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+.umu-directory-actions button { flex: 1 1 auto; font-size: var(--font-size-12, 12px); white-space: nowrap; }
+.umu-settings-block { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+
+/* Ventanas estrechas */
+@media (max-width: 1100px) {
+  .mr-umu .umu-board { grid-template-columns: 170px minmax(0, 1fr) 170px; }
+  .mr-umu .umu-seat { padding: .7rem .6rem; }
+  .mr-umu .umu-seat-head { grid-template-columns: 44px 1fr; }
+  .mr-umu .umu-portrait { width: 44px; height: 56px; }
+  .mr-umu .umu-choices { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+}
+.mr-umu .umu-table.cine .umu-seat.washi .umu-counters li.adv header i { color: #000; }
+.mr-umu .umu-table.cine .umu-seat.washi .umu-counters li header i { color: #000; }

@@ -1,0 +1,441 @@
+{
+  "TYPES": {
+    "Actor": {
+      "samurai": "Samurai"
+    }
+  },
+  "UMU": {
+    "App": {
+      "Table": "Duel Table",
+      "Chronicle": "Chronicle",
+      "Safety": "Safety"
+    },
+    "Keys": {
+      "Table": "Open the Duel Table",
+      "TableHint": "Opens the main window of One Single Moment."
+    },
+    "Error": {
+      "Phase": "MR · Un momento único: phase “{phase}” failed. Foundry keeps working; check the diagnostic."
+    },
+    "Settings": {
+      "OpenOnStart": "Open the Table on login",
+      "OpenOnStartHint": "Opens the Duel Table automatically when the world loads. A personal setting."
+    },
+    "Game": {
+      "DocName": "One Single Moment · Game",
+      "NoDoc": "There is no game yet. Ask the GM to enter the world once.",
+      "Preparing": "Preparing the game…",
+      "WaitGM": "The game is prepared when the GM first enters the world.",
+      "New": "New game",
+      "NewTitle": "New game",
+      "NewConfirm": "This erases the current game (chapters, advantages, hate and scars). Seats are kept. Continue?"
+    },
+    "Seat": {
+      "Default": "Samurai {seat}",
+      "You": "You",
+      "Free": "Free seat",
+      "Active": "active player",
+      "Clan": "Clan"
+    },
+    "Counter": {
+      "adv": "Advantages",
+      "hate": "Hate",
+      "scar": "Scars",
+      "advHint": "Spent in the Grand Finale: one per attack and one per extra die.",
+      "hateHint": "Each point is a die rolled when dealing with hate. It breaks ties at the end.",
+      "scarHint": "Whoever has more scars loses if nobody lands the mortal blow."
+    },
+    "Table": {
+      "ActAs": "Play as",
+      "Spectator": "Spectator",
+      "Tools": "Table tools",
+      "History": "Chapter scroll"
+    },
+    "Phase": {
+      "setup": "Opening scene",
+      "chapter": "Chapters",
+      "hate": "Dealing with hate",
+      "final": "Grand Finale",
+      "epilogue": "Epilogue",
+      "done": "The end"
+    },
+    "Chapter": {
+      "Label": "Chapter {n} of {total}",
+      "Between": "{n} of {total} chapters told",
+      "Title": "Chapter {n}",
+      "Steps": "Chapter steps",
+      "YouAreActive": "You are the active player: you act as Game Master for this chapter.",
+      "ActiveIs": "{name} is the active player and acts as Game Master.",
+      "ActiveChooses": "{name} decides.",
+      "ActiveDecides": "{name} has the last word on every decision."
+    },
+    "Step": {
+      "virtue": "Virtue",
+      "theme": "Key theme",
+      "character": "Key character",
+      "play": "Play",
+      "climax": "Climax",
+      "close": "Closing"
+    },
+    "Setup": {
+      "Title": "The opening scene",
+      "Sit": "Sit here",
+      "Leave": "Stand up",
+      "YourSamurai": "Your samurai",
+      "SamuraiOf": "Samurai {seat}",
+      "Name": "Character name",
+      "Clan": "Clan",
+      "Kamon": "Clan crest",
+      "Color": "Colour",
+      "IntroHint": "“My name is… I am a member of the clan… This is my story.”",
+      "Options": "Setup",
+      "First": "Goes first: whoever most recently watched a martial arts film",
+      "Planned": "Agreed chapters",
+      "PlannedHint": "Three for a short game, five for a standard one. You can change it at any time.",
+      "WaitingFor": "Waiting for {name}…",
+      "Declare": "Declare",
+      "Undo": "Undo the last declaration",
+      "ChooseVirtue": "Choose the virtue of the story",
+      "StartHint": "The scene is declared. Now you tell, in flashbacks, how you came to be here.",
+      "NeedBoth": "Both seats must be taken to begin.",
+      "Start": "{name} opens the first chapter"
+    },
+    "Decl": {
+      "era": "It happens in times of…",
+      "eraHint": "When the story happens: the season, maybe the year. Also choose the table's weather.",
+      "place": "We are in…",
+      "placeHint": "The location, which may also hint at the technology level or the state of the surroundings.",
+      "span": "It has taken us… to reach this moment.",
+      "spanHint": "The time the whole story spans. It can be epic: more than a generation.",
+      "story": "This is a story of…",
+      "storyHint": "Choose a virtue. It takes priority over the others throughout all chapters."
+    },
+    "Weather": {
+      "Label": "Table weather",
+      "none": "No weather",
+      "snow": "Snow",
+      "petals": "Petals (spring)",
+      "summer": "Summer",
+      "leaves": "Leaves (autumn)",
+      "rain": "Rain",
+      "fog": "Fog",
+      "dust": "Dust"
+    },
+    "Between": {
+      "Title": "Chapter {n} closed",
+      "Next": "{name} opens the next chapter.",
+      "Reached": "You have reached the agreed number of chapters. You may deal with hate or keep telling.",
+      "Begin": "Start the next chapter",
+      "ToHate": "Deal with hate"
+    },
+    "Step1": {
+      "Hint": "Each player draws a virtue from the six left and the active player picks one for the chapter. Or keeps the story's virtue.",
+      "Draw": "Draw virtue",
+      "Keep": "Keep the story's virtue",
+      "Pick": "This is the chapter's"
+    },
+    "Step2": {
+      "Hint": "There are three key themes and all three must be played before the end. Starting a chapter with a key theme gives the active player two advantages.",
+      "Pick": "Play this theme (+2 advantages)",
+      "Skip": "No key theme this chapter",
+      "Done": "already played"
+    },
+    "Step3": {
+      "Hint": "The active player may introduce a key character. Whoever introduces them plays them in every later scene.",
+      "Pick": "Introduce",
+      "Skip": "No key character this chapter",
+      "Name": "Character name",
+      "NameHint": "Optional"
+    },
+    "Step4": {
+      "Hint": "{name} runs the scene. If a decision favours their samurai, the other player receives a choice marker; if it favours the other, they receive it.",
+      "Settle": "Go to the climax"
+    },
+    "Pool": {
+      "Reserve": "Choice reserve",
+      "Empty": "reserve empty",
+      "Note": "Decision note",
+      "NoteHint": "What was decided (feeds the Chronicle)",
+      "Favors": "Favours {name}",
+      "NoOne": "Favours no one",
+      "Undo": "Undo the last one",
+      "Rule": "The marker goes to the other player: whoever receives markers will have more dice in the climax, at the cost of what the story concedes."
+    },
+    "Step5": {
+      "Hint": "Each player trades markers for dice. You may add extra dice (each gives a scar) and award two dice to whoever best embodied the virtue. Nobody goes past seven."
+    },
+    "Climax": {
+      "Extra": "Extra dice",
+      "ExtraHint": "Each extra die gives a scar",
+      "Less": "Fewer",
+      "More": "More",
+      "Consonance": "Consonance",
+      "ConsonanceHint": "Together you choose who best embodied the virtue: they get two dice. If you disagree, nobody does.",
+      "ConsonanceTo": "{name} receives two extra dice.",
+      "ConsonanceClear": "Remove",
+      "Proposed": "{by} proposes {name}.",
+      "Accept": "Agreed",
+      "Reject": "No",
+      "WaitingAnswer": "Waiting for an answer…",
+      "Plan": "{markers} markers · {dice} dice · {scars} scars from extras",
+      "PlusTwo": "consonance +2",
+      "Ready": "Ready to roll",
+      "Unready": "Not yet",
+      "RivalReady": "The other player is ready.",
+      "RivalNotReady": "The other player is not ready yet.",
+      "Roll": "Roll the dice",
+      "Tie": "Stalemate",
+      "TieText": "Stalemate: each gains advantages equal to their markers and hate equal to the rival's, and the active player gains a scar.",
+      "Wins": "{name} wins ({a} to {b})."
+    },
+    "Step6": {
+      "Narrate": "{name} narrates the end of the chapter and must respect the theme, at least as far as the active player is concerned.",
+      "NarrateTie": "On a stalemate, {name} narrates the end in a neutral, direct way.",
+      "Summary": "Chapter summary (for the Chronicle)",
+      "Close": "Close the chapter"
+    },
+    "Hate": {
+      "Title": "Dealing with hate",
+      "Intro": "Each samurai decides separately what to do with their hate before the Grand Finale.",
+      "Note": "What your samurai does behind the other's back",
+      "NoteHint": "The more dramatic the better. It may hurt people the rival cared about.",
+      "Ideas": "Ideas",
+      "Surrender": "Surrender to hate",
+      "SurrenderHint": "Roll all your hate dice: evens are advantages, odds are scars.",
+      "Escape": "Escape from hate",
+      "EscapeHint": "Only with more than {n} hate. Discard scars equal to half your hate, rounded down. It gives no advantages and does not erase hate.",
+      "Keep": "Keep the hate as it is",
+      "Back": "Back",
+      "Roll": "Roll {n} hate dice",
+      "RollHint": "You roll all {n} hate dice together. Evens are advantages; odds are scars.",
+      "Deciding": "{name} is deciding…",
+      "SurrenderDone": "Surrendered to hate: +{adv} advantages, +{scar} scars.",
+      "EscapeDone": "Escaped hate: discards {n} scars.",
+      "KeepDone": "Keeps their hate."
+    },
+    "Final": {
+      "Title": "The Grand Finale",
+      "Round": "Exchange {n}",
+      "Attacks": "{name} attacks",
+      "Attacker": "Attacker",
+      "Defender": "Defender",
+      "WhyHate": "Whoever has more hate attacks first.",
+      "WhyAdv": "Tied on hate: whoever has more advantages attacks first.",
+      "WhyScar": "Tied on advantages: whoever has more scars attacks first.",
+      "WhyFirst": "All tied: whoever declared first attacks.",
+      "Declare": "Declare the move",
+      "DeclareHint": "The more dramatic the better.",
+      "Respond": "Declare the defence",
+      "RespondHint": "How you defend against that move.",
+      "SpendTitle": "Spend advantages",
+      "SpendAtt": "Attacking costs one advantage (one die). You may spend up to two more for extra dice.",
+      "SpendDef": "Defending is free (one die). You may spend up to two advantages for extra dice.",
+      "SpendNone": "Spend no more",
+      "SpendN": "Spend {n} more",
+      "SpendLocked": "You have decided.",
+      "RivalLocked": "The other player has decided.",
+      "RivalThinking": "The other player is deciding…",
+      "DiceN": "{n} dice",
+      "HighestWins": "Dice are not added: the highest die wins. The attacker must beat the defender.",
+      "Clash": "The swords clash. Blind bet: whoever bets more advantages wins.",
+      "BetHow": "Advantages you bet (maximum {max})",
+      "BetLock": "Lock the bet",
+      "BetLocked": "Bet locked. Both are revealed at once.",
+      "BetHint": "You may bet zero. Advantages bet are spent. If you bet the same, nobody takes a scar.",
+      "Won": "{name} wins the exchange and the other takes a scar.",
+      "NoWinner": "Nobody wins: the clash breaks and the fight goes on.",
+      "Best": "Highest die: attacker {a}, defender {d}",
+      "BetRevealed": "bets {a} and {b}",
+      "Narrate": "Narrate the result",
+      "NarrateHint": "Describe how the exchange resolves.",
+      "Narrates": "{name} narrates the result.",
+      "MortalTitle": "Mortal blow {n}",
+      "MortalText": "{att} lunges for the final blow against {def}.",
+      "MortalRule": "One die each, unmodified. If the attacker beats the defender, all their advantages become scars for the rival. A tie fails.",
+      "MortalRoll": "Roll the mortal blow die",
+      "Log": "Duel log",
+      "Hit": "lands it",
+      "Missed": "misses"
+    },
+    "Verdict": {
+      "Defeated": "{winner} triumphs. {loser} is defeated.",
+      "Dies": "{winner} triumphs. {loser} is defeated and dies.",
+      "Draw": "A draw: nobody triumphs.",
+      "by": {
+        "mortal": "Mortal blow",
+        "scars": "More scars",
+        "hate": "Scars tied: whoever gathered less hate triumphs",
+        "draw": "Scars and hate equal"
+      }
+    },
+    "Epilogue": {
+      "Title": "Epilogue",
+      "DoneTitle": "The end of the story",
+      "Triumph": "The victor tells what happened right after",
+      "Defeated": "The defeated adds something (dramatic, favouring the victor)",
+      "Close": "The victor closes the story",
+      "Hint": "Write your part of the epilogue.",
+      "Write": "Write"
+    },
+    "Warn": {
+      "reserveLeft": "There are still markers in the reserve. You may continue, but normally all seven are dealt.",
+      "themesPending": "Key themes are still unplayed. The book asks for all three before the Grand Finale."
+    },
+    "Arbiter": {
+      "Title": "Referee",
+      "Weather": "Weather",
+      "Ledger": "Correct a counter",
+      "Amount": "Amount (may be negative)",
+      "Note": "Reason",
+      "Apply": "Apply",
+      "Step": "Jump to a step",
+      "Go": "Go",
+      "SkipDecl": "Skip the declarations"
+    },
+    "Chronicle": {
+      "Open": "Open the Chronicle",
+      "Empty": "The Chronicle appears as soon as the first chapter closes.",
+      "Heading": "Chronicle of {a} and {b}",
+      "Chapters": "{n} chapters",
+      "Scene": "The opening scene",
+      "Intro": "My name is {name}. I am a member of the clan {clan}. This is my story.",
+      "ChapterTitle": "Chapter {n} · {name}",
+      "Won": "{name} wins ({a} to {b}).",
+      "Tied": "Stalemate ({a} to {b}).",
+      "HateTitle": "Hate",
+      "Hate": {
+        "surrender": "{name} surrendered to hate: {adv} advantages and {scar} scars.",
+        "escape": "{name} escaped hate and discarded {n} scars.",
+        "keep": "{name} kept their hate."
+      },
+      "Final": "The Grand Finale",
+      "Totals": "{a}: {aa} advantages, {ah} hate, {as} scars. {b}: {ba} advantages, {bh} hate, {bs} scars.",
+      "MortalHit": "{name} landed the mortal blow.",
+      "MortalMiss": "{name} missed the mortal blow.",
+      "Epilogue": "Epilogue",
+      "Copy": "Copy the text",
+      "Copied": "Chronicle copied.",
+      "CopyFail": "Could not copy. Use “Download”.",
+      "Download": "Download as a page",
+      "Save": "Save to Journals",
+      "Saved": "Chronicle saved to “{name}”.",
+      "Credit": "Based on “One Single Moment” (Un momento único), by Tobie Abad (The Hills Press, Spanish translation by Víctor Romero), CC BY 4.0. Foundry VTT system: MR · Un momento único, by Manu Romera. Virtue texts adapted and condensed."
+    },
+    "Sheet": {
+      "Samurai": "MR · Samurai",
+      "Name": "Name",
+      "Clan": "Clan",
+      "Kamon": "Crest",
+      "Color": "Colour",
+      "Declaration": "Opening declaration",
+      "Notes": "Notes",
+      "Duel": "In the duel"
+    },
+    "Welcome": {
+      "Title": "MR · Un momento único",
+      "Ready": "All set.",
+      "Body": "Two samurai, a frozen duel and the story of how they got there. Both of you, take a seat at the Duel Table.",
+      "Table": "Open the Duel Table",
+      "Safety": "Lines and veils",
+      "Hide": "Do not show again"
+    },
+    "Safety": {
+      "Intro": "Pause, Veil or X-Card: they alert the whole table at once, without saying who pressed them.",
+      "Pause": "Pause",
+      "PauseHint": "Stop for a moment.",
+      "PauseText": "The game stops for a moment.",
+      "Veil": "Veil",
+      "VeilHint": "Tell it without going into detail.",
+      "VeilText": "We pass over this, without detail.",
+      "X": "X-Card",
+      "XHint": "Not this. It is skipped, no questions asked.",
+      "XText": "That stays out of the story. We continue another way.",
+      "Continue": "Continue",
+      "Anonymous": "Nobody will know who triggered it; the X-Card is not recorded anywhere.",
+      "Topics": "Before you begin, talk about lines and veils: ritual suicide, violence against family and a duel to the death can be hard themes."
+    },
+    "Access": {
+      "Title": "Accessibility and reading",
+      "Open": "Open",
+      "Intro": "Personal settings: they only affect this system's windows and only in your browser.",
+      "textScale": "Text size",
+      "sfxVolume": "Effects volume",
+      "ambientVolume": "Ambient volume",
+      "musicVolume": "Music volume",
+      "readingMode": "Reading mode",
+      "readingModeHint": "Plain dark backgrounds, no textures.",
+      "highContrast": "High contrast",
+      "highContrastHint": "Marked borders and text.",
+      "plainFont": "Plain typeface",
+      "plainFontHint": "No brush lettering or italics.",
+      "wideSpacing": "Wide spacing",
+      "wideSpacingHint": "More room between lines and letters.",
+      "largeButtons": "Large buttons",
+      "largeButtonsHint": "Easier to press.",
+      "reducedMotion": "Reduce motion",
+      "reducedMotionHint": "No animations or brush strokes being drawn.",
+      "reducedEffects": "Reduce effects",
+      "reducedEffectsHint": "No bleeding ink, no cinema bars.",
+      "soundFx": "Sound",
+      "soundFxHint": "Synthesised ambience and effects.",
+      "music": "Music",
+      "musicHint": "A very sparse koto at key moments.",
+      "InkLabel": "Text colour in reading mode",
+      "Ink": {
+        "soft": "Soft ivory",
+        "paper": "Paper",
+        "pearl": "Pearl",
+        "amber": "Amber",
+        "mint": "Mint"
+      },
+      "Reset": "Reset",
+      "Forget": "Forget window positions",
+      "Forgotten": "Window positions forgotten."
+    },
+    "Diagnostic": {
+      "Title": "Diagnostic",
+      "Open": "Open",
+      "Hint": "A copyable report of the system's state, in case something fails.",
+      "AllGood": "All good.",
+      "Problems": "There are problems; copy the report and send it.",
+      "Missing": "Missing file:",
+      "Refresh": "Refresh",
+      "Copy": "Copy",
+      "Copied": "Report copied."
+    },
+    "Err": {
+      "badSeat": "Invalid seat.",
+      "seatTaken": "That seat is already taken.",
+      "wrongPhase": "That cannot be done in this phase of the game.",
+      "wrongStep": "That is not due now.",
+      "notYourTurn": "It is not your turn.",
+      "notNarrator": "Another player narrates this.",
+      "needNames": "Both samurai need a name and a clan.",
+      "emptyText": "Write something before sending.",
+      "needVirtue": "Choose a virtue to close the declarations.",
+      "declDone": "The declarations are already complete.",
+      "needDeclarations": "Opening declarations are missing.",
+      "needSeats": "Both seats must be taken.",
+      "nothingToUndo": "Nothing to undo.",
+      "drawing": "Virtues are already on the table.",
+      "notDrawing": "Draw virtues first.",
+      "badVirtue": "That virtue is not on the table.",
+      "noVirtues": "No virtues left.",
+      "badTheme": "That theme has already been played.",
+      "badCharacter": "That key character is already in the story.",
+      "reserveEmpty": "The reserve is empty.",
+      "locked": "You are both ready: the dice are fixed.",
+      "notReady": "You both must be ready to roll.",
+      "alreadyRolled": "You have already rolled.",
+      "badDice": "The dice do not match what was expected.",
+      "noProposal": "There is no proposal.",
+      "alreadyDone": "You have already decided.",
+      "badMode": "Invalid option.",
+      "cannotEscape": "You can only escape hate if it is above ten.",
+      "noHate": "You have no hate to deal with.",
+      "notEnoughAdvantages": "You do not have enough advantages left.",
+      "unknownAction": "Unknown action.",
+      "noSetting": "The setting is missing."
+    }
+  }
+}
