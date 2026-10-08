@@ -2,6 +2,7 @@ import { TEMPLATES, SYSTEM_ID, FLAGS } from "../constants.mjs";
 import { SystemApp, t } from "./base.mjs";
 import { buildChronicle } from "../services/chronicle.mjs";
 import { GameService } from "../services/game.mjs";
+import { openApp } from "./registry.mjs";
 
 /** La Crónica: el rollo de la partida. Se puede copiar, descargar como página limpia o guardar en los Diarios. */
 export class ChronicleApp extends SystemApp {
@@ -10,7 +11,7 @@ export class ChronicleApp extends SystemApp {
   static DEFAULT_OPTIONS = {
     id: "umu-chronicle", classes: ["umu-chronicle-app", "umu-paper-window"],
     window: { title: "UMU.App.Chronicle", icon: "fa-solid fa-scroll" }, position: { width: 760, height: 760 },
-    actions: { copy: ChronicleApp.#copy, download: ChronicleApp.#download, save: ChronicleApp.#save }
+    actions: { access: () => openApp("access"), copy: ChronicleApp.#copy, download: ChronicleApp.#download, save: ChronicleApp.#save }
   };
   static PARTS = { body: { template: `${TEMPLATES}/apps/chronicle.hbs`, scrollable: [".umu-chron"] } };
 

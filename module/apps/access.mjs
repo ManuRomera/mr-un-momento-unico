@@ -4,7 +4,7 @@ import { ACCESS_DEFAULTS, INKS, get, set } from "../settings.mjs";
 import { SoundService } from "../services/sound.mjs";
 import { SystemApp, t } from "./base.mjs";
 
-const TOGGLES = ["readingMode", "highContrast", "plainFont", "wideSpacing", "largeButtons", "reducedMotion", "reducedEffects", "soundFx", "music"];
+const TOGGLES = ["darkMode", "readingMode", "highContrast", "plainFont", "wideSpacing", "largeButtons", "reducedMotion", "reducedEffects", "soundFx", "music"];
 const RANGES = { textScale: [85, 160, 5], sfxVolume: [0, 100, 5], ambientVolume: [0, 100, 5], musicVolume: [0, 100, 5] };
 
 /** Accesibilidad y lectura, por usuario. Cada cambio se aplica al instante. */

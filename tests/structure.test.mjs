@@ -114,7 +114,7 @@ test("las familias de claves dinámicas están completas", () => {
   for (const code of ["badSeat", "seatTaken", "wrongPhase", "wrongStep", "notYourTurn", "notNarrator", "needNames", "emptyText", "needVirtue", "declDone", "needDeclarations", "needSeats", "nothingToUndo", "drawing", "notDrawing", "badVirtue", "noVirtues", "badTheme", "badCharacter", "reserveEmpty", "locked", "notReady", "alreadyRolled", "badDice", "noProposal", "alreadyDone", "badMode", "cannotEscape", "noHate", "notEnoughAdvantages", "unknownAction", "noSetting"])
     assert.ok(es.Err[code], `Err.${code}`);
   for (const mode of ["surrender", "escape", "keep"]) assert.ok(es.Chronicle.Hate[mode]);
-  for (const key of ["readingMode", "highContrast", "plainFont", "wideSpacing", "largeButtons", "reducedMotion", "reducedEffects", "soundFx", "music"]) { assert.ok(es.Access[key]); assert.ok(es.Access[`${key}Hint`]); }
+  for (const key of ["darkMode", "readingMode", "highContrast", "plainFont", "wideSpacing", "largeButtons", "reducedMotion", "reducedEffects", "soundFx", "music"]) { assert.ok(es.Access[key]); assert.ok(es.Access[`${key}Hint`]); }
 });
 
 test("el arte declarado existe en disco", () => {

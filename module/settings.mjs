@@ -4,13 +4,13 @@ export const INKS = { soft: "#e8e2d4", paper: "#f2ede1", pearl: "#dfe3e8", amber
 
 /** Preferencias de lectura y accesibilidad: [ajuste, clase en <html>]. Solo afectan a ventanas del sistema. */
 const CLASS_TOGGLES = [
-  ["readingMode", "umu-reading"], ["plainFont", "umu-plain-font"], ["wideSpacing", "umu-wide-spacing"],
+  ["darkMode", "umu-dark"], ["readingMode", "umu-reading"], ["plainFont", "umu-plain-font"], ["wideSpacing", "umu-wide-spacing"],
   ["highContrast", "umu-high-contrast"], ["reducedMotion", "umu-reduced-motion"], ["reducedEffects", "umu-reduced-effects"],
   ["largeButtons", "umu-large-buttons"]
 ];
 
 export const ACCESS_DEFAULTS = Object.freeze({
-  textScale: 1, readingInk: "soft", readingMode: false, plainFont: false, wideSpacing: false, highContrast: false,
+  textScale: 1, readingInk: "soft", darkMode: false, readingMode: false, plainFont: false, wideSpacing: false, highContrast: false,
   reducedMotion: false, reducedEffects: false, largeButtons: false, soundFx: true, music: true,
   sfxVolume: 0.6, ambientVolume: 0.35, musicVolume: 0.4
 });

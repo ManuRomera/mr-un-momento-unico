@@ -482,3 +482,59 @@
 }
 .mr-umu .umu-table.cine .umu-seat.washi .umu-counters li.adv header i { color: #000; }
 .mr-umu .umu-table.cine .umu-seat.washi .umu-counters li header i { color: #000; }
+
+/* Botón de accesibilidad en las hojas */
+.mr-umu button.umu-access-btn { position: absolute; top: .5rem; right: .6rem; z-index: 3; width: 32px; min-height: 32px; padding: 0; border-color: transparent; background: transparent; }
+.mr-umu .umu-sheet-body, .mr-umu .umu-chron-wrap { position: relative; }
+.mr-umu .umu-chron-actions button.umu-access-btn { position: static; margin-right: auto; }
+
+/* ==========================================================================
+   Modo oscuro (accesibilidad): nada claro en ninguna ventana del sistema.
+   Papel y fondos pasan a tinta; las imágenes claras se invierten conservando el tono.
+   ========================================================================== */
+.umu-dark .application.mr-umu.umu-paper-window .window-content,
+.umu-dark .application.mr-umu.umu-chronicle-app .window-content { background: #121214; color: #e4ddcd; }
+.umu-dark .mr-umu .umu-table { background-color: #0d0d0f; color: #e4ddcd; }
+.umu-dark .mr-umu .umu-table::before { content: ""; position: absolute; inset: 0; z-index: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) hue-rotate(180deg) brightness(.5) saturate(.7); }
+.umu-dark .mr-umu .umu-table .umu-atmos { background: radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(0, 0, 0, .55) 100%); }
+.umu-dark .mr-umu .umu-panel { background: rgba(22, 22, 25, .94); color: #e4ddcd; border-color: rgba(228, 221, 205, .25); box-shadow: 0 6px 22px rgba(0, 0, 0, .5); }
+.umu-dark .mr-umu .umu-panel button:where(:not(.header-control)) { color: #e4ddcd; background: rgba(255, 255, 255, .06); border-color: rgba(228, 221, 205, .35); }
+.umu-dark .mr-umu .umu-panel button:where(:not(.header-control)):hover:not(:disabled) { background: rgba(255, 255, 255, .13); border-color: #e4ddcd; }
+.umu-dark .mr-umu .umu-panel button.umu-primary { background: #d9d2c2; color: #0b0b0c; border-color: #d9d2c2; }
+.umu-dark .mr-umu .umu-panel button.umu-primary:hover:not(:disabled) { background: #e8e2d4; box-shadow: 0 0 0 2px var(--umu-shu); }
+.umu-dark .mr-umu .umu-panel button.umu-primary.on { background: var(--umu-shu); color: #fff; border-color: var(--umu-shu); }
+.umu-dark .mr-umu .umu-panel input[type=text], .umu-dark .mr-umu .umu-panel input[type=number], .umu-dark .mr-umu .umu-panel input:not([type]),
+.umu-dark .mr-umu .umu-panel select, .umu-dark .mr-umu .umu-panel textarea { color: #e4ddcd; background: rgba(255, 255, 255, .06); border-color: rgba(228, 221, 205, .3); }
+.umu-dark .mr-umu .umu-panel label, .umu-dark .mr-umu .umu-panel h3, .umu-dark .mr-umu .umu-panel fieldset legend { color: #a9a49a; }
+.umu-dark .mr-umu .umu-panel .umu-stamp-done { color: var(--umu-oro); }
+.umu-dark .mr-umu .umu-panel-head h2 { color: #e4ddcd; }
+.umu-dark .mr-umu .umu-panel-head, .umu-dark .mr-umu .umu-start { border-color: rgba(228, 221, 205, .2); }
+.umu-dark .mr-umu .umu-seat.washi { background: rgba(38, 38, 42, .96); color: #e4ddcd; border-color: rgba(228, 221, 205, .25); }
+.umu-dark .mr-umu .umu-seat.sumi { background: rgba(8, 8, 9, .96); }
+.umu-dark .mr-umu .umu-seat-card, .umu-dark .mr-umu .umu-seat-card.taken, .umu-dark .mr-umu .umu-say, .umu-dark .mr-umu .umu-result, .umu-dark .mr-umu .umu-dice-row,
+.umu-dark .mr-umu .umu-hate-card, .umu-dark .mr-umu .umu-consonance, .umu-dark .mr-umu .umu-declarations > li.current, .umu-dark .mr-umu .umu-epilogue-steps li.current { background: rgba(255, 255, 255, .04); border-color: rgba(228, 221, 205, .22); }
+.umu-dark .mr-umu .umu-reserve { background: rgba(255, 255, 255, .04); border-color: rgba(228, 221, 205, .22); }
+.umu-dark .mr-umu .umu-virtue-card { background: rgba(255, 255, 255, .06); color: #e4ddcd; border-color: rgba(228, 221, 205, .3); }
+.umu-dark .mr-umu .umu-virtue-opt input:checked + .umu-virtue-card { background: #d9d2c2; color: #0b0b0c; }
+.umu-dark .mr-umu button.umu-kamon-btn { background: rgba(255, 255, 255, .06); }
+.umu-dark .mr-umu button.umu-kamon-btn.on { background: rgba(255, 255, 255, .16); }
+.umu-dark .mr-umu .umu-card { background: #1d1d20; color: #e4ddcd; border-color: rgba(228, 221, 205, .35); }
+.umu-dark .mr-umu .umu-card.virtue { background: linear-gradient(180deg, #232327, #19191c); }
+.umu-dark .mr-umu .umu-card.art img { filter: invert(1) hue-rotate(180deg) brightness(.82); }
+.umu-dark .mr-umu .umu-steps li b { background: #19191c; }
+.umu-dark .mr-umu .umu-steps li.done b { background: #d9d2c2; color: #0b0b0c; border-color: #d9d2c2; }
+.umu-dark .mr-umu .umu-dice-row.washi .umu-die { background: #cfc8b6; color: #0b0b0c; }
+.umu-dark .mr-umu .umu-portrait img, .umu-dark .mr-umu .umu-sheet-portrait img { filter: brightness(.85); }
+.umu-dark .mr-umu .umu-seat.washi .umu-portrait img { filter: invert(1) hue-rotate(180deg) brightness(.85); }
+.umu-dark .mr-umu .umu-fragment.won-B { background: #cfc8b6; }
+.umu-dark .mr-umu .umu-warn { background: rgba(201, 163, 92, .14); }
+.umu-dark .mr-umu .umu-chron { background: #121214; color: #e4ddcd; }
+.umu-dark .mr-umu .umu-chron h2 { border-color: var(--umu-shu); }
+.umu-dark .mr-umu .umu-chron-foot img { filter: invert(1) hue-rotate(180deg); }
+.umu-dark .mr-umu .umu-chron-actions { background: #19191c; border-color: rgba(228, 221, 205, .2); }
+.umu-dark .mr-umu .umu-chron-wrap button:where(:not(.header-control)) { color: #e4ddcd; background: rgba(255, 255, 255, .06); border-color: rgba(228, 221, 205, .35); }
+.umu-dark .mr-umu .umu-chron-wrap button.umu-primary { background: #d9d2c2; color: #0b0b0c; }
+.umu-dark .mr-umu .umu-empty { background: #121214; color: #e4ddcd; }
+.umu-dark .mr-umu .umu-empty-art { filter: invert(1) hue-rotate(180deg); }
+.umu-dark .mr-umu .umu-welcome-art { filter: invert(1) hue-rotate(180deg) brightness(.7); }
+.umu-dark .mr-umu .umu-hanko { background: #7a1a22; }

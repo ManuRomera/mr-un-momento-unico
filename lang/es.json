@@ -390,7 +390,9 @@
       },
       "Reset": "Restablecer",
       "Forget": "Olvidar posiciones de ventanas",
-      "Forgotten": "Posiciones de ventanas olvidadas."
+      "Forgotten": "Posiciones de ventanas olvidadas.",
+      "darkMode": "Modo oscuro",
+      "darkModeHint": "Todo en oscuro: fondos, papeles, cartas y dados. Sin colores claros que deslumbren."
     },
     "Diagnostic": {
       "Title": "Diagnóstico",

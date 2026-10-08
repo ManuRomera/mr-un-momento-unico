@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- **Modo oscuro** en Accesibilidad: todas las ventanas del sistema pasan a tinta, también el papel, los fondos de la Mesa, las cartas, los retratos claros y la Crónica. Pensado para quien los colores claros le hacen daño en los ojos.
+- Botón de **accesibilidad** también en la ficha del Samurái y en la Crónica (ya estaba en la Mesa).
+
 ## 1.0.0
 
 Primera versión. Ambientación **Bushido** completa.

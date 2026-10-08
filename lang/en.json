@@ -390,7 +390,9 @@
       },
       "Reset": "Reset",
       "Forget": "Forget window positions",
-      "Forgotten": "Window positions forgotten."
+      "Forgotten": "Window positions forgotten.",
+      "darkMode": "Dark mode",
+      "darkModeHint": "Everything dark: backgrounds, paper, cards and dice. No bright colours to dazzle."
     },
     "Diagnostic": {
       "Title": "Diagnostic",

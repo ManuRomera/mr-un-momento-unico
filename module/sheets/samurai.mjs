@@ -11,7 +11,7 @@ export class SamuraiSheet extends WithMemory(HandlebarsApplicationMixin(ActorShe
   static DEFAULT_OPTIONS = {
     classes: ["mr-umu", "umu-window", "umu-sheet"], form: { submitOnChange: true },
     position: { width: 560, height: 640 }, window: { resizable: true, icon: "fa-solid fa-user-ninja" },
-    actions: { table: () => openApp("table"), kamon: SamuraiSheet.#kamon }
+    actions: { table: () => openApp("table"), access: () => openApp("access"), kamon: SamuraiSheet.#kamon }
   };
   static PARTS = { sheet: { template: `${TEMPLATES}/sheets/samurai.hbs`, scrollable: [".umu-sheet-body"] } };
 

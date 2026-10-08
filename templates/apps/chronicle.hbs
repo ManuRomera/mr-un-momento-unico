@@ -4,6 +4,7 @@
   {{else}}
   <article class="umu-chron">{{{html}}}</article>
   <footer class="umu-chron-actions">
+    <button type="button" class="umu-access-btn" data-action="access" data-tooltip="{{localize 'UMU.Access.Title'}}" aria-label="{{localize 'UMU.Access.Title'}}"><i class="fa-solid fa-universal-access" aria-hidden="true"></i></button>
     <button type="button" data-action="copy"><i class="fa-solid fa-copy" aria-hidden="true"></i> {{localize "UMU.Chronicle.Copy"}}</button>
     <button type="button" data-action="download"><i class="fa-solid fa-download" aria-hidden="true"></i> {{localize "UMU.Chronicle.Download"}}</button>
     {{#if gm}}<button type="button" class="umu-primary" data-action="save"><i class="fa-solid fa-book" aria-hidden="true"></i> {{localize "UMU.Chronicle.Save"}}</button>{{/if}}
