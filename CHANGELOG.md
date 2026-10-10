@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3
+
+- **Legibilidad y modo oscuro de la Mesa a pantalla completa.** Sin clima, el fondo era la mesa lacada oscura: el texto oscuro no se leía, y en modo oscuro ese arte se invertía y deslumbraba. Ahora el fondo es siempre un arte claro con su propia base y velo, sin mezclarse con la escena de Foundry: el texto se lee sea cual sea la escena activa.
+- En modo oscuro la base es tinta y el arte se invierte y se atenúa: sin blancos, pensado para quien tiene sensibilidad a la luz.
+
 ## 1.1.2
 
 - La Mesa a pantalla completa ya no pone una zona rellena detrás del rollo: era una mancha clara u oscura según la escena. En su lugar hay un círculo de tinta (ensō) muy atenuado y sin relleno, y el fondo se ve entero detrás del texto. En modo oscuro y en el cine del Gran Final el aro se invierte; con alto contraste o menos efectos desaparece.

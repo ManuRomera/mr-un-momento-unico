@@ -585,13 +585,19 @@
 .mr-umu .umu-hide-btn { position: absolute; top: 64px; right: 76px; z-index: 2; pointer-events: auto; width: 34px; min-height: 34px; padding: 0; }
 
 /* El fondo es otra capa para poder mezclarse con la escena: multiplica el papel del clima sobre el claro. */
-.umu-backdrop { position: fixed; inset: 0; z-index: 19; pointer-events: none; background: var(--umu-bg, none) center / cover no-repeat; mix-blend-mode: multiply; opacity: .94; }
+/* El fondo SIEMPRE es un arte claro sobre una base de papel y bajo un velo: así el texto oscuro se lee sea cual sea la escena de Foundry.
+   En modo oscuro la base es tinta y el arte se invierte y se atenúa: nunca hay blancos que deslumbren. */
+.umu-backdrop { position: fixed; inset: 0; z-index: 19; pointer-events: none; background: #ece5d3; }
+.umu-backdrop::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg, none) center / cover no-repeat; opacity: .92; }
+.umu-backdrop::after { content: ""; position: absolute; inset: 0; background: rgba(242, 237, 225, .3); }
 .umu-backdrop.umu-hidden { display: none; }
-.umu-backdrop.cine { background: #000; mix-blend-mode: normal; opacity: 1; }
-.umu-backdrop.cine::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) grayscale(1) contrast(1.25); opacity: .85; }
-.umu-dark .umu-backdrop { mix-blend-mode: normal; background-color: #0d0d0f; opacity: .92; }
-.umu-dark .umu-backdrop::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) hue-rotate(180deg) brightness(.85) saturate(.8); }
-.umu-dark .umu-backdrop.cine { background: #000; }
+.umu-dark .umu-backdrop { background: #0c0c0e; }
+.umu-dark .umu-backdrop::before { filter: invert(1) hue-rotate(180deg) brightness(.5) saturate(.55) contrast(.9); opacity: .85; }
+.umu-dark .umu-backdrop::after { background: rgba(8, 8, 10, .42); }
+/* Cine del Gran Final: negro con el dibujo en blanco y negro */
+.umu-backdrop.cine, .umu-dark .umu-backdrop.cine { background: #000; }
+.umu-backdrop.cine::before, .umu-dark .umu-backdrop.cine::before { filter: invert(1) grayscale(1) contrast(1.25) brightness(.8); opacity: .8; }
+.umu-backdrop.cine::after, .umu-dark .umu-backdrop.cine::after { display: none; }
 
 /* Gran Final: toda la pantalla en blanco y negro, con barras de cine (el fondo lo pinta .umu-backdrop) */
 .mr-umu .umu-table.screen.cine { background: none; }

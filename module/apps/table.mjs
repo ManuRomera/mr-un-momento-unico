@@ -147,7 +147,7 @@ export class TableApp extends SystemApp {
     if (state.phase === "final") return ASSETS.final;
     if (state.phase === "epilogue" || state.phase === "done") return ASSETS.epilogue;
     if (state.phase === "setup") return ASSETS.scene;
-    return ASSETS.weather[state.weather] ?? ASSETS.table;
+    return ASSETS.weather[state.weather] ?? ASSETS.scene;
   }
   #chapterLabel(state) {
     if (state.phase === "setup") return t("UMU.Phase.setup");
