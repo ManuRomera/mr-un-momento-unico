@@ -1,11 +1,13 @@
 {{#if noGame}}
-<div class="umu-table umu-empty">
+<div class="umu-table umu-empty {{#if screen}}screen{{/if}}">
+  {{#if screen}}<button type="button" class="umu-hide-btn" data-action="hide" data-tooltip="{{localize 'UMU.Table.Hide'}}" aria-label="{{localize 'UMU.Table.Hide'}}"><i class="fa-solid fa-eye-slash" aria-hidden="true"></i></button>{{/if}}
   <img class="umu-empty-art" src="systems/mr-un-momento-unico/assets/art/brand/logo.webp" alt="">
   <p class="umu-lede">{{#if gm}}{{localize "UMU.Game.Preparing"}}{{else}}{{localize "UMU.Game.WaitGM"}}{{/if}}</p>
 </div>
 {{else}}
-<div class="umu-table {{#if cine}}cine{{/if}} phase-{{phase}}" style="--umu-bg:{{bg}}">
+<div class="umu-table {{#if cine}}cine{{/if}} {{#if screen}}screen{{/if}} phase-{{phase}}" style="--umu-bg:{{bg}}">
   <div class="umu-atmos" aria-hidden="true"></div>
+  <div class="umu-frame">
 
   {{!-- Cabecera --}}
   <header class="umu-head">
@@ -21,6 +23,8 @@
     {{/if}}
     {{#if spectator}}{{#unless gm}}<span class="umu-badge"><i class="fa-solid fa-eye" aria-hidden="true"></i> {{localize "UMU.Table.Spectator"}}</span>{{/unless}}{{/if}}
     <nav class="umu-head-tools" aria-label="{{localize 'UMU.Table.Tools'}}">
+      {{#if screen}}<button type="button" data-action="hide" data-tooltip="{{localize 'UMU.Table.Hide'}}" aria-label="{{localize 'UMU.Table.Hide'}}"><i class="fa-solid fa-eye-slash" aria-hidden="true"></i></button>{{/if}}
+      {{#if canFix}}<button type="button" data-action="toggleFixes" class="{{#if fixing}}on{{/if}}" aria-pressed="{{#if fixing}}true{{else}}false{{/if}}" data-tooltip="{{localize 'UMU.Fix.Toggle'}}" aria-label="{{localize 'UMU.Fix.Toggle'}}"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></button>{{/if}}
       <button type="button" data-action="chronicle" data-tooltip="{{localize 'UMU.App.Chronicle'}}" aria-label="{{localize 'UMU.App.Chronicle'}}"><i class="fa-solid fa-scroll" aria-hidden="true"></i></button>
       <button type="button" data-action="safety" data-tooltip="{{localize 'UMU.App.Safety'}}" aria-label="{{localize 'UMU.App.Safety'}}"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i></button>
       <button type="button" data-action="access" data-tooltip="{{localize 'UMU.Access.Title'}}" aria-label="{{localize 'UMU.Access.Title'}}"><i class="fa-solid fa-universal-access" aria-hidden="true"></i></button>
@@ -33,6 +37,7 @@
 
     {{!-- El rollo --}}
     <main class="umu-center" aria-live="polite">
+      {{#if fixing}}{{> "systems/mr-un-momento-unico/templates/partials/fixes.hbs"}}{{/if}}
       {{#each warnings}}<p class="umu-warn"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{this}}</p>{{/each}}
       {{#if isSetup}}{{> "systems/mr-un-momento-unico/templates/partials/setup.hbs"}}{{/if}}
       {{#if isChapter}}
@@ -88,5 +93,6 @@
     {{/each}}
   </footer>
   {{/if}}
+  </div>
 </div>
 {{/if}}

@@ -11,15 +11,19 @@
       "Safety": "Seguridad"
     },
     "Keys": {
-      "Table": "Abrir la Mesa del Duelo",
-      "TableHint": "Abre la ventana principal de Un momento único."
+      "Table": "Mostrar u ocultar la Mesa del Duelo",
+      "TableHint": "Muestra u oculta la Mesa de Un momento único."
     },
     "Error": {
       "Phase": "MR · Un momento único: la fase «{phase}» falló. Foundry sigue funcionando; mira el diagnóstico."
     },
     "Settings": {
       "OpenOnStart": "Abrir la Mesa al entrar",
-      "OpenOnStartHint": "Abre la Mesa del Duelo automáticamente al cargar el mundo. Es un ajuste personal."
+      "OpenOnStartHint": "En el modo ventana, abre la Mesa al cargar el mundo. A pantalla completa la Mesa se muestra siempre al entrar, salvo que la hayas ocultado. Es un ajuste personal.",
+      "TableMode": "La Mesa",
+      "TableModeHint": "A pantalla completa: la Mesa ocupa toda la pantalla sobre la escena y se puede ocultar con el ojo, la pastilla o el atajo. En ventana: la Mesa del Duelo en una ventana. Es un ajuste personal.",
+      "TableModeScreen": "A pantalla completa",
+      "TableModeWindow": "En ventana"
     },
     "Game": {
       "DocName": "Un momento único · Partida",
@@ -49,7 +53,10 @@
       "ActAs": "Jugar como",
       "Spectator": "Espectador",
       "Tools": "Herramientas de la mesa",
-      "History": "Rollo de capítulos"
+      "History": "Rollo de capítulos",
+      "Hide": "Ocultar la Mesa y ver solo la escena",
+      "Show": "Mostrar la Mesa",
+      "ShowHint": "Vuelve a mostrar la Mesa del Duelo"
     },
     "Phase": {
       "setup": "Escena inicial",
@@ -437,7 +444,47 @@
       "noHate": "No tienes odio con el que lidiar.",
       "notEnoughAdvantages": "No te quedan ventajas suficientes.",
       "unknownAction": "Acción desconocida.",
-      "noSetting": "Falta la ambientación."
+      "noSetting": "Falta la ambientación.",
+      "badKind": "Ese contador no existe.",
+      "badAmount": "Indica una cantidad distinta de cero.",
+      "belowZero": "No puede bajar de cero."
+    },
+    "Fix": {
+      "Title": "Corregir a mano",
+      "Toggle": "Corregir a mano",
+      "Intro": "Para arreglar un error: sube o baja lo que el juego haya gastado o repartido por su cuenta. Con esto activado, los contadores de cada jugador (Ventajas, Odio y Cicatrices) tienen − y + a su lado. Cualquiera de los dos puede hacerlo y todo queda anotado.",
+      "Note": "Corrección manual",
+      "LessOf": "Quitar uno de {what} a {name}",
+      "MoreOf": "Añadir uno de {what} a {name}",
+      "Less": "Quitar uno",
+      "More": "Añadir uno",
+      "Pool": "Marcadores de Elección",
+      "PoolHint": "Mueve un marcador entre la reserva y un jugador. Solo se puede antes de tirar los dados del clímax.",
+      "Reserve": "Reserva",
+      "PoolLess": "Devolver un marcador de {name} a la reserva",
+      "PoolMore": "Dar un marcador a {name}",
+      "Themes": "Temas clave",
+      "ThemesHint": "Marca un tema como jugado o devuélvelo. Las ventajas que dio se corrigen en el contador del jugador.",
+      "Used": "Jugado",
+      "Available": "Disponible",
+      "Return": "devolver",
+      "Mark": "marcar como jugado",
+      "Chars": "Personajes clave",
+      "Release": "Liberar",
+      "AssignTo": "Asignar a {name}",
+      "Virtues": "Virtudes",
+      "VirtuesHint": "Mueve una virtud entre el mazo y el descarte. La de la historia, la del capítulo y las que están sobre la mesa no se tocan.",
+      "ToDeck": "Devolver al mazo",
+      "ToDiscard": "Al descarte",
+      "Where": {
+        "story": "la de la historia",
+        "table": "sobre la mesa",
+        "play": "en juego",
+        "deck": "en el mazo",
+        "discard": "descartada"
+      },
+      "Planned": "Capítulos previstos",
+      "PlannedHint": "Cuántos capítulos se jugarán"
     }
   }
 }

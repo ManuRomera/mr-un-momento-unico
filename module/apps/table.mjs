@@ -21,6 +21,8 @@ const val = (root, name) => root.querySelector(`[name="${name}"]`)?.value ?? "";
  */
 export class TableApp extends SystemApp {
   static MEMORY = "table";
+  /** La variante a pantalla completa (ScreenTable) lo pone a true: sin marco, con botón para ocultarla. */
+  static SCREEN = false;
   static SCROLL_MEMORY = [".umu-center"];
   static DEFAULT_OPTIONS = {
     id: "umu-table", classes: ["umu-table-app"],
@@ -37,6 +39,7 @@ export class TableApp extends SystemApp {
       hateChoose: TableApp.#hateChoose, hateRoll: TableApp.#hateRoll, hateUndo: TableApp.#hateUndo, hateIdea: TableApp.#hateIdea,
       finalWrite: TableApp.#finalWrite, spend: TableApp.#spend, rollExchange: TableApp.#rollExchange, bet: TableApp.#bet, narrate: TableApp.#narrate, rollMortal: TableApp.#rollMortal,
       epilogueWrite: TableApp.#epilogueWrite, chronicle: () => openApp("chronicle"), safety: () => openApp("safety"), access: () => openApp("access"),
+      toggleFixes: TableApp.#toggleFixes, fixLedger: TableApp.#fixLedger, fixPool: TableApp.#fixPool, fixTheme: TableApp.#fixTheme, fixChar: TableApp.#fixChar, fixVirtue: TableApp.#fixVirtue, fixPlanned: TableApp.#fixPlanned,
       zoom: TableApp.#zoom, newGame: TableApp.#newGame, arbiterLedger: TableApp.#arbiterLedger, arbiterStep: TableApp.#arbiterStep, arbiterForce: TableApp.#arbiterForce
     }
   };
@@ -79,7 +82,8 @@ export class TableApp extends SystemApp {
 
   async _prepareContext() {
     const state = GameService.state(), gm = game.user.isGM;
-    if (!state) return { noGame: true, gm };
+    const screen = this.constructor.SCREEN;
+    if (!state) return { noGame: true, gm, screen };
     const def = GameService.settingDef(state.settingId), me = this.#me(state), tot = totals(state);
     const left = me ?? "A", right = other(left);
     const seats = Object.fromEntries(SEATS.map(s => [s, this.#seatView(state, s, me, tot)]));
@@ -92,7 +96,7 @@ export class TableApp extends SystemApp {
     };
 
     const ctx = {
-      gm, state, me, left: seats[left], right: seats[right], seats, spectator: !me, arbiter: gm,
+      gm, screen, state, me, left: seats[left], right: seats[right], seats, spectator: !me, arbiter: gm,
       canSwitch: held.length > 1 || (gm && !held.length), switchSeats: SEATS.map(s => ({ seat: s, name: nameOf(s), on: s === me })),
       phase, isSetup: phase === "setup", isChapter: phase === "chapter", isHate: phase === "hate", isFinal: phase === "final", isEpilogue: phase === "epilogue", isDone: phase === "done",
       setting: { id: def.id, name: loc(def.name), tagline: loc(def.tagline) },
@@ -112,7 +116,31 @@ export class TableApp extends SystemApp {
     if (state.verdict) ctx.verdict = { ...state.verdict, triumphName: state.verdict.triumph ? nameOf(state.verdict.triumph) : "", defeatedName: state.verdict.defeated ? nameOf(state.verdict.defeated) : "", by: t(`UMU.Verdict.by.${state.verdict.by}`) };
     ctx.weatherOptions = [{ key: "", name: t("UMU.Weather.none"), on: !state.weather }, ...WEATHER.map(w => ({ key: w, name: t(`UMU.Weather.${w}`), on: state.weather === w }))];
     ctx.kamonShapes = KAMON_SHAPES;
+    ctx.canFix = Boolean(me) || gm;
+    ctx.fixing = ctx.canFix && this.sectionOpen("fixes", false);
+    if (ctx.fixing) ctx.fixes = this.#fixes(state, def, nameOf);
     return ctx;
+  }
+
+  /** El panel «Corregir a mano»: lo que los automatismos consumen o reparten, con su botón para arreglarlo. */
+  #fixes(state, def, nameOf) {
+    const c = state.chapter, playing = state.phase === "chapter" && !state.between;
+    const poolOpen = playing && (c.step === 4 || c.step === 5) && !c.dice.A && !c.dice.B;
+    const drawn = Object.values(state.virtues.drawn).filter(Boolean);
+    const where = id => id === state.decl.virtueId ? "story" : drawn.includes(id) ? "table" : playing && c.virtueId === id ? "play" : state.virtues.deck.includes(id) ? "deck" : state.virtues.discard.includes(id) ? "discard" : "deck";
+    return {
+      pool: poolOpen ? { reserve: c.pool.reserve, seats: SEATS.map(s => ({ seat: s, name: nameOf(s), n: c.pool[s] })) } : null,
+      themes: def.themes.map(x => ({ id: x.id, title: loc(x.title), used: state.themesDone.includes(x.id) })),
+      chars: def.characters.map(x => {
+        const owner = state.chars[x.id]?.owner ?? "";
+        return { id: x.id, title: loc(x.title), free: !owner, ownerName: owner ? nameOf(owner) : "", seats: SEATS.filter(s => s !== owner).map(s => ({ seat: s, name: nameOf(s) })) };
+      }),
+      virtues: state.decl.virtueId ? def.virtues.filter(v => v.id !== state.decl.virtueId).map(v => {
+        const w = where(v.id), movable = w === "deck" || w === "discard";
+        return { id: v.id, glyph: v.glyph, name: loc(v.name), movable, whereLabel: t(`UMU.Fix.Where.${w}`), moveTo: w === "deck" ? "discard" : "deck", moveLabel: t(w === "deck" ? "UMU.Fix.ToDiscard" : "UMU.Fix.ToDeck") };
+      }) : [],
+      planned: state.planned, canPlanned: state.phase === "setup" || state.phase === "chapter"
+    };
   }
 
   #background(state) {
@@ -406,5 +434,14 @@ export class TableApp extends SystemApp {
     return GameService.dispatch({ type: "admin.ledger", seat, kind, n, note: this.#field("arbNote") });
   }
   static #arbiterStep() { return GameService.dispatch({ type: "admin.step", step: Number(this.#field("arbStep")) }); }
+  static #toggleFixes() { this.setSection("fixes", !this.sectionOpen("fixes", false)); this.render(); }
+  static #fixLedger(event, target) {
+    return GameService.dispatch({ type: "fix.ledger", seat: target.dataset.seat, kind: target.dataset.kind, delta: Number(target.dataset.delta), note: t("UMU.Fix.Note") });
+  }
+  static #fixPool(event, target) { return GameService.dispatch({ type: "fix.pool", seat: target.dataset.seat, delta: Number(target.dataset.delta) }); }
+  static #fixTheme(event, target) { return GameService.dispatch({ type: "fix.theme", themeId: target.dataset.id, used: target.dataset.used === "true" }); }
+  static #fixChar(event, target) { return GameService.dispatch({ type: "fix.char", characterId: target.dataset.id, owner: target.dataset.owner }); }
+  static #fixVirtue(event, target) { return GameService.dispatch({ type: "fix.virtue", virtueId: target.dataset.id, where: target.dataset.where }); }
+  static #fixPlanned(event, target) { return GameService.dispatch({ type: "fix.planned", n: GameService.state().planned + Number(target.dataset.delta) }); }
   static #arbiterForce() { return GameService.dispatch({ type: "admin.skipDeclarations" }); }
 }

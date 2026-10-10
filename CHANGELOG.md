@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0
+
+- **La Mesa a pantalla completa** (por defecto): el panel de la Mesa del Duelo deja de ser una ventana y se integra en la escena. Los climas, el claro y el Gran Final pasan a ser el fondo de toda la pantalla, y los controles, la barra lateral y las macros de Foundry siguen encima y reciben los clics.
+- Se puede **ocultar** para ver solo la escena (botón-ojo de la cabecera, atajo `Alt + U`, herramienta de la barra de escena) y **recuperar** con una pastilla fija. Se recuerda por persona.
+- Nuevo ajuste personal **La Mesa**: a pantalla completa o en ventana (la ventana de siempre, con su memoria de posición y tamaño).
+- El Gran Final a pantalla completa ocupa toda la pantalla en blanco y negro con barras de cine.
+- La escena de bienvenida se amplía lo justo para cubrir la pantalla sin bandas.
+- **Corregir a mano**: todo lo que los automatismos consumen o reparten se puede subir o bajar a mano para arreglar errores en partida. Un botón de llave inglesa en la cabecera pone − y + junto a las Ventajas, el Odio y las Cicatrices de cada jugador y abre un panel con la reserva de marcadores (antes de tirar), los temas clave (marcar o devolver), los personajes clave (asignar o liberar), las virtudes (mazo o descarte) y los capítulos previstos. Lo pueden hacer los dos jugadores y el Director; queda anotado como «Corrección manual» y nunca baja de cero. Si se corrigen las ventajas en pleno Gran Final, el golpe mortal se recoloca solo.
+- Capturas nuevas en el README y en la página del repositorio.
+
 ## 1.0.1
 
 - **Modo oscuro** en Accesibilidad: todas las ventanas del sistema pasan a tinta, también el papel, los fondos de la Mesa, las cartas, los retratos claros y la Crónica. Pensado para quien los colores claros le hacen daño en los ojos.

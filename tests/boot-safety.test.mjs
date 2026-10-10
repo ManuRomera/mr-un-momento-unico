@@ -20,14 +20,20 @@ const walk = dir => readdirSync(join(root, dir)).flatMap(n => {
 const code = ["mr-un-momento-unico.mjs", ...walk("module").filter(p => p.endsWith(".mjs"))];
 const entry = read("mr-un-momento-unico.mjs");
 
-test("la Mesa solo se abre al entrar si el usuario lo pidió", () => {
+test("la Mesa solo se muestra al entrar por Table.start: a pantalla completa si no está oculta, en ventana si se pidió", () => {
   const settings = read("module/settings.mjs");
   assert.match(settings, /register\(SYSTEM_ID, "openOnStart", \{[^}]*scope: "client"[^}]*default: false/s);
+  assert.match(settings, /register\(SYSTEM_ID, "tableMode", \{[^}]*scope: "client"/s);
+  assert.match(settings, /register\(SYSTEM_ID, "tableHidden", \{[^}]*scope: "client"[^}]*default: false/s);
   for (const file of code) assert.doesNotMatch(read(file), /autoOpen/, `${file} usa el ajuste antiguo autoOpen`);
   const ready = entry.slice(entry.indexOf('Hooks.once("ready"'), entry.indexOf("async function ensureScene"));
-  const opens = ready.split("\n").filter(l => /openApp\("table"\)|TableApp\.open/.test(l));
+  const opens = ready.split("\n").filter(l => /openApp\("table"\)|TableApp\.open|ScreenTable\.open|Table\.open|Table\.start/.test(l));
   assert.equal(opens.length, 1);
-  assert.match(opens[0], /openOnStart/);
+  assert.match(opens[0], /Table\.start/);
+  const screen = read("module/apps/screen.mjs");
+  const start = screen.slice(screen.indexOf("async start()"), screen.indexOf("async reopen()"));
+  assert.match(start, /this\.hidden/, "a pantalla completa respeta la Mesa oculta");
+  assert.match(start, /get\("openOnStart"\)/, "en ventana solo si el usuario lo pidió");
 });
 
 test("la escena de bienvenida no abre ninguna ventana", () => {
@@ -54,7 +60,7 @@ test("ninguna ventana nace más grande que 1400×900", () => {
       if (m[1] !== '"auto"') assert.ok(Number(m[1]) <= 1400, `${file}: ancho ${m[1]}`);
       if (m[2] !== '"auto"') assert.ok(Number(m[2]) <= 900, `${file}: alto ${m[2]}`);
     }
-    assert.doesNotMatch(read(file), /frame:\s*false/, `${file}: ventana sin marco (no se podría cerrar)`);
+    if (file !== "module/apps/screen.mjs") assert.doesNotMatch(read(file), /frame:\s*false/, `${file}: ventana sin marco (no se podría cerrar)`);
   }
   const welcome = read("module/apps/welcome.mjs").match(/width:\s*(\d+)/);
   assert.ok(Number(welcome[1]) <= 520, "el aviso de bienvenida debe ser pequeño");
@@ -108,7 +114,7 @@ test("sin reglas destructivas sobre la interfaz de Foundry", () => {
 });
 
 test("solo la señal de seguridad ocupa la pantalla entera, y se puede cerrar", () => {
-  const allowed = [".mr-umu.umu-safety-signal"];
+  const allowed = [".mr-umu.umu-safety-signal", ".umu-screen-app", ".umu-backdrop", ".umu-pill", ".mr-umu .umu-table.screen", ".mr-umu .umu-hide-btn"];
   const fixed = allRules.filter(r => /position:\s*fixed/.test(r.body)).map(r => r.selector);
   for (const s of fixed) assert.ok(allowed.some(a => s.startsWith(a)), `position: fixed en ${s}`);
   const safety = read("module/apps/safety.mjs");
@@ -140,4 +146,19 @@ test("nadie escribe en el Proxy position de ApplicationV2 (un 0 lanza TypeError)
   for (const file of code) {
     assert.doesNotMatch(read(file), /Object\.assign\(this\.position|this\.position\.\w+\s*=[^=]/, `${file} escribe en this.position`);
   }
+});
+
+test("la Mesa a pantalla completa siempre se puede ocultar y recuperar", () => {
+  const screen = read("module/apps/screen.mjs");
+  assert.match(screen, /frame:\s*false/);
+  assert.match(screen, /positioned:\s*false/);
+  assert.match(screen, /umu-pill/);
+  assert.match(screen, /set\("tableHidden"/);
+  assert.match(read("templates/apps/table.hbs"), /data-action="hide"/);
+  assert.match(entry, /Table\.toggle\(\)[\s\S]*umuChronicle/, "herramienta de escena que alterna");
+  assert.match(entry, /onDown: \(\) => \{ Table\.toggle\(\)/, "atajo de teclado que alterna");
+  // la capa de pantalla completa deja pasar el ratón a la escena y no tapa los controles de Foundry (z-index 30)
+  const layer = allRules.find(r => r.selector === ".umu-screen-app");
+  assert.match(layer.body, /pointer-events:\s*none/);
+  assert.match(layer.body, /z-index:\s*20\b/);
 });

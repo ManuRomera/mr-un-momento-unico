@@ -538,3 +538,100 @@
 .umu-dark .mr-umu .umu-empty-art { filter: invert(1) hue-rotate(180deg); }
 .umu-dark .mr-umu .umu-welcome-art { filter: invert(1) hue-rotate(180deg) brightness(.7); }
 .umu-dark .mr-umu .umu-hanko { background: #7a1a22; }
+
+/* ==========================================================================
+   La Mesa a pantalla completa: capa sin marco sobre la escena.
+   z-index 20: por encima del lienzo, por debajo de los controles de Foundry (30) y de las ventanas (100+).
+   El panel se coloca entre los controles con las variables --umu-left/top/right/bottom (las calcula screen.mjs).
+   ========================================================================== */
+.mr-umu .umu-frame { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.umu-screen-app { position: fixed; inset: 0; z-index: 20; pointer-events: none; font-family: var(--umu-serif); font-size: calc(14px * var(--umu-text-scale, 1)); }
+.umu-screen-app.umu-hidden { display: none; }
+.mr-umu .umu-table.screen { position: absolute; inset: 0; height: auto; overflow: visible; background: none; pointer-events: none; }
+.mr-umu .umu-table.screen .umu-atmos { display: none; }
+.mr-umu .umu-table.screen > .umu-frame {
+  position: absolute; top: var(--umu-top, 60px); left: var(--umu-left, 104px); right: var(--umu-right, 76px); bottom: var(--umu-bottom, 160px);
+  gap: 12px; pointer-events: none; overflow: visible; background: none;
+}
+/* Cada pieza es una tarjeta suelta sobre la escena: entre ellas se ve el claro y el clima */
+.mr-umu .umu-table.screen .umu-head, .mr-umu .umu-table.screen .umu-scroll-strip, .mr-umu .umu-table.screen .umu-seat {
+  pointer-events: auto; border-radius: 12px; border: 1px solid rgba(11, 11, 12, .65); box-shadow: 0 14px 40px rgba(0, 0, 0, .4);
+}
+.mr-umu .umu-table.screen .umu-board { pointer-events: none; gap: 12px; }
+.mr-umu .umu-table.screen .umu-center { pointer-events: auto; padding: .2rem .4rem 1rem; }
+.mr-umu .umu-table.screen .umu-seat.sumi { border-right-width: 1px; }
+.mr-umu .umu-table.screen .umu-seat.washi { border-left-width: 1px; }
+
+/* En un hueco estrecho (ventana pequeña, barra lateral abierta) los jugadores pasan a una fila compacta sobre el rollo */
+.mr-umu .umu-table.screen > .umu-frame { container-type: inline-size; container-name: umu-frame; }
+@container umu-frame (max-width: 960px) {
+  .mr-umu .umu-board { grid-template-columns: 1fr 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 10px; }
+  .mr-umu .umu-board > .umu-seat:first-child { grid-column: 1; grid-row: 1; }
+  .mr-umu .umu-board > .umu-seat:last-child { grid-column: 2; grid-row: 1; }
+  .mr-umu .umu-board > .umu-center { grid-column: 1 / -1; grid-row: 2; }
+  .mr-umu .umu-seat { flex-direction: row; align-items: center; justify-content: space-between; gap: .8rem; padding: .5rem .8rem; overflow: hidden; }
+  .mr-umu .umu-seat-head { grid-template-columns: 40px minmax(0, 1fr); flex: 1 1 auto; min-width: 0; }
+  .mr-umu .umu-portrait { width: 40px; height: 50px; }
+  .mr-umu .umu-seat-kamon { display: none; }
+  .mr-umu .umu-counters { flex-direction: row; gap: .8rem; flex: 0 0 auto; }
+  .mr-umu .umu-counters li header span { display: none; }
+  .mr-umu .umu-counters li header { gap: .3rem; }
+  .mr-umu .umu-counters li header b { margin-left: 0; font-size: 1.35em; }
+  .mr-umu .umu-pips { display: none; }
+  .mr-umu .umu-seat.active::before { top: 0; bottom: auto; left: 0; right: 0; width: auto; height: 3px; }
+}
+.mr-umu .umu-table.screen.umu-empty { display: block; padding: 0; }
+.mr-umu .umu-table.screen.umu-empty > *:not(.umu-hide-btn) { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: auto; }
+.mr-umu .umu-hide-btn { position: absolute; top: 64px; right: 76px; z-index: 2; pointer-events: auto; width: 34px; min-height: 34px; padding: 0; }
+
+/* El fondo es otra capa para poder mezclarse con la escena: multiplica el papel del clima sobre el claro. */
+.umu-backdrop { position: fixed; inset: 0; z-index: 19; pointer-events: none; background: var(--umu-bg, none) center / cover no-repeat; mix-blend-mode: multiply; opacity: .94; }
+.umu-backdrop.umu-hidden { display: none; }
+.umu-backdrop.cine { background: #000; mix-blend-mode: normal; opacity: 1; }
+.umu-backdrop.cine::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) grayscale(1) contrast(1.25); opacity: .85; }
+.umu-dark .umu-backdrop { mix-blend-mode: normal; background-color: #0d0d0f; opacity: .96; }
+.umu-dark .umu-backdrop::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) hue-rotate(180deg) brightness(.5) saturate(.7); }
+.umu-dark .umu-backdrop.cine { background: #000; }
+
+/* Gran Final: toda la pantalla en blanco y negro, con barras de cine (el fondo lo pinta .umu-backdrop) */
+.mr-umu .umu-table.screen.cine { background: none; }
+.mr-umu .umu-table.screen:not(.cine)::before { content: none; }
+.mr-umu .umu-table.screen.cine::before, .mr-umu .umu-table.screen.cine::after {
+  content: ""; position: absolute; left: 0; right: 0; z-index: 0; background: #000; filter: none; opacity: 1; height: 8vh; inset-block: auto;
+}
+.mr-umu .umu-table.screen.cine::before { top: 0; }
+.mr-umu .umu-table.screen.cine::after { bottom: 0; }
+.umu-dark .mr-umu .umu-table.screen { background: none; }
+.umu-dark .mr-umu .umu-table.screen:not(.cine)::before { content: none; }
+
+/* La pastilla para recuperar la Mesa oculta */
+.umu-pill {
+  position: fixed; z-index: 21; top: 64px; left: 104px; display: inline-flex; align-items: center; gap: .5em; width: auto; min-height: 34px; padding: .2em 1em;
+  background: rgba(11, 11, 12, .92); color: var(--umu-washi, #f2ede1); border: 1px solid var(--umu-shu, #b3202a); border-radius: 999px;
+  font-family: var(--umu-serif); font-size: 13px; letter-spacing: .08em; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, .5);
+}
+.umu-pill:hover, .umu-pill:focus-visible { background: var(--umu-shu, #b3202a); }
+
+@media (max-width: 1100px) {
+  .mr-umu .umu-table.screen > .umu-frame { border-radius: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .umu-backdrop { transition: none; }
+}
+
+/* Corregir a mano: − y + junto a los contadores y panel con lo que el juego consume */
+.mr-umu .umu-head-tools button.on { background: var(--umu-washi); color: var(--umu-sumi); }
+.mr-umu .umu-fix-btns { display: inline-flex; gap: 3px; margin-left: .35rem; }
+.mr-umu .umu-fix-btn { width: 22px; min-height: 22px; padding: 0; border: 1px solid currentColor; border-radius: 50%; background: transparent; color: inherit; font-size: .62em; line-height: 1; cursor: pointer; opacity: .85; }
+.mr-umu .umu-fix-btn:hover, .mr-umu .umu-fix-btn:focus-visible { background: var(--umu-shu); border-color: var(--umu-shu); color: #fff; opacity: 1; }
+.mr-umu .umu-fixes h2 i { color: var(--umu-shu); margin-right: .3em; }
+.mr-umu .umu-fix-group { display: flex; flex-direction: column; gap: .4rem; padding-top: .6rem; border-top: 1px solid var(--umu-line); }
+.mr-umu .umu-fix-group h3 { font-size: .85em; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+.mr-umu .umu-fix-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+.mr-umu .umu-fix-list li { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; }
+.mr-umu .umu-fix-list small { opacity: .65; }
+.mr-umu .umu-fix-actions { display: inline-flex; gap: .3rem; flex-wrap: wrap; }
+.mr-umu .umu-stepper { display: inline-flex; align-items: center; gap: .5rem; }
+.mr-umu .umu-stepper b { min-width: 1.6em; text-align: center; font-size: 1.15em; font-variant-numeric: tabular-nums; }
+.mr-umu .umu-stepper button { width: 28px; min-height: 28px; padding: 0; border-radius: 50%; }
+.mr-umu button.umu-chip.on { background: var(--umu-sumi); color: var(--umu-washi); }

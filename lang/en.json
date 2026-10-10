@@ -11,15 +11,19 @@
       "Safety": "Safety"
     },
     "Keys": {
-      "Table": "Open the Duel Table",
-      "TableHint": "Opens the main window of One Single Moment."
+      "Table": "Show or hide the Duel Table",
+      "TableHint": "Shows or hides the A Single Moment table."
     },
     "Error": {
       "Phase": "MR · Un momento único: phase “{phase}” failed. Foundry keeps working; check the diagnostic."
     },
     "Settings": {
       "OpenOnStart": "Open the Table on login",
-      "OpenOnStartHint": "Opens the Duel Table automatically when the world loads. A personal setting."
+      "OpenOnStartHint": "In window mode, opens the Table when the world loads. In full screen the Table always shows on login unless you hid it. A personal setting.",
+      "TableMode": "The Table",
+      "TableModeHint": "Full screen: the Table covers the whole screen over the scene and can be hidden with the eye, the pill or the shortcut. Window: the Duel Table in a window. A personal setting.",
+      "TableModeScreen": "Full screen",
+      "TableModeWindow": "In a window"
     },
     "Game": {
       "DocName": "One Single Moment · Game",
@@ -49,7 +53,10 @@
       "ActAs": "Play as",
       "Spectator": "Spectator",
       "Tools": "Table tools",
-      "History": "Chapter scroll"
+      "History": "Chapter scroll",
+      "Hide": "Hide the Table and see only the scene",
+      "Show": "Show the Table",
+      "ShowHint": "Shows the Duel Table again"
     },
     "Phase": {
       "setup": "Opening scene",
@@ -437,7 +444,47 @@
       "noHate": "You have no hate to deal with.",
       "notEnoughAdvantages": "You do not have enough advantages left.",
       "unknownAction": "Unknown action.",
-      "noSetting": "The setting is missing."
+      "noSetting": "The setting is missing.",
+      "badKind": "That counter does not exist.",
+      "badAmount": "Enter a non-zero amount.",
+      "belowZero": "It cannot go below zero."
+    },
+    "Fix": {
+      "Title": "Fix by hand",
+      "Toggle": "Fix by hand",
+      "Intro": "To repair a mistake: raise or lower whatever the game spent or dealt on its own. While this is on, each player's counters (Advantages, Hate and Scars) show − and + next to them. Either player can do it and everything is recorded.",
+      "Note": "Manual correction",
+      "LessOf": "Remove one {what} from {name}",
+      "MoreOf": "Add one {what} to {name}",
+      "Less": "Remove one",
+      "More": "Add one",
+      "Pool": "Choice markers",
+      "PoolHint": "Move a marker between the reserve and a player. Only before the climax dice are rolled.",
+      "Reserve": "Reserve",
+      "PoolLess": "Return one of {name}'s markers to the reserve",
+      "PoolMore": "Give a marker to {name}",
+      "Themes": "Key themes",
+      "ThemesHint": "Mark a theme as played or put it back. The advantages it gave are fixed on the player's counter.",
+      "Used": "Played",
+      "Available": "Available",
+      "Return": "put back",
+      "Mark": "mark as played",
+      "Chars": "Key characters",
+      "Release": "Release",
+      "AssignTo": "Assign to {name}",
+      "Virtues": "Virtues",
+      "VirtuesHint": "Move a virtue between the deck and the discard. The story's virtue, the chapter's and any on the table are left alone.",
+      "ToDeck": "Back to the deck",
+      "ToDiscard": "To the discard",
+      "Where": {
+        "story": "the story's",
+        "table": "on the table",
+        "play": "in play",
+        "deck": "in the deck",
+        "discard": "discarded"
+      },
+      "Planned": "Planned chapters",
+      "PlannedHint": "How many chapters will be played"
     }
   }
 }

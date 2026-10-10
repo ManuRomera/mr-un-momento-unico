@@ -242,8 +242,12 @@ const HANDLERS = {
   },
   "pool.undo"(s) {
     inStep(s, 4);
-    const last = s.chapter.decisions.pop(); need(last, "nothingToUndo");
-    if (last.favored !== "none") { s.chapter.pool[other(last.favored)] -= 1; s.chapter.pool.reserve += 1; }
+    const last = s.chapter.decisions.at(-1); need(last, "nothingToUndo");
+    if (last.favored !== "none") {
+      need(s.chapter.pool[other(last.favored)] > 0, "belowZero"); // el reparto se corrigió a mano: no se puede deshacer esa decisión
+      s.chapter.pool[other(last.favored)] -= 1; s.chapter.pool.reserve += 1;
+    }
+    s.chapter.decisions.pop();
   },
   "pool.settle"(s) { inStep(s, 4); s.chapter.step = 5; },
   "climax.extra"(s, a) {
@@ -439,6 +443,69 @@ const HANDLERS = {
     if (e.step >= e.order.length) s.phase = "done";
   },
 
+  /* ---------- correcciones a mano ----------
+     Para arreglar un error en partida. Las pueden hacer los dos jugadores y el Director; ninguna baja de cero
+     y las de contadores quedan en el libro (origen «fix»). */
+  "fix.ledger"(s, a) {
+    need(s.phase !== "setup", "wrongPhase");
+    const seat = seatArg(a);
+    need(KINDS.includes(a.kind), "badKind");
+    const delta = Math.trunc(a.delta) || 0;
+    need(delta !== 0, "badAmount");
+    need(totals(s)[seat][a.kind] + delta >= 0, "belowZero");
+    entry(s, seat, a.kind, delta, a.note ?? "", "fix");
+    if (s.phase === "final") resyncFinal(s);
+  },
+  /** Mueve un marcador de Elección entre la reserva y un jugador (pasos 4 y 5, antes de tirar). */
+  "fix.pool"(s, a) {
+    inPhase(s, "chapter");
+    const c = s.chapter;
+    need(!s.between && (c.step === 4 || c.step === 5), "wrongStep");
+    need(!c.dice.A && !c.dice.B, "locked");
+    const seat = seatArg(a);
+    if (Math.trunc(a.delta) < 0) { need(c.pool[seat] > 0, "belowZero"); c.pool[seat] -= 1; c.pool.reserve += 1; }
+    else { need(c.pool.reserve > 0, "reserveEmpty"); c.pool[seat] += 1; c.pool.reserve -= 1; }
+    // el plan del clímax cambia: se desbloquea y se recorta lo que ya no cabe (el tope de 7 incluye la consonancia)
+    c.ready = { A: false, B: false };
+    for (const x of SEATS) c.extra[x] = Math.min(c.extra[x], climaxDice({ markers: c.pool[x], extra: 99, consonance: c.consonance === x }).room);
+  },
+  /** Marca un tema clave como jugado o lo devuelve. Las ventajas que dio siguen en el libro: se corrigen con fix.ledger. */
+  "fix.theme"(s, a) {
+    need(s.themeIds.includes(a.themeId), "badTheme");
+    const used = s.themesDone.includes(a.themeId);
+    if (a.used && !used) s.themesDone.push(a.themeId);
+    if (!a.used && used) {
+      s.themesDone = s.themesDone.filter(t => t !== a.themeId);
+      if (s.chapter.theme === a.themeId) s.chapter.theme = "";
+    }
+  },
+  /** Asigna un personaje clave a un jugador o lo libera (`owner: ""`). */
+  "fix.char"(s, a) {
+    need(s.charIds.includes(a.characterId), "badCharacter");
+    if (a.owner === "" || a.owner === null) {
+      delete s.chars[a.characterId];
+      if (s.chapter.character === a.characterId) s.chapter.character = "";
+      return;
+    }
+    need(SEATS.includes(a.owner), "badSeat");
+    s.chars[a.characterId] = { owner: a.owner, name: text(a.name ?? s.chars[a.characterId]?.name).slice(0, 60), chapter: s.chars[a.characterId]?.chapter ?? s.chapter.n };
+  },
+  /** Mueve una virtud entre el mazo y el descarte. No toca la de la historia, la del capítulo ni las que están sobre la mesa. */
+  "fix.virtue"(s, a, rng) {
+    need(s.virtues.all.includes(a.virtueId), "badVirtue");
+    need(a.virtueId !== s.decl.virtueId && !Object.values(s.virtues.drawn).includes(a.virtueId), "badVirtue");
+    need(!(s.phase === "chapter" && !s.between && s.chapter.virtueId === a.virtueId), "badVirtue");
+    s.virtues.deck = s.virtues.deck.filter(v => v !== a.virtueId);
+    s.virtues.discard = s.virtues.discard.filter(v => v !== a.virtueId);
+    if (a.where === "discard") s.virtues.discard.push(a.virtueId);
+    else s.virtues.deck = shuffle([...s.virtues.deck, a.virtueId], rng);
+  },
+  /** Cuántos capítulos se jugarán. */
+  "fix.planned"(s, a) {
+    need(s.phase === "setup" || s.phase === "chapter", "wrongPhase");
+    s.planned = Math.max(2, Math.min(40, Math.trunc(a.n) || s.planned));
+  },
+
   /* ---------- administración (árbitro) ---------- */
   "admin.ledger"(s, a) {
     need(SEATS.includes(a.seat) && KINDS.includes(a.kind), "badSeat");
@@ -469,6 +536,16 @@ function finishHate(s) {
   const t = totals(s);
   s.final = { ...blankFinal(), attacker: startingAttacker({ A: { hate: t.A.hate, advantages: t.A.adv, scars: t.A.scar }, B: { hate: t.B.hate, advantages: t.B.adv, scars: t.B.scar } }, s.first) };
   checkMortal(s);
+}
+/** Tras corregir las ventajas en el Gran Final: quién intenta el golpe mortal puede haber cambiado. */
+function resyncFinal(s) {
+  const f = s.final, t = totals(s), m = mortalAttacker({ A: t.A.adv, B: t.B.adv });
+  if (f.stage === "mortal") {
+    if (f.mortal.dice.A || f.mortal.dice.B) return; // ya se está tirando: no se toca
+    if (m) { if (f.mortal.round === 1) f.mortal.attacker = m; }
+    else if (t.A.adv === 0 && t.B.adv === 0) conclude(s, null);
+    else { f.stage = "declare"; f.mortal = { round: 0, attacker: "", dice: { A: null, B: null } }; }
+  } else if (f.stage === "declare") checkMortal(s);
 }
 function advanceDeclare(s) { if (s.final.declaration && s.final.response) s.final.stage = "spend"; }
 function scarTo(s, seat) { entry(s, seat, "scar", 1, "", "exchange"); }

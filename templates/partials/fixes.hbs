@@ -1,0 +1,85 @@
+<section class="umu-panel umu-fixes" aria-label="{{localize 'UMU.Fix.Title'}}">
+  <header class="umu-panel-head">
+    <h2><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> {{localize "UMU.Fix.Title"}}</h2>
+    <p class="umu-lede">{{localize "UMU.Fix.Intro"}}</p>
+  </header>
+
+  {{#if fixes.pool}}
+  <div class="umu-fix-group">
+    <h3>{{localize "UMU.Fix.Pool"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Fix.PoolHint"}}</p>
+    <ul class="umu-fix-list">
+      <li><span>{{localize "UMU.Fix.Reserve"}}</span><b>{{fixes.pool.reserve}}</b></li>
+      {{#each fixes.pool.seats}}
+      <li>
+        <span>{{name}}</span>
+        <span class="umu-stepper">
+          <button type="button" data-action="fixPool" data-seat="{{seat}}" data-delta="-1" aria-label="{{localize 'UMU.Fix.PoolLess' name=name}}"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+          <b>{{n}}</b>
+          <button type="button" data-action="fixPool" data-seat="{{seat}}" data-delta="1" aria-label="{{localize 'UMU.Fix.PoolMore' name=name}}"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+        </span>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+
+  <div class="umu-fix-group">
+    <h3>{{localize "UMU.Fix.Themes"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Fix.ThemesHint"}}</p>
+    <ul class="umu-fix-list">
+      {{#each fixes.themes}}
+      <li>
+        <span>{{title}}</span>
+        <button type="button" class="umu-chip {{#if used}}on{{/if}}" data-action="fixTheme" data-id="{{id}}" data-used="{{#if used}}false{{else}}true{{/if}}" aria-pressed="{{#if used}}true{{else}}false{{/if}}">{{#if used}}{{localize "UMU.Fix.Used"}} · {{localize "UMU.Fix.Return"}}{{else}}{{localize "UMU.Fix.Available"}} · {{localize "UMU.Fix.Mark"}}{{/if}}</button>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="umu-fix-group">
+    <h3>{{localize "UMU.Fix.Chars"}}</h3>
+    <ul class="umu-fix-list">
+      {{#each fixes.chars}}
+      <li>
+        <span>{{title}}{{#unless free}} <small>· {{ownerName}}</small>{{/unless}}</span>
+        <span class="umu-fix-actions">
+          {{#unless free}}<button type="button" class="umu-chip" data-action="fixChar" data-id="{{id}}" data-owner="">{{localize "UMU.Fix.Release"}}</button>{{/unless}}
+          {{#each seats}}<button type="button" class="umu-chip" data-action="fixChar" data-id="{{../id}}" data-owner="{{seat}}">{{localize "UMU.Fix.AssignTo" name=name}}</button>{{/each}}
+        </span>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  {{#if fixes.virtues.length}}
+  <div class="umu-fix-group">
+    <h3>{{localize "UMU.Fix.Virtues"}}</h3>
+    <p class="umu-hint">{{localize "UMU.Fix.VirtuesHint"}}</p>
+    <ul class="umu-fix-list">
+      {{#each fixes.virtues}}
+      <li>
+        <span><span class="umu-glyph-sm" aria-hidden="true">{{glyph}}</span> {{name}} <small>· {{whereLabel}}</small></span>
+        {{#if movable}}<button type="button" class="umu-chip" data-action="fixVirtue" data-id="{{id}}" data-where="{{moveTo}}">{{moveLabel}}</button>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+
+  {{#if fixes.canPlanned}}
+  <div class="umu-fix-group">
+    <h3>{{localize "UMU.Fix.Planned"}}</h3>
+    <ul class="umu-fix-list">
+      <li>
+        <span>{{localize "UMU.Fix.PlannedHint"}}</span>
+        <span class="umu-stepper">
+          <button type="button" data-action="fixPlanned" data-delta="-1" aria-label="{{localize 'UMU.Fix.Less'}}"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+          <b>{{fixes.planned}}</b>
+          <button type="button" data-action="fixPlanned" data-delta="1" aria-label="{{localize 'UMU.Fix.More'}}"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+        </span>
+      </li>
+    </ul>
+  </div>
+  {{/if}}
+</section>

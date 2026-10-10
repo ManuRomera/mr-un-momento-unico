@@ -13,6 +13,8 @@ import { BOOT, bootPhase, diagnostic } from "./module/services/diagnostic.mjs";
 import { SamuraiSheet } from "./module/sheets/samurai.mjs";
 import { Apps, openApp } from "./module/apps/registry.mjs";
 import { TableApp } from "./module/apps/table.mjs";
+import { ScreenTable, Table } from "./module/apps/screen.mjs";
+import { registerCover } from "./module/services/cover.mjs";
 import { ChronicleApp } from "./module/apps/chronicle.mjs";
 import { AccessPanel } from "./module/apps/access.mjs";
 import { SafetyPanel } from "./module/apps/safety.mjs";
@@ -24,7 +26,7 @@ import { SoundService } from "./module/services/sound.mjs";
 const TEMPLATE_FILES = [
   "apps/table.hbs", "apps/chronicle.hbs", "apps/access.hbs", "apps/safety.hbs", "apps/welcome.hbs", "apps/diagnostic.hbs",
   "sheets/samurai.hbs", "partials/seat.hbs", "partials/setup.hbs", "partials/between.hbs", "partials/chapter.hbs",
-  "partials/hate.hbs", "partials/final.hbs", "partials/epilogue.hbs"
+  "partials/hate.hbs", "partials/fixes.hbs", "partials/fixbtns.hbs", "partials/final.hbs", "partials/epilogue.hbs"
 ].map(p => `${TEMPLATES}/${p}`);
 
 /* -------------------------------------------- */
@@ -52,17 +54,20 @@ Hooks.once("init", () => {
   });
 
   bootPhase("apps", () => {
-    Object.assign(Apps, { table: TableApp, chronicle: ChronicleApp, access: AccessPanel, safety: SafetyPanel, welcome: WelcomeApp, diagnostic: DiagnosticApp });
+    Object.assign(Apps, { table: Table, chronicle: ChronicleApp, access: AccessPanel, safety: SafetyPanel, welcome: WelcomeApp, diagnostic: DiagnosticApp });
     game.keybindings.register(SYSTEM_ID, "openTable", {
       name: "UMU.Keys.Table", hint: "UMU.Keys.TableHint",
       editable: [{ key: "KeyU", modifiers: ["Alt"] }],
-      onDown: () => { openApp("table"); return true; }
+      onDown: () => { Table.toggle(); return true; }
     });
+    Hooks.on("mrUmuTableMode", () => Table.reopen());
   });
+
+  bootPhase("cover", registerCover);
 
   bootPhase("api", () => {
     game.mrUnMomentoUnico = Object.freeze({
-      open: () => openApp("table"), table: () => openApp("table"), chronicle: () => openApp("chronicle"),
+      open: () => openApp("table"), table: () => openApp("table"), hideTable: () => Table.hide(), toggleTable: () => Table.toggle(), chronicle: () => openApp("chronicle"),
       safety: () => openApp("safety"), access: () => openApp("access"),
       state: () => GameService.state(), registerSetting, settings: () => GameService.settings().map(s => s.id),
       /** Informe copiable. `game.mrUnMomentoUnico.diagnostic({ show: true })` abre la ventana. */
@@ -85,7 +90,7 @@ Hooks.once("ready", async () => {
   bootPhase("preferences", applyPreferences);
   bootPhase("sound", () => SoundService.init());
   bootPhase("safety", () => SafetyPanel.init());
-  bootPhase("live", () => { TableApp.init(); ChronicleApp.init(); });
+  bootPhase("live", () => { TableApp.init(); ScreenTable.init(); ChronicleApp.init(); });
 
   if (game.user.isGM) {
     await bootPhase("game", () => GameService.ensure());
@@ -94,7 +99,7 @@ Hooks.once("ready", async () => {
 
   console.info(`${LOG} listo · Foundry ${game.version}`, BOOT.errors.length ? BOOT.errors : "sin errores");
   if (game.user.isGM) bootPhase("welcome", () => WelcomeApp.maybeShow());
-  if (game.settings.get(SYSTEM_ID, "openOnStart")) bootPhase("openOnStart", () => openApp("table"));
+  bootPhase("table", () => Table.start());
 });
 
 /**
@@ -121,7 +126,7 @@ Hooks.on("getSceneControlButtons", controls => {
     addControlGroup(controls, {
       name: "umu", title: "MR · Un momento único", icon: "fa-solid fa-torii-gate",
       tools: [
-        { name: "umuTable", title: t("UMU.App.Table"), icon: "fa-solid fa-torii-gate", onChange: () => openApp("table") },
+        { name: "umuTable", title: t("UMU.App.Table"), icon: "fa-solid fa-torii-gate", onChange: () => Table.toggle() },
         { name: "umuChronicle", title: t("UMU.App.Chronicle"), icon: "fa-solid fa-scroll", onChange: () => openApp("chronicle") },
         { name: "umuSafety", title: t("UMU.App.Safety"), icon: "fa-solid fa-shield-heart", onChange: () => openApp("safety") }
       ]

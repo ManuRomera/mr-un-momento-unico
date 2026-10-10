@@ -358,3 +358,99 @@ test("apply no muta el estado de entrada y numera las revisiones", () => {
   assert.equal(b.planned, 7);
   assert.equal(codeOf(() => go(a, { type: "nope" })), "unknownAction");
 });
+
+/* -------------------------------------------- */
+/*  Correcciones a mano                         */
+/* -------------------------------------------- */
+
+test("fix.ledger sube y baja un contador, queda en el libro y nunca baja de cero", () => {
+  let s = ready(); s = go(s, { type: "chapter.begin", seat: "A" });
+  s = go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: 3, note: "olvidadas" });
+  assert.equal(totals(s).B.adv, 3);
+  assert.equal(s.ledger.at(-1).source, "fix");
+  s = go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: -1 });
+  assert.equal(totals(s).B.adv, 2);
+  assert.equal(codeOf(() => go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: -3 })), "belowZero");
+  assert.equal(codeOf(() => go(s, { type: "fix.ledger", seat: "B", kind: "oro", delta: 1 })), "badKind");
+  assert.equal(codeOf(() => go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: 0 })), "badAmount");
+  assert.equal(codeOf(() => go(newGame({ setting: SETTING }), { type: "fix.ledger", seat: "A", kind: "adv", delta: 1 })), "wrongPhase");
+});
+
+test("fix.pool mueve marcadores entre la reserva y un jugador y desbloquea el clímax", () => {
+  let s = toPool(ready(), "A");
+  s = go(s, { type: "pool.favor", toSeat: "A", note: "" });          // el marcador va a B
+  s = go(s, { type: "fix.pool", seat: "B", delta: -1 });             // se devuelve a la reserva
+  assert.deepEqual(s.chapter.pool, { reserve: 7, A: 0, B: 0 });
+  s = go(s, { type: "fix.pool", seat: "A", delta: 1 });
+  assert.deepEqual(s.chapter.pool, { reserve: 6, A: 1, B: 0 });
+  assert.equal(codeOf(() => go(s, { type: "fix.pool", seat: "B", delta: -1 })), "belowZero");
+  assert.equal(codeOf(() => go(s, { type: "pool.undo" })), "belowZero", "la decisión ya no se puede deshacer porque el reparto cambió");
+  s = go(s, { type: "pool.settle" });
+  s = go(s, { type: "climax.ready", seat: "A" });
+  s = go(s, { type: "fix.pool", seat: "A", delta: 1 });
+  assert.equal(s.chapter.ready.A, false);
+  s = go(s, { type: "climax.ready", seat: "A" }); s = go(s, { type: "climax.ready", seat: "B" });
+  assert.equal(codeOf(() => go(s, { type: "fix.pool", seat: "A", delta: 1 })), null, "antes de tirar aún se puede corregir");
+});
+
+test("fix.pool: la reserva vacía y las fases equivocadas se rechazan", () => {
+  let s = toPool(ready(), "A");
+  for (let i = 0; i < 7; i++) s = go(s, { type: "pool.favor", toSeat: "A", note: "" });
+  assert.equal(codeOf(() => go(s, { type: "fix.pool", seat: "A", delta: 1 })), "reserveEmpty");
+  assert.equal(codeOf(() => go(ready(), { type: "fix.pool", seat: "A", delta: 1 })), "wrongPhase");
+});
+
+test("fix.theme y fix.char devuelven lo que el automatismo había gastado", () => {
+  let s = ready(); s = go(s, { type: "chapter.begin", seat: "A" }); s = go(s, { type: "virtue.keep" });
+  s = go(s, { type: "theme.pick", themeId: "trust" });
+  assert.deepEqual(themesLeft(s), ["line", "promise"]);
+  s = go(s, { type: "fix.theme", themeId: "trust", used: false });
+  assert.deepEqual(themesLeft(s), ["trust", "line", "promise"]);
+  assert.equal(s.chapter.theme, "");
+  s = go(s, { type: "fix.theme", themeId: "line", used: true });
+  assert.deepEqual(themesLeft(s), ["trust", "promise"]);
+  s = go(s, { type: "fix.char", characterId: "victim", owner: "B", name: "El granjero" });
+  assert.deepEqual(charsLeft(s), ["catalyst", "coveted"]);
+  assert.equal(s.chars.victim.owner, "B");
+  s = go(s, { type: "fix.char", characterId: "victim", owner: "" });
+  assert.deepEqual(charsLeft(s), ["catalyst", "victim", "coveted"]);
+  assert.equal(codeOf(() => go(s, { type: "fix.theme", themeId: "nada", used: true })), "badTheme");
+});
+
+test("fix.virtue mueve una virtud entre mazo y descarte sin tocar la de la historia", () => {
+  let s = ready();
+  assert.equal(s.virtues.deck.length, 6);
+  s = go(s, { type: "fix.virtue", virtueId: "gi", where: "discard" });
+  assert.equal(s.virtues.deck.includes("gi"), false);
+  assert.deepEqual(s.virtues.discard, ["gi"]);
+  s = go(s, { type: "fix.virtue", virtueId: "gi", where: "deck" });
+  assert.equal(s.virtues.deck.length, 6);
+  assert.deepEqual(s.virtues.discard, []);
+  assert.equal(codeOf(() => go(s, { type: "fix.virtue", virtueId: "meiyo", where: "discard" })), "badVirtue", "la de la declaración inicial no se mueve");
+});
+
+test("fix.planned cambia los capítulos previstos", () => {
+  let s = ready();
+  s = go(s, { type: "fix.planned", n: 7 });
+  assert.equal(s.planned, 7);
+  assert.equal(go(s, { type: "fix.planned", n: 1 }).planned, 2);
+});
+
+test("corregir ventajas en el Gran Final recoloca el golpe mortal", () => {
+  let s = ready();
+  s = go(s, { type: "admin.ledger", seat: "A", kind: "adv", n: 2 });
+  s = go(s, { type: "admin.ledger", seat: "B", kind: "adv", n: 1 });
+  s = structuredClone(s);
+  s.phase = "final";
+  s.final = { attacker: "A", stage: "declare", round: 0, declaration: "", response: "", spend: { A: null, B: null }, dice: { A: null, B: null }, bets: { A: null, B: null }, last: null, log: [], mortal: { round: 0, attacker: "", dice: { A: null, B: null } } };
+  s = go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: -1 });   // B se queda sin ventajas: A intenta el golpe mortal
+  assert.equal(s.final.stage, "mortal");
+  assert.equal(s.final.mortal.attacker, "A");
+  s = go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: 1 });    // era un error: vuelve el intercambio normal
+  assert.equal(s.final.stage, "declare");
+  s = go(s, { type: "fix.ledger", seat: "A", kind: "adv", delta: -2 });   // ahora es A quien se queda a cero
+  assert.equal(s.final.stage, "mortal");
+  assert.equal(s.final.mortal.attacker, "B");
+  s = go(s, { type: "fix.ledger", seat: "B", kind: "adv", delta: -1 });   // los dos a cero: tablas por cicatrices y odio
+  assert.equal(s.phase, "epilogue");
+});

@@ -27,6 +27,13 @@ export function registerSettings() {
   game.settings.register(SYSTEM_ID, "openOnStart", {
     name: "UMU.Settings.OpenOnStart", hint: "UMU.Settings.OpenOnStartHint", scope: "client", config: true, type: Boolean, default: false
   });
+  // La Mesa a pantalla completa (por defecto) o en ventana. «Oculta» es la preferencia de quien quiere ver solo la escena.
+  game.settings.register(SYSTEM_ID, "tableMode", {
+    name: "UMU.Settings.TableMode", hint: "UMU.Settings.TableModeHint", scope: "client", config: true, type: String,
+    choices: { screen: "UMU.Settings.TableModeScreen", window: "UMU.Settings.TableModeWindow" }, default: "screen",
+    onChange: () => Hooks.callAll("mrUmuTableMode")
+  });
+  game.settings.register(SYSTEM_ID, "tableHidden", { scope: "client", config: false, type: Boolean, default: false });
   world("welcomeHidden", { type: Boolean, default: false });
   world("sceneReady", { type: Boolean, default: false });
   world("migratedVersion", { type: String, default: "" });

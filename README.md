@@ -4,11 +4,17 @@
 
 Sistema **no oficial** para Foundry VTT de ***Un momento único***, de Tobie Abad (The Hills Press, traducción de Víctor Romero): un juego de rol **para dos jugadores y sin Director** sobre dos samuráis que se miran a los ojos en un duelo final, y la historia de cómo llegaron hasta él.
 
-![La Mesa del Duelo en pleno capítulo](docs/img/mesa-capitulo.png)
+![La Mesa del Duelo a pantalla completa, en pleno capítulo](docs/img/mesa-capitulo.webp)
 
 ## Qué hace
 
 - **La Mesa del Duelo**: dos asientos simétricos (tinta contra papel) y, en el centro, el rollo con lo que toca en cada fase. Tú siempre estás a la izquierda.
+- **A pantalla completa**: la Mesa se integra en la escena (sin ventana): el claro, el clima y el Gran Final son el fondo de toda la pantalla. Se oculta con el ojo, con `Alt+U` o con la herramienta de la barra de escena, y se recupera con una pastilla. En *Configurar ajustes → La Mesa* puedes volver a la ventana de siempre.
+
+  ![La Mesa oculta: solo la escena y una pastilla para recuperarla](docs/img/mesa-oculta.webp)
+- **Corregir a mano**: los automatismos gastan y reparten por su cuenta (temas, personajes, marcadores, ventajas…). Si algo sale mal, el botón de la llave inglesa de la cabecera pone **− y +** junto a las Ventajas, el Odio y las Cicatrices de cada jugador y abre un panel para mover marcadores de la reserva, devolver un tema o un personaje clave, mover virtudes entre el mazo y el descarte y cambiar los capítulos previstos. Lo pueden hacer los dos jugadores y todo queda anotado («Corrección manual»); nunca baja de cero.
+
+  ![El panel «Corregir a mano»](docs/img/corregir-a-mano.webp)
 - **La partida entera, guiada**: escena inicial con cuatro declaraciones alternadas → capítulos de seis pasos → lidiar con el odio → Gran Final → epílogo.
 - **Las reglas, vigiladas pero nunca bloqueantes**: ventajas, odio y cicatrices se derivan de un registro único; los dados los tiran los jugadores (Dice So Nice si lo tienes); la apuesta a ciegas no se ve hasta que ambos la bloquean.
 - **Gran Final en cine mudo**: al llegar el duelo, la interfaz pasa a blanco y negro duro con barras de cine.
@@ -17,7 +23,7 @@ Sistema **no oficial** para Foundry VTT de ***Un momento único***, de Tobie Aba
 - **Atmósfera**: siete climas (nieve, pétalos, verano, hojas, lluvia, niebla, polvo), sonido sintetizado (ambientes, efectos y un koto muy esporádico) con tres volúmenes por usuario.
 - **Cuidado**: accesibilidad completa (texto, lectura, contraste, movimiento, botones grandes), Pausa/Velo/Tarjeta X anónimos, ventanas que recuerdan su posición, español e inglés.
 
-![El Gran Final](docs/img/gran-final.png)
+![El Gran Final, en blanco y negro con barras de cine](docs/img/gran-final.webp)
 
 ## Instalación
 
@@ -27,7 +33,7 @@ En Foundry: **Sistemas → Instalar sistema** y pega el manifiesto:
 https://github.com/ManuRomera/mr-un-momento-unico/releases/latest/download/system.json
 ```
 
-Crea un mundo con el sistema, entra como Director una vez (se prepara la partida) y que cada jugador pulse **Mesa del Duelo** en los controles de escena (o `Alt+U`). Cada uno se sienta en un asiento, escribe nombre y clan, elige emblema, y a contar la historia.
+Crea un mundo con el sistema, entra como Director una vez (se prepara la partida) y que cada jugador vea la **Mesa del Duelo** (aparece sola; se oculta y se muestra con `Alt+U` o desde los controles de escena). Cada uno se sienta en un asiento, escribe nombre y clan, elige emblema, y a contar la historia.
 
 Para jugar **solo dos personas**, basta con que los dos usuarios sean jugadores; el Director es opcional.
 
