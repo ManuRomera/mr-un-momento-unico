@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+
+- **«Jugar como» ya no intercambia los paneles ni los retratos.** Cuando una misma persona lleva a los dos samuráis (el Director, o quien juega sola), cada uno conserva su sitio: el primero a la izquierda y el segundo a la derecha. Quien lleva un único samurái sigue viéndose a sí mismo a la izquierda.
+
 ## 1.1.3
 
 - **Legibilidad y modo oscuro de la Mesa a pantalla completa.** Sin clima, el fondo era la mesa lacada oscura: el texto oscuro no se leía, y en modo oscuro ese arte se invertía y deslumbraba. Ahora el fondo es siempre un arte claro con su propia base y velo, sin mezclarse con la escena de Foundry: el texto se lee sea cual sea la escena activa.

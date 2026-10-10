@@ -85,10 +85,12 @@ export class TableApp extends SystemApp {
     const screen = this.constructor.SCREEN;
     if (!state) return { noGame: true, gm, screen };
     const def = GameService.settingDef(state.settingId), me = this.#me(state), tot = totals(state);
-    const left = me ?? "A", right = other(left);
+    const held = SEATS.filter(s => state.seats[s].userId === game.user.id);
+    // «Tú a la izquierda» solo cuando llevas un único samurái. Si llevas los dos (o arbitras), cada uno tiene su sitio fijo:
+    // cambiar con «Jugar como» no debe intercambiar los paneles ni sus retratos.
+    const left = held.length === 1 && me === held[0] ? me : "A", right = other(left);
     const seats = Object.fromEntries(SEATS.map(s => [s, this.#seatView(state, s, me, tot)]));
     const nameOf = s => seats[s]?.name ?? "";
-    const held = SEATS.filter(s => state.seats[s].userId === game.user.id);
     const phase = state.phase;
     const virtueView = id => {
       const v = def.virtues.find(x => x.id === id);
