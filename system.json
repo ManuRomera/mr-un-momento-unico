@@ -2,7 +2,7 @@
   "id": "mr-un-momento-unico",
   "title": "MR · Un momento único",
   "description": "Sistema no oficial de Un momento único (Tobie Abad) para Foundry VTT: un juego de rol para dos jugadores sin Director sobre un duelo de samuráis. Mesa del Duelo con asientos simétricos, virtudes, temas y personajes clave, clímax con dados, odio, Gran Final con golpe mortal, epílogo y Crónica autogenerada. Estética sumi-e, sonido sintetizado, accesibilidad y seguridad en mesa.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "compatibility": { "minimum": "13", "verified": "13.351", "maximum": "14" },
   "authors": [
     { "name": "Manu Romera", "url": "https://github.com/ManuRomera", "flags": { "role": "Diseño e implementación" } },

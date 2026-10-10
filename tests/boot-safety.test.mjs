@@ -94,7 +94,7 @@ const allRules = rules(css).filter(r => !r.parents.some(p => p.startsWith("@keyf
 test("todo selector está limitado al sistema", () => {
   const bad = [];
   for (const { selector } of allRules) {
-    for (const s of selector.split(",").map(x => x.trim())) {
+    for (const s of selector.split(/,(?![^(]*\))/).map(x => x.trim())) {
       if (s === ":root") continue;
       const scoped = /\.mr-umu\b/.test(s) || /^\.umu-[a-z-]+(\s|$|\.|:)/.test(s) || /^\.umu-[a-z-]+$/.test(s);
       if (!scoped) bad.push(s);
@@ -135,7 +135,7 @@ test("se respeta prefers-reduced-motion", () => {
 
 test("los estilos de botón no tocan los controles de cabecera de Foundry (sus iconos)", () => {
   for (const { selector, body } of allRules) {
-    for (const s of selector.split(",").map(x => x.trim())) {
+    for (const s of selector.split(/,(?![^(]*\))/).map(x => x.trim())) {
       if (!/\bbutton(?![.\w-])/.test(s) || /header-control|window-content|\.umu-/.test(s)) continue;
       if (/font|background|border|padding|height/.test(body)) assert.fail(`«${s}» alcanzaría los botones de cabecera`);
     }

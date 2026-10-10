@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+- **La Mesa a pantalla completa se integra mejor con el fondo.** El rollo central ya no es una hoja con marco: el texto se apoya directamente en el fondo con un halo suave del color del papel (o de la tinta en modo oscuro) y una zona de calma difuminada, sin bordes. Las cartas, los botones y los campos siguen sólidos.
+- Los jugadores y la cabecera son tarjetas translúcidas con desenfoque; los jugadores miden lo que su contenido y el rollo tiene un ancho de lectura cómodo.
+- El modo oscuro muestra más el fondo; el texto secundario no pierde opacidad sobre el dibujo. Con alto contraste o menos efectos, el centro vuelve a ser una hoja casi opaca.
+
 ## 1.1.0
 
 - **La Mesa a pantalla completa** (por defecto): el panel de la Mesa del Duelo deja de ser una ventana y se integra en la escena. Los climas, el claro y el Gran Final pasan a ser el fondo de toda la pantalla, y los controles, la barra lateral y las macros de Foundry siguen encima y reciben los clics.

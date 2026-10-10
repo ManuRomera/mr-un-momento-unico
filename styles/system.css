@@ -589,8 +589,8 @@
 .umu-backdrop.umu-hidden { display: none; }
 .umu-backdrop.cine { background: #000; mix-blend-mode: normal; opacity: 1; }
 .umu-backdrop.cine::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) grayscale(1) contrast(1.25); opacity: .85; }
-.umu-dark .umu-backdrop { mix-blend-mode: normal; background-color: #0d0d0f; opacity: .96; }
-.umu-dark .umu-backdrop::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) hue-rotate(180deg) brightness(.5) saturate(.7); }
+.umu-dark .umu-backdrop { mix-blend-mode: normal; background-color: #0d0d0f; opacity: .92; }
+.umu-dark .umu-backdrop::before { content: ""; position: absolute; inset: 0; background: var(--umu-bg) center / cover no-repeat; filter: invert(1) hue-rotate(180deg) brightness(.85) saturate(.8); }
 .umu-dark .umu-backdrop.cine { background: #000; }
 
 /* Gran Final: toda la pantalla en blanco y negro, con barras de cine (el fondo lo pinta .umu-backdrop) */
@@ -635,3 +635,94 @@
 .mr-umu .umu-stepper b { min-width: 1.6em; text-align: center; font-size: 1.15em; font-variant-numeric: tabular-nums; }
 .mr-umu .umu-stepper button { width: 28px; min-height: 28px; padding: 0; border-radius: 50%; }
 .mr-umu button.umu-chip.on { background: var(--umu-sumi); color: var(--umu-washi); }
+
+/* ==========================================================================
+   Mesa a pantalla completa · transparencias
+   El fondo (clima, claro) tiene que verse. Cada tarjeta es translúcida y desenfoca lo que hay detrás,
+   así el texto sigue leyéndose con contraste alto sobre cualquier parte del dibujo.
+   ========================================================================== */
+.mr-umu .umu-table.screen .umu-head, .mr-umu .umu-table.screen .umu-scroll-strip, .mr-umu .umu-table.screen .umu-arbiter {
+  background: rgba(11, 11, 12, .72); -webkit-backdrop-filter: blur(8px) saturate(.9); backdrop-filter: blur(8px) saturate(.9);
+}
+.mr-umu .umu-table.screen .umu-panel {
+  background: rgba(242, 237, 225, .8); -webkit-backdrop-filter: blur(7px) saturate(.9); backdrop-filter: blur(7px) saturate(.9);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, .3);
+}
+.mr-umu .umu-table.screen .umu-seat.sumi { background: rgba(11, 11, 12, .74); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.mr-umu .umu-table.screen .umu-seat.washi { background: rgba(242, 237, 225, .78); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+/* Los jugadores miden lo que su contenido: debajo se ve la escena. El rollo tiene un ancho de lectura cómodo y deja ver el fondo a los lados. */
+.mr-umu .umu-table.screen .umu-seat { align-self: start; max-height: 100%; }
+.mr-umu .umu-table.screen .umu-center { align-items: center; padding-inline: clamp(1rem, 9%, 6rem); }
+.mr-umu .umu-table.screen .umu-center > * { width: 100%; max-width: 1040px; }
+
+/* Modo oscuro */
+.umu-dark .mr-umu .umu-table.screen .umu-panel { background: rgba(22, 22, 25, .76); }
+.umu-dark .mr-umu .umu-table.screen .umu-seat.washi { background: rgba(38, 38, 42, .74); }
+.umu-dark .mr-umu .umu-table.screen .umu-seat.sumi { background: rgba(8, 8, 9, .72); }
+
+/* Cine del Gran Final */
+.mr-umu .umu-table.screen.cine .umu-panel { background: rgba(0, 0, 0, .7); }
+.mr-umu .umu-table.screen.cine .umu-seat.sumi { background: rgba(0, 0, 0, .72); }
+.mr-umu .umu-table.screen.cine .umu-seat.washi { background: rgba(255, 255, 255, .9); }
+.mr-umu .umu-table.screen.cine .umu-head, .mr-umu .umu-table.screen.cine .umu-scroll-strip { background: rgba(0, 0, 0, .72); }
+
+/* Sin soporte de desenfoque o con efectos reducidos: un poco más opacos para no perder lectura */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .mr-umu .umu-table.screen .umu-panel { background: rgba(242, 237, 225, .93); }
+  .mr-umu .umu-table.screen .umu-seat.washi { background: rgba(242, 237, 225, .93); }
+  .umu-dark .mr-umu .umu-table.screen .umu-panel { background: rgba(22, 22, 25, .94); }
+}
+.umu-reduced-effects .mr-umu .umu-table.screen .umu-panel, .umu-high-contrast .mr-umu .umu-table.screen .umu-panel { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(242, 237, 225, .96); }
+.umu-dark.umu-reduced-effects .mr-umu .umu-table.screen .umu-panel, .umu-dark.umu-high-contrast .mr-umu .umu-table.screen .umu-panel { background: rgba(22, 22, 25, .96); }
+
+/* ==========================================================================
+   Mesa a pantalla completa · el centro deja de ser una losa
+   El texto se apoya directamente en el fondo: un halo del color del papel (o de la tinta en oscuro) lo mantiene
+   legible sobre las pinceladas, y una zona de calma muy difuminada, sin bordes, aquieta el centro. Las cartas,
+   los botones y los campos siguen siendo sólidos.
+   ========================================================================== */
+.mr-umu .umu-table.screen .umu-center {
+  background: radial-gradient(ellipse 50% 82% at 50% 50%, rgba(242, 237, 225, .74) 0%, rgba(242, 237, 225, .7) 68%, rgba(242, 237, 225, 0) 100%);
+}
+.mr-umu .umu-table.screen .umu-panel {
+  background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding: .5rem .3rem;
+}
+.mr-umu .umu-table.screen .umu-panel::before { display: none; }
+.mr-umu .umu-table.screen .umu-panel :is(h1, h2, h3, h4, p, li, label, legend, small, summary, dt, dd, strong, em, blockquote, .umu-lede, .umu-hint, .umu-waiting) {
+  text-shadow: 0 0 3px rgba(242, 237, 225, .95), 0 0 9px rgba(242, 237, 225, .95), 0 0 18px rgba(242, 237, 225, .8);
+}
+.mr-umu .umu-table.screen .umu-panel :is(button, .umu-card, .umu-card *, input, textarea, select, option) { text-shadow: none; }
+/* los bloques que agrupan controles (reserva, resultado, dados) se quedan como notas ligeras sobre la mesa */
+.mr-umu .umu-table.screen .umu-panel :is(.umu-pool, .umu-reserve, .umu-result, .umu-say, .umu-dice-row, .umu-note) {
+  background: rgba(242, 237, 225, .55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.mr-umu .umu-table.screen .umu-panel :is(input, textarea, select) { background: rgba(255, 255, 255, .78); }
+.mr-umu .umu-table.screen .umu-panel-head { border-bottom-color: rgba(23, 23, 26, .45); }
+
+/* Modo oscuro */
+.umu-dark .mr-umu .umu-table.screen .umu-center {
+  background: radial-gradient(ellipse 50% 82% at 50% 50%, rgba(12, 12, 14, .74) 0%, rgba(12, 12, 14, .7) 68%, rgba(12, 12, 14, 0) 100%);
+}
+.umu-dark .mr-umu .umu-table.screen .umu-panel { background: none; }
+.umu-dark .mr-umu .umu-table.screen .umu-panel :is(h1, h2, h3, h4, p, li, label, legend, small, summary, dt, dd, strong, em, blockquote, .umu-lede, .umu-hint, .umu-waiting) {
+  text-shadow: 0 0 3px rgba(8, 8, 9, .95), 0 0 9px rgba(8, 8, 9, .95), 0 0 18px rgba(8, 8, 9, .8);
+}
+.umu-dark .mr-umu .umu-table.screen .umu-panel :is(.umu-pool, .umu-reserve, .umu-result, .umu-say, .umu-dice-row, .umu-note) { background: rgba(22, 22, 25, .6); }
+.umu-dark .mr-umu .umu-table.screen .umu-panel :is(input, textarea, select) { background: rgba(0, 0, 0, .6); }
+.umu-dark .mr-umu .umu-table.screen .umu-panel-head { border-bottom-color: rgba(228, 221, 205, .35); }
+
+/* Cine del Gran Final: halo negro, sin zona clara */
+.mr-umu .umu-table.screen.cine .umu-center { background: radial-gradient(ellipse 50% 82% at 50% 50%, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, .54) 68%, rgba(0, 0, 0, 0) 100%); }
+.mr-umu .umu-table.screen.cine .umu-panel { background: none; }
+.mr-umu .umu-table.screen.cine .umu-panel :is(h1, h2, h3, h4, p, li, label, legend, small, summary, dt, dd, strong, em, blockquote, .umu-lede, .umu-hint, .umu-waiting) { text-shadow: 0 0 4px #000, 0 0 12px #000; }
+
+/* Alto contraste o menos efectos: vuelve la hoja sólida, que es lo más legible */
+.umu-high-contrast .mr-umu .umu-table.screen .umu-panel, .umu-reduced-effects .mr-umu .umu-table.screen .umu-panel { background: rgba(242, 237, 225, .96); padding: 1.2rem 1.4rem; }
+.umu-dark.umu-high-contrast .mr-umu .umu-table.screen .umu-panel, .umu-dark.umu-reduced-effects .mr-umu .umu-table.screen .umu-panel { background: rgba(22, 22, 25, .96); }
+
+/* Sobre el fondo, el texto secundario no puede perder opacidad: se lee igual que el principal */
+.mr-umu .umu-table.screen .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-lede, .umu-waiting, small, .umu-rule) { opacity: 1; }
+.mr-umu .umu-table.screen .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-waiting, small, .umu-rule) { color: var(--umu-ink); }
+.umu-dark .mr-umu .umu-table.screen .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-waiting, small, .umu-rule) { color: #e4ddcd; }
+.mr-umu .umu-table.screen.cine .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-waiting, small, .umu-rule) { color: #fff; }
