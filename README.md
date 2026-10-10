@@ -12,6 +12,9 @@ Sistema **no oficial** para Foundry VTT de ***Un momento único***, de Tobie Aba
 - **A pantalla completa**: la Mesa se integra en la escena (sin ventana): el claro, el clima y el Gran Final son el fondo de toda la pantalla. Se oculta con el ojo, con `Alt+U` o con la herramienta de la barra de escena, y se recupera con una pastilla. En *Configurar ajustes → La Mesa* puedes volver a la ventana de siempre.
 
   ![La Mesa oculta: solo la escena y una pastilla para recuperarla](docs/img/mesa-oculta.webp)
+- **Modo oscuro** pensado para quien tiene sensibilidad a la luz: la base es tinta y el arte de fondo se atenúa, sin blancos que deslumbren, y el texto sigue legible.
+
+  ![La Mesa en modo oscuro](docs/img/mesa-oscura.webp)
 - **Corregir a mano**: los automatismos gastan y reparten por su cuenta (temas, personajes, marcadores, ventajas…). Si algo sale mal, el botón de la llave inglesa de la cabecera pone **− y +** junto a las Ventajas, el Odio y las Cicatrices de cada jugador y abre un panel para mover marcadores de la reserva, devolver un tema o un personaje clave, mover virtudes entre el mazo y el descarte y cambiar los capítulos previstos. Lo pueden hacer los dos jugadores y todo queda anotado («Corrección manual»); nunca baja de cero.
 
   ![El panel «Corregir a mano»](docs/img/corregir-a-mano.webp)
