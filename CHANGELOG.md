@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+- La Mesa a pantalla completa ya no pone una zona rellena detrás del rollo: era una mancha clara u oscura según la escena. En su lugar hay un círculo de tinta (ensō) muy atenuado y sin relleno, y el fondo se ve entero detrás del texto. En modo oscuro y en el cine del Gran Final el aro se invierte; con alto contraste o menos efectos desaparece.
+
 ## 1.1.1
 
 - **La Mesa a pantalla completa se integra mejor con el fondo.** El rollo central ya no es una hoja con marco: el texto se apoya directamente en el fondo con un halo suave del color del papel (o de la tinta en modo oscuro) y una zona de calma difuminada, sin bordes. Las cartas, los botones y los campos siguen sólidos.

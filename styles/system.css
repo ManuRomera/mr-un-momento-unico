@@ -683,7 +683,7 @@
    los botones y los campos siguen siendo sólidos.
    ========================================================================== */
 .mr-umu .umu-table.screen .umu-center {
-  background: radial-gradient(ellipse 50% 82% at 50% 50%, rgba(242, 237, 225, .74) 0%, rgba(242, 237, 225, .7) 68%, rgba(242, 237, 225, 0) 100%);
+  background: none;
 }
 .mr-umu .umu-table.screen .umu-panel {
   background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding: .5rem .3rem;
@@ -702,7 +702,7 @@
 
 /* Modo oscuro */
 .umu-dark .mr-umu .umu-table.screen .umu-center {
-  background: radial-gradient(ellipse 50% 82% at 50% 50%, rgba(12, 12, 14, .74) 0%, rgba(12, 12, 14, .7) 68%, rgba(12, 12, 14, 0) 100%);
+  background: none;
 }
 .umu-dark .mr-umu .umu-table.screen .umu-panel { background: none; }
 .umu-dark .mr-umu .umu-table.screen .umu-panel :is(h1, h2, h3, h4, p, li, label, legend, small, summary, dt, dd, strong, em, blockquote, .umu-lede, .umu-hint, .umu-waiting) {
@@ -713,7 +713,7 @@
 .umu-dark .mr-umu .umu-table.screen .umu-panel-head { border-bottom-color: rgba(228, 221, 205, .35); }
 
 /* Cine del Gran Final: halo negro, sin zona clara */
-.mr-umu .umu-table.screen.cine .umu-center { background: radial-gradient(ellipse 50% 82% at 50% 50%, rgba(0, 0, 0, .6) 0%, rgba(0, 0, 0, .54) 68%, rgba(0, 0, 0, 0) 100%); }
+.mr-umu .umu-table.screen.cine .umu-center { background: none; }
 .mr-umu .umu-table.screen.cine .umu-panel { background: none; }
 .mr-umu .umu-table.screen.cine .umu-panel :is(h1, h2, h3, h4, p, li, label, legend, small, summary, dt, dd, strong, em, blockquote, .umu-lede, .umu-hint, .umu-waiting) { text-shadow: 0 0 4px #000, 0 0 12px #000; }
 
@@ -726,3 +726,17 @@
 .mr-umu .umu-table.screen .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-waiting, small, .umu-rule) { color: var(--umu-ink); }
 .umu-dark .mr-umu .umu-table.screen .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-waiting, small, .umu-rule) { color: #e4ddcd; }
 .mr-umu .umu-table.screen.cine .umu-panel :is(.umu-hint, .umu-hint.dim, .umu-waiting, small, .umu-rule) { color: #fff; }
+
+/* ==========================================================================
+   Mesa a pantalla completa · el círculo de tinta (ensō)
+   Un aro de pincel muy atenuado y sin relleno detrás del rollo: marca el centro de la mesa sin tapar el fondo.
+   ========================================================================== */
+.mr-umu .umu-table.screen .umu-board { position: relative; }
+.mr-umu .umu-table.screen .umu-board::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: min(78%, 92vh); aspect-ratio: 1000 / 980; translate: -50% -50%;
+  background: url("../assets/art/ink/enso.webp") center / contain no-repeat; opacity: .13; pointer-events: none; z-index: 0;
+}
+.mr-umu .umu-table.screen .umu-board > * { position: relative; z-index: 1; }
+.umu-dark .mr-umu .umu-table.screen .umu-board::before { filter: invert(1); opacity: .12; }
+.mr-umu .umu-table.screen.cine .umu-board::before { filter: invert(1); opacity: .16; }
+.umu-reduced-effects .mr-umu .umu-table.screen .umu-board::before, .umu-high-contrast .mr-umu .umu-table.screen .umu-board::before { display: none; }
