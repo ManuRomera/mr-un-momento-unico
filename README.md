@@ -1,6 +1,6 @@
 # MR · Un momento único
 
-![Foundry VTT 13–14](https://img.shields.io/badge/Foundry%20VTT-13%20%E2%80%93%2014-informational) ![Versión](https://img.shields.io/github/v/release/ManuRomera/mr-un-momento-unico) ![Licencia](https://img.shields.io/badge/c%C3%B3digo-MIT-green) ![Texto del juego](https://img.shields.io/badge/texto%20del%20juego-CC%20BY%204.0-lightgrey)
+![Foundry VTT 13–14](https://img.shields.io/badge/Foundry%20VTT-13%20%E2%80%93%2014-informational) ![Versión](https://img.shields.io/github/v/release/ManuRomera/mr-un-momento-unico) ![Licencia](https://img.shields.io/badge/c%C3%B3digo-MIT-green) ![Texto del juego](https://img.shields.io/badge/texto%20del%20juego-CC%20BY%204.0-lightgrey) [![Descargas](https://raw.githubusercontent.com/ManuRomera/ManuRomera/main/badges/descargas-flat/mr-un-momento-unico.svg)](https://github.com/ManuRomera/mr-un-momento-unico/releases)
 
 Sistema **no oficial** para Foundry VTT de ***Un momento único***, de Tobie Abad (The Hills Press, traducción de Víctor Romero): un juego de rol **para dos jugadores y sin Director** sobre dos samuráis que se miran a los ojos en un duelo final, y la historia de cómo llegaron hasta él.
 
